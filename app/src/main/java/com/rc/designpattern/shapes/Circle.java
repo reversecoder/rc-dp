@@ -25,11 +25,11 @@ public class Circle extends BaseShape {
     }
 
     @Override
-    public void drawShape(RelativeLayout mFrame, Context aContext) {
-        super.drawShape(mFrame, aContext);
+    public void drawShape(RelativeLayout frame, Context context) {
+        super.drawShape(frame, context);
 
-        CircleView aCircleView = new CircleView(aContext, getShapeX(), getShapeY());
-        mFrame.addView(aCircleView);
+        CircleView aCircleView = new CircleView(context, getShapeX(), getShapeY());
+        frame.addView(aCircleView);
     }
 
     private class CircleView extends View implements ShapeView {
@@ -44,44 +44,7 @@ public class Circle extends BaseShape {
 
         @Override
         protected synchronized void onDraw(Canvas canvas) {
-            canvas.drawCircle(mXPos, mYPos, radius / 2, paint);
+            canvas.drawCircle(mXPos, mYPos, radius / 2, borderPaint);
         }
     }
-
-
-//    @Override
-//    public void drawShape(RelativeLayout mFrame, final float x, final float y, Context aContext) {
-//        this.mFrame = mFrame;
-//        mDisplayHeight = mFrame.getShapeHeight();
-//        mDisplayWidth = mFrame.getShapeWidth();
-//        CircleView aCircleView = new CircleView(aContext, x, y);
-//        mFrame.addView(aCircleView);
-//    }
-//
-//    @Override
-//    public void setShapeColor(int aColor) {
-//        this.myColor.setShapeColor(aColor);
-//    }
-//
-//    @Override
-//    public void setWidth(int width) {
-//        this.width = (float) width;
-//    }
-//
-//
-//    private class CircleView extends View implements ShapeView {
-//
-//        private float mXPos, mYPos;
-//
-//        public CircleView(Context context, float x, float y) {
-//            super(context);
-//            this.mXPos = x;
-//            this.mYPos = y;
-//        }
-//
-//        @Override
-//        protected synchronized void onDraw(Canvas canvas) {
-//            canvas.drawCircle(mXPos, mYPos, width / 2, myColor);
-//        }
-//    }
 }

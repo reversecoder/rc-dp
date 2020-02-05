@@ -29,11 +29,11 @@ public class Triangle extends BaseShape {
     }
 
     @Override
-    public void drawShape(RelativeLayout mFrame, Context aContext) {
-        super.drawShape(mFrame, aContext);
+    public void drawShape(RelativeLayout frame, Context context) {
+        super.drawShape(frame, context);
 
-        TriangleView triangleView = new TriangleView(aContext, getShapeX(), getShapeY());
-        mFrame.addView(triangleView);
+        TriangleView triangleView = new TriangleView(context, getShapeX(), getShapeY());
+        frame.addView(triangleView);
     }
 
     public class TriangleView extends View implements ShapeView {
@@ -48,7 +48,7 @@ public class Triangle extends BaseShape {
 
         @Override
         protected synchronized void onDraw(Canvas canvas) {
-            drawTriangle(canvas, paint, getShapeX(), getShapeY(), getShapeWidth());
+            drawTriangle(canvas, borderPaint, getShapeX(), getShapeY(), getShapeWidth());
         }
 
         public void drawTriangle(Canvas canvas, Paint paint, int x, int y, int width) {

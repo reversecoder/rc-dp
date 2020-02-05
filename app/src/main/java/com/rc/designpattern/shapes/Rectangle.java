@@ -27,11 +27,11 @@ public class Rectangle extends BaseShape {
     }
 
     @Override
-    public void drawShape(RelativeLayout mFrame, Context aContext) {
-        super.drawShape(mFrame, aContext);
+    public void drawShape(RelativeLayout frame, Context context) {
+        super.drawShape(frame, context);
 
-        RectangleView rectangleView = new RectangleView(aContext, getShapeX(), getShapeY());
-        mFrame.addView(rectangleView);
+        RectangleView rectangleView = new RectangleView(context, getShapeX(), getShapeY());
+        frame.addView(rectangleView);
     }
 
     public class RectangleView extends View implements ShapeView {
@@ -47,7 +47,7 @@ public class Rectangle extends BaseShape {
 
         @Override
         protected synchronized void onDraw(Canvas canvas) {
-            canvas.drawRect(mXPos - width, mYPos - width / 2, mXPos + width, mYPos + width / 2, paint);
+            canvas.drawRect(mXPos - width, mYPos - width / 2, mXPos + width, mYPos + width / 2, borderPaint);
         }
     }
 }

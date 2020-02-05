@@ -25,7 +25,6 @@ import com.rc.designpattern.tools.Generator;
 
 import java.util.HashMap;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private static final float YOFFSET = 100;
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Shape myShape = new CompoundShape(
-                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor()),
+//                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor()),
                         new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor())
                 );
                 myShape.drawShape(mFrame, getApplicationContext());

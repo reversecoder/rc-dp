@@ -181,11 +181,11 @@ public class CompoundShape extends BaseShape {
     }
 
     @Override
-    public void drawShape(RelativeLayout mFrame, Context aContext) {
-        super.drawShape(mFrame, aContext);
+    public void drawShape(RelativeLayout frame, Context context) {
+        super.drawShape(frame, context);
 
-        CompoundView compoundView = new CompoundView(aContext);
-        mFrame.addView(compoundView);
+        CompoundView compoundView = new CompoundView(context);
+        frame.addView(compoundView);
     }
 
     private class CompoundView extends View implements ShapeView {
@@ -198,7 +198,7 @@ public class CompoundShape extends BaseShape {
         protected synchronized void onDraw(Canvas canvas) {
             if (isSelected()) {
                 enableSelectionStyle();
-                canvas.drawRect(getShapeX() - 1, getShapeY() - 1, getShapeWidth() + 1, getShapeHeight() + 1, paint);
+                canvas.drawRect(getShapeX() - 1, getShapeY() - 1, getShapeWidth() + 1, getShapeHeight() + 1, borderPaint);
                 disableSelectionStyle();
             }
 

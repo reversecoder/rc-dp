@@ -8,8 +8,8 @@ import android.widget.RelativeLayout;
 
 public abstract class BaseShape implements Shape {
 
-    int x, y;
-    Paint paint;
+    int shapeX, shapeY;
+    Paint borderPaint, backgroundPaint;
     RelativeLayout frame;
     private int dx = 0, dy = 0;
     private int color;
@@ -18,20 +18,20 @@ public abstract class BaseShape implements Shape {
     private int displayWidth, displayHeight;
 
     BaseShape(int x, int y, int color) {
-        this.x = x;
-        this.y = y;
+        this.shapeX = x;
+        this.shapeY = y;
         this.color = color;
-        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        this.borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     @Override
     public int getShapeX() {
-        return x;
+        return shapeX;
     }
 
     @Override
     public int getShapeY() {
-        return y;
+        return shapeY;
     }
 
     @Override
@@ -46,26 +46,26 @@ public abstract class BaseShape implements Shape {
 
     @Override
     public void drag() {
-        dx = x;
-        dy = y;
+        dx = shapeX;
+        dy = shapeY;
     }
 
     @Override
     public void moveTo(int x, int y) {
-        this.x = dx + x;
-        this.y = dy + y;
+        this.shapeX = dx + x;
+        this.shapeY = dy + y;
     }
 
     @Override
     public void moveBy(int x, int y) {
-        this.x += x;
-        this.y += y;
+        this.shapeX += x;
+        this.shapeY += y;
     }
 
     @Override
     public void drop() {
-        this.x = dx;
-        this.y = dy;
+        this.shapeX = dx;
+        this.shapeY = dy;
     }
 
     @Override
@@ -100,10 +100,10 @@ public abstract class BaseShape implements Shape {
     }
 
     void enableSelectionStyle() {
-        paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2f);
-        paint.setPathEffect(new DashPathEffect(new float[]{5, 10}, 0));
+        borderPaint.setColor(Color.RED);
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setStrokeWidth(5f);
+        borderPaint.setPathEffect(new DashPathEffect(new float[]{5, 10}, 0));
 
 //        Graphics2D g2 = (Graphics2D) graphics;
 //        float dash1[] = {2.0f};
@@ -114,18 +114,19 @@ public abstract class BaseShape implements Shape {
     }
 
     void disableSelectionStyle() {
-        paint.setColor(color);
-        paint.setStyle(Paint.Style.STROKE);
+        borderPaint.setColor(color);
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setStrokeWidth(5f);
 //        Graphics2D g2 = (Graphics2D) graphics;
 //        g2.setStroke(new BasicStroke());
     }
 
     @Override
-    public void drawShape(RelativeLayout mFrame, Context aContext) {
-        frame = mFrame;
-        context = aContext;
-        displayHeight = mFrame.getHeight();
-        displayWidth = mFrame.getWidth();
+    public void drawShape(RelativeLayout frame, Context context) {
+        this.frame = frame;
+        this.context = context;
+        this.displayHeight = frame.getHeight();
+        this.displayWidth = frame.getWidth();
 
         if (isSelected()) {
             enableSelectionStyle();

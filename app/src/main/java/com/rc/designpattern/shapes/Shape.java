@@ -36,5 +36,5 @@ public interface Shape extends Serializable {
 
     void setShapeColor(int color);
 
-    void drawShape(RelativeLayout mFrame, Context aContext);
+    void drawShape(RelativeLayout frame, Context context);
 }
