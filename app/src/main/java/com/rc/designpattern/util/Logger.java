@@ -18,7 +18,7 @@ import java.util.Locale;
 public class Logger {
 
     private static String TAG = "LogManager";
-    private static final String ROOT = "pocketalkS";
+    private static final String ROOT = "MyApp";
     private static final String FOLDER = "log";
     private static String DOWNLOADS_PATH;
     private static String LOG_PREFIX;
@@ -31,7 +31,7 @@ public class Logger {
 //        DOWNLOADS_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
         DOWNLOADS_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ROOT;
         LOG_DIR = setLogPath(FOLDER);
-        LOG_PREFIX = setLogPrefix("TTSMicrosoft");
+        LOG_PREFIX = setLogPrefix("FeatureName");
     }
 
     public static void v(String msg) {
