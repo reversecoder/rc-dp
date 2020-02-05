@@ -3,8 +3,12 @@ package com.rc.designpattern.shapes;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import com.rc.designpattern.gesture.TouchGestureDetector;
+import com.rc.designpattern.util.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -192,6 +196,14 @@ public class CompoundShape extends BaseShape {
 
         public CompoundView(Context context) {
             super(context);
+
+//            setOnTouchListener(new OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    gestureDetector.onTouchEvent(event);
+//                    return false;
+//                }
+//            });
         }
 
         @Override
@@ -206,5 +218,42 @@ public class CompoundShape extends BaseShape {
                 child.drawShape(frame, getContext());
             }
         }
+
+//        TouchGestureDetector gestureDetector = new TouchGestureDetector(new TouchGestureDetector.TouchGestureListener() {
+//            @Override
+//            public void onPress(MotionEvent motionEvent) {
+//
+//            }
+//
+//            @Override
+//            public void onTap(MotionEvent motionEvent) {
+//
+//            }
+//
+//            @Override
+//            public void onDrag(MotionEvent motionEvent) {
+//
+//            }
+//
+//            @Override
+//            public void onMove(MotionEvent motionEvent) {
+//
+//            }
+//
+//            @Override
+//            public void onRelease(MotionEvent motionEvent) {
+//
+//            }
+//
+//            @Override
+//            public void onLongPress(MotionEvent motionEvent) {
+//                Util.doVibrate(getContext(), 100);
+//            }
+//
+//            @Override
+//            public void onMultiTap(MotionEvent motionEvent, int clicks) {
+//
+//            }
+//        });
     }
 }
