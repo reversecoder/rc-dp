@@ -8,13 +8,13 @@ import java.io.Serializable;
 
 public interface Shape extends Serializable {
 
-    int getX();
+    int getShapeX();
 
-    int getY();
+    int getShapeY();
 
-    int getWidth();
+    int getShapeWidth();
 
-    int getHeight();
+    int getShapeHeight();
 
     void drag();
 
@@ -26,7 +26,7 @@ public interface Shape extends Serializable {
 
     boolean isInsideBounds(int x, int y);
 
-    int getColor();
+    int getShapeColor();
 
     void select();
 
@@ -34,7 +34,7 @@ public interface Shape extends Serializable {
 
     boolean isSelected();
 
-    void setColor(int color);
+    void setShapeColor(int color);
 
-    void draw(RelativeLayout mFrame, Context aContext);
+    void drawShape(RelativeLayout mFrame, Context aContext);
 }

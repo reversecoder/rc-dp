@@ -10,14 +10,14 @@ public abstract class BaseShape implements Shape {
 
     int x, y;
     Paint paint;
+    RelativeLayout frame;
     private int dx = 0, dy = 0;
     private int color;
     private boolean selected = false;
     private Context context;
-    private RelativeLayout frame;
     private int displayWidth, displayHeight;
 
-    public BaseShape(int x, int y, int color) {
+    BaseShape(int x, int y, int color) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -25,22 +25,22 @@ public abstract class BaseShape implements Shape {
     }
 
     @Override
-    public int getX() {
+    public int getShapeX() {
         return x;
     }
 
     @Override
-    public int getY() {
+    public int getShapeY() {
         return y;
     }
 
     @Override
-    public int getWidth() {
+    public int getShapeWidth() {
         return 0;
     }
 
     @Override
-    public int getHeight() {
+    public int getShapeHeight() {
         return 0;
     }
 
@@ -70,17 +70,17 @@ public abstract class BaseShape implements Shape {
 
     @Override
     public boolean isInsideBounds(int x, int y) {
-        return x > getX() && x < (getX() + getWidth()) &&
-                y > getY() && y < (getY() + getHeight());
+        return x > getShapeX() && x < (getShapeX() + getShapeWidth()) &&
+                y > getShapeY() && y < (getShapeY() + getShapeHeight());
     }
 
     @Override
-    public int getColor() {
+    public int getShapeColor() {
         return color;
     }
 
     @Override
-    public void setColor(int color) {
+    public void setShapeColor(int color) {
         this.color = color;
     }
 
@@ -121,7 +121,7 @@ public abstract class BaseShape implements Shape {
     }
 
     @Override
-    public void draw(RelativeLayout mFrame, Context aContext) {
+    public void drawShape(RelativeLayout mFrame, Context aContext) {
         frame = mFrame;
         context = aContext;
         displayHeight = mFrame.getHeight();

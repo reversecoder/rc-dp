@@ -2,13 +2,9 @@ package com.rc.designpattern.shapes;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-/**
- * Created by enrique on 04/08/14.
- */
 public class Circle extends BaseShape {
 
     private int radius;
@@ -19,20 +15,20 @@ public class Circle extends BaseShape {
     }
 
     @Override
-    public int getWidth() {
+    public int getShapeWidth() {
         return radius * 2;
     }
 
     @Override
-    public int getHeight() {
+    public int getShapeHeight() {
         return radius * 2;
     }
 
     @Override
-    public void draw(RelativeLayout mFrame, Context aContext) {
-       super.draw(mFrame, aContext);
+    public void drawShape(RelativeLayout mFrame, Context aContext) {
+        super.drawShape(mFrame, aContext);
 
-        CircleView aCircleView = new CircleView(aContext, getX(), getY());
+        CircleView aCircleView = new CircleView(aContext, getShapeX(), getShapeY());
         mFrame.addView(aCircleView);
     }
 
@@ -54,17 +50,17 @@ public class Circle extends BaseShape {
 
 
 //    @Override
-//    public void draw(RelativeLayout mFrame, final float x, final float y, Context aContext) {
+//    public void drawShape(RelativeLayout mFrame, final float x, final float y, Context aContext) {
 //        this.mFrame = mFrame;
-//        mDisplayHeight = mFrame.getHeight();
-//        mDisplayWidth = mFrame.getWidth();
+//        mDisplayHeight = mFrame.getShapeHeight();
+//        mDisplayWidth = mFrame.getShapeWidth();
 //        CircleView aCircleView = new CircleView(aContext, x, y);
 //        mFrame.addView(aCircleView);
 //    }
 //
 //    @Override
-//    public void setColor(int aColor) {
-//        this.myColor.setColor(aColor);
+//    public void setShapeColor(int aColor) {
+//        this.myColor.setShapeColor(aColor);
 //    }
 //
 //    @Override

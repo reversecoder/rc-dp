@@ -1,6 +1,5 @@
 package com.rc.designpattern.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
@@ -12,11 +11,16 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rc.designpattern.R;
+import com.rc.designpattern.enumeration.ShapeType;
 import com.rc.designpattern.memento.CareTaker;
 import com.rc.designpattern.memento.Memento;
 import com.rc.designpattern.memento.Originator;
 import com.rc.designpattern.shapes.Circle;
+import com.rc.designpattern.shapes.CompoundShape;
+import com.rc.designpattern.shapes.Rectangle;
 import com.rc.designpattern.shapes.Shape;
+import com.rc.designpattern.shapes.ShapeFactory;
+import com.rc.designpattern.shapes.Triangle;
 import com.rc.designpattern.tools.Generator;
 
 import java.util.HashMap;
@@ -40,10 +44,23 @@ public class MainActivity extends AppCompatActivity {
     private Button bttnUndo;
     private int currentState = 0;
     private final int duration = Toast.LENGTH_SHORT;
-    int whatShape = -1;
+//    private AudioManager mAudioManager;
+//    private float mStreamVolume;
+    // SoundPool
+//    private SoundPool mSoundPool;
+    // ID for the bubble popping sound
+//    private int mSoundID;
+    //speeed mode
+//    public final static int RANDOM = 0;
+//    public static int speedMode = RANDOM;
+//    public final static int SINGLE = 1;
+//    public final static int STILL = 2;
 
-//    private static final ShapeFactory.ShapeType shapes[] = { ShapeFactory.ShapeType.RECTANGLE,
-//            ShapeFactory.ShapeType.CIRCLE, ShapeFactory.ShapeType.TRIANGLE };
+
+//    int whatShape = -1;
+
+//    private static final ShapeFactory.ShapeType shapes[] = {ShapeFactory.ShapeType.RECTANGLE,
+//            ShapeFactory.ShapeType.CIRCLE, ShapeFactory.ShapeType.TRIANGLE};
 
     private HashMap<String, Integer> shapeMapping = new HashMap<String, Integer>();
 
@@ -68,20 +85,17 @@ public class MainActivity extends AppCompatActivity {
         bttnCompound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                whatShape = 3;
-//
-//                float xPos = Generator.randInt(100,500);
-//                float yPos = Generator.randInt(100, 800);
-//                Shape myShape = new CompoundShape(new Circle(Generator.generateColor(),100), new Circle(Generator.generateColor(),50));
-//                myShape.setColor(Color.BLUE);
-//                myShape.setWidth(100);
-//                myShape.draw(mFrame,xPos,yPos,getApplicationContext());
-//
-//                // memento
-//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //adding the last com.rc.designpattern.view that you insert into the frame
-//                Memento currentMemento = mOriginator.save2Memento(); //save status
-//                aCaretaker.add(currentMemento, currentState); //save to status list
-//                currentState++;
+                Shape myShape = new CompoundShape(
+                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor()),
+                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor())
+                );
+                myShape.drawShape(mFrame, getApplicationContext());
+
+                // memento
+                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1)); //adding the last com.rc.designpattern.view that you insert into the frame
+                Memento currentMemento = mOriginator.save2Memento(); //save status
+                aCaretaker.add(currentMemento, currentState); //save to status list
+                currentState++;
             }
         });
 
@@ -89,47 +103,46 @@ public class MainActivity extends AppCompatActivity {
         bttnCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Shape myShape = new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor());
 
-                int xPos = Generator.randInt(100, 500);
-                int yPos = Generator.randInt(100, 800);
-                Shape myShape = new Circle(xPos, yPos, 50, Color.GRAY);
-                myShape.draw(mFrame, getApplicationContext());
+//                Shape myShape = ShapeFactory.getShape(ShapeType.CIRCLE);
+                myShape.drawShape(mFrame, getApplicationContext());
+
                 // memento
                 mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
                 Memento currentMemento = mOriginator.save2Memento();
                 aCaretaker.add(currentMemento, currentState);
                 currentState++;
-
-
-//                whatShape = 1; //
-//                float xPos = Generator.randInt(100,500);
-//                float yPos = Generator.randInt(100, 800);
-//                if(whatShape == -1){
-//                    return ;
-//                }
-//
-//                Shape myShape = ShapeFactory.getShape(shapes[whatShape]);
-//                myShape.draw(mFrame,xPos,yPos,getApplicationContext());
-//
-//                // memento
-//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //agregando el ultimo com.rc.designpattern.view que inserte al frame
-//                Memento currentMemento = mOriginator.save2Memento(); //guardar estado
-//                aCaretaker.add(currentMemento, currentState); //guargar a la lista de estados
-//                currentState++;
-
-
             }
         });
         bttnRectangle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                whatShape = 0;
+                Shape myShape = new Rectangle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.randInt(50, 100), Generator.generateColor());
+
+//                Shape myShape = ShapeFactory.getShape(ShapeType.RECTANGLE);
+                myShape.drawShape(mFrame, getApplicationContext());
+
+                // memento
+                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
+                Memento currentMemento = mOriginator.save2Memento();
+                aCaretaker.add(currentMemento, currentState);
+                currentState++;
             }
         });
         bttnTriangle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                whatShape = 2;
+                Shape myShape = new Triangle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.randInt(50, 100), Generator.generateColor());
+
+//                Shape myShape = ShapeFactory.getShape(ShapeType.TRIANGLE);
+                myShape.drawShape(mFrame, getApplicationContext());
+
+                // memento
+                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
+                Memento currentMemento = mOriginator.save2Memento();
+                aCaretaker.add(currentMemento, currentState);
+                currentState++;
             }
         });
         bttnUndo.setOnClickListener(new View.OnClickListener() {
@@ -204,8 +217,8 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onFling(MotionEvent event1, MotionEvent event2,
                                            float velocityX, float velocityY) {
 
-//                        float xPos = event1.getX();
-//                        float yPos = event1.getY()-YOFFSET;
+//                        float xPos = event1.getShapeX();
+//                        float yPos = event1.getShapeY()-YOFFSET;
 //                        if(whatShape == -1){
 //                            return false;
 //                        }
@@ -240,8 +253,8 @@ public class MainActivity extends AppCompatActivity {
                         // You can get all Views in mFrame using the
                         // ViewGroup.getChildCount() method
 //                        float xPos = event.getX();
-//                        float yPos = event.getY()-YOFFSET;
-//                        if(whatShape == -1){
+//                        float yPos = event.getY() - YOFFSET;
+//                        if (whatShape == -1) {
 //                            return false;
 //                        }
 //
@@ -251,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
 //                            ShapeView myViewTmp = (ShapeView) mFrame.getChildAt(i);
                             /*
                             Log.i("posicion","xpos(evento)="+xPos +"ypos(evento) = " + yPos + "x com.rc.designpattern.view = "+
-                                    myViewTmp.getX()+"y com.rc.designpattern.view =" + myViewTmp.getY() + "ancho =" +myViewTmp.getWidth());
+                                    myViewTmp.getShapeX()+"y com.rc.designpattern.view =" + myViewTmp.getShapeY() + "ancho =" +myViewTmp.getShapeWidth());
                                     */
 
 //                            if(myViewTmp.intersects(xPos,yPos) ){
@@ -261,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
 //                                toast.show();
 //                                int index = shapeMapping.get(myViewTmp.getClass().getName());
 //                                myShape = ShapeFactory.getShape(com.rc.designpattern.shapes[index]);
-//                                myShape.setColor(Generator.generateColor());
+//                                myShape.setShapeColor(Generator.generateColor());
 //                                myShape.setWidth(Generator.randInt(ShapeFactory.MINWIDTH,ShapeFactory.MAXWIDTH));
 //                                reDrawLayout();
 //                                return true;
@@ -270,11 +283,11 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 
 
-//                        myShape.draw(mFrame,xPos,yPos,getApplicationContext());
+//                        myShape.drawShape(mFrame, xPos, yPos, getApplicationContext());
 //                        mSoundPool.play(mSoundID, (float)mStreamVolume , (float)mStreamVolume, 1, 0,1.0f);
 
 
-//                        mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //agregando el ultimo com.rc.designpattern.view que inserte al frame
+//                        mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1)); //agregando el ultimo com.rc.designpattern.view que inserte al frame
 //                        Memento currentMemento = mOriginator.save2Memento(); //guardar estado
 //
 //                        aCaretaker.add(currentMemento, currentState); //guargar a la lista de estados

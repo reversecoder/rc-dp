@@ -8,7 +8,6 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="#ffb9e8ac"
         android:id="@+id/frame"
         android:layout_weight="0.8">
     </RelativeLayout>
