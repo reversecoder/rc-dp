@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Design Pattern</string>
+
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+
+</resources>
