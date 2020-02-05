@@ -5,40 +5,37 @@ import android.graphics.Canvas;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-public class Rectangle extends BaseShape {
+public class Dot extends BaseShape {
 
-    private int width;
-    private int height;
+    private final int DOT_SIZE = 10;
 
-    public Rectangle(int x, int y, int width, int height, int color) {
+    public Dot(int x, int y, int color) {
         super(x, y, color);
-        this.width = width;
-        this.height = height;
     }
 
     @Override
     public int getShapeWidth() {
-        return width;
+        return DOT_SIZE;
     }
 
     @Override
     public int getShapeHeight() {
-        return height;
+        return DOT_SIZE;
     }
 
     @Override
     public void drawShape(RelativeLayout frame, Context context) {
         super.drawShape(frame, context);
 
-        RectangleView rectangleView = new RectangleView(context, getShapeX(), getShapeY());
-        frame.addView(rectangleView);
+        DotView dotView = new DotView(context, getShapeX(), getShapeY());
+        frame.addView(dotView);
     }
 
-    public class RectangleView extends View implements ShapeView {
+    public class DotView extends View implements ShapeView {
 
         private float mXPos, mYPos;
 
-        public RectangleView(Context context, float x, float y) {
+        public DotView(Context context, float x, float y) {
             super(context);
 
             this.mXPos = x;
@@ -47,7 +44,7 @@ public class Rectangle extends BaseShape {
 
         @Override
         protected synchronized void onDraw(Canvas canvas) {
-            canvas.drawRect(mXPos - width/2, mYPos - height / 2, mXPos + width, mYPos + height / 2, borderPaint);
+            canvas.drawRect(mXPos - getShapeWidth()/2, mYPos - getShapeHeight() / 2, mXPos + getShapeWidth(), mYPos + getShapeHeight() / 2, borderPaint);
         }
     }
 }

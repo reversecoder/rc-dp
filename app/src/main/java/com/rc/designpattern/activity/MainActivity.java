@@ -1,5 +1,6 @@
 package com.rc.designpattern.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
@@ -11,15 +12,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rc.designpattern.R;
-import com.rc.designpattern.enumeration.ShapeType;
 import com.rc.designpattern.memento.CareTaker;
 import com.rc.designpattern.memento.Memento;
 import com.rc.designpattern.memento.Originator;
 import com.rc.designpattern.shapes.Circle;
 import com.rc.designpattern.shapes.CompoundShape;
+import com.rc.designpattern.shapes.Dot;
 import com.rc.designpattern.shapes.Rectangle;
 import com.rc.designpattern.shapes.Shape;
-import com.rc.designpattern.shapes.ShapeFactory;
 import com.rc.designpattern.shapes.Triangle;
 import com.rc.designpattern.tools.Generator;
 
@@ -84,9 +84,17 @@ public class MainActivity extends AppCompatActivity {
         bttnCompound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                int shapeX = Generator.randInt(100, 500);
+//                int shapeY = Generator.randInt(100, 800);
+//                int height = Generator.randInt(50, 100);
+//                int width = Generator.randInt(50, 100);
+                int color = Generator.generateColor();
                 Shape myShape = new CompoundShape(
-//                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor()),
-                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor())
+                        new Rectangle(250, 250, 120, 100, color)
+                        , new Dot(250 - 120 / 2, 250 - 15 - 120 / 2, Color.RED)
+                        , new Dot(250 + 120, 250 - 15 - 120 / 2, Color.RED)
+                        , new Dot(250 - 120 / 2, 250 + 15 + 120 / 2, Color.RED)
+                        , new Dot(250 + 120, 250 + 15 + 120 / 2, Color.RED)
                 );
                 myShape.drawShape(mFrame, getApplicationContext());
 
@@ -102,7 +110,10 @@ public class MainActivity extends AppCompatActivity {
         bttnCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Shape myShape = new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor());
+                Shape myShape = new CompoundShape(
+//                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor()),
+                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor())
+                );
 
 //                Shape myShape = ShapeFactory.getShape(ShapeType.CIRCLE);
                 myShape.drawShape(mFrame, getApplicationContext());
