@@ -12,17 +12,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rc.designpattern.R;
-
-import java.util.HashMap;
-
 import com.rc.designpattern.memento.CareTaker;
 import com.rc.designpattern.memento.Memento;
 import com.rc.designpattern.memento.Originator;
 import com.rc.designpattern.shapes.Circle;
-import com.rc.designpattern.shapes.CompoundShape;
 import com.rc.designpattern.shapes.Shape;
-import com.rc.designpattern.shapes.ShapeFactory;
 import com.rc.designpattern.tools.Generator;
+
+import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -38,34 +35,21 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton bttnRectangle;
     private ImageButton bttnCircle;
     private ImageButton bttnTriangle;
-    private  Originator mOriginator = new Originator();
+    private Originator mOriginator = new Originator();
     private CareTaker aCaretaker = new CareTaker();
     private Button bttnUndo;
     private int currentState = 0;
     private final int duration = Toast.LENGTH_SHORT;
-//    private AudioManager mAudioManager;
-//    private float mStreamVolume;
-    // SoundPool
-//    private SoundPool mSoundPool;
-    // ID for the bubble popping sound
-//    private int mSoundID;
-    //speeed mode
-//    public final static int RANDOM = 0;
-//    public static int speedMode = RANDOM;
-//    public final static int SINGLE = 1;
-//    public final static int STILL = 2;
+    int whatShape = -1;
 
+//    private static final ShapeFactory.ShapeType shapes[] = { ShapeFactory.ShapeType.RECTANGLE,
+//            ShapeFactory.ShapeType.CIRCLE, ShapeFactory.ShapeType.TRIANGLE };
 
-    int whatShape=-1;
+    private HashMap<String, Integer> shapeMapping = new HashMap<String, Integer>();
 
-    private static final ShapeFactory.ShapeType shapes[] = { ShapeFactory.ShapeType.RECTANGLE,
-            ShapeFactory.ShapeType.CIRCLE, ShapeFactory.ShapeType.TRIANGLE };
-
-    private HashMap<String,Integer> shapeMapping = new HashMap<String, Integer>();
-
-    private final String CIRCLECLASS= "com.rc.designpattern.shapes.Circle$CircleView";
-    private final String RECTANGLECLASS= "com.rc.designpattern.shapes.Rectangle$RectangleView";
-    private final String TRIANGLECLASS= "com.rc.designpattern.shapes.Triangle$TriangleView";
+    private final String CIRCLECLASS = "com.rc.designpattern.shapes.Circle$CircleView";
+    private final String RECTANGLECLASS = "com.rc.designpattern.shapes.Rectangle$RectangleView";
+    private final String TRIANGLECLASS = "com.rc.designpattern.shapes.Triangle$TriangleView";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,27 +61,27 @@ public class MainActivity extends AppCompatActivity {
         bttnRectangle = (ImageButton) findViewById(R.id.bttnRectangle);
         bttnTriangle = (ImageButton) findViewById(R.id.bttnTriangle);
         bttnUndo = (Button) findViewById(R.id.bttnUndo);
-        shapeMapping.put(CIRCLECLASS,1);
-        shapeMapping.put(RECTANGLECLASS,0);
-        shapeMapping.put(TRIANGLECLASS,2);
+        shapeMapping.put(CIRCLECLASS, 1);
+        shapeMapping.put(RECTANGLECLASS, 0);
+        shapeMapping.put(TRIANGLECLASS, 2);
 
         bttnCompound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                whatShape = 3;
-
-                float xPos = Generator.randInt(100,500);
-                float yPos = Generator.randInt(100, 800);
-                Shape myShape = new CompoundShape(new Circle(Generator.generateColor(),100), new Circle(Generator.generateColor(),50));
-                myShape.setColor(Color.BLUE);
-                myShape.setWidth(100);
-                myShape.draw(mFrame,xPos,yPos,getApplicationContext());
-
-                // memento
-                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //adding the last com.rc.designpattern.view that you insert into the frame
-                Memento currentMemento = mOriginator.save2Memento(); //save status
-                aCaretaker.add(currentMemento, currentState); //save to status list
-                currentState++;
+//                whatShape = 3;
+//
+//                float xPos = Generator.randInt(100,500);
+//                float yPos = Generator.randInt(100, 800);
+//                Shape myShape = new CompoundShape(new Circle(Generator.generateColor(),100), new Circle(Generator.generateColor(),50));
+//                myShape.setColor(Color.BLUE);
+//                myShape.setWidth(100);
+//                myShape.draw(mFrame,xPos,yPos,getApplicationContext());
+//
+//                // memento
+//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //adding the last com.rc.designpattern.view that you insert into the frame
+//                Memento currentMemento = mOriginator.save2Memento(); //save status
+//                aCaretaker.add(currentMemento, currentState); //save to status list
+//                currentState++;
             }
         });
 
@@ -105,23 +89,33 @@ public class MainActivity extends AppCompatActivity {
         bttnCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                whatShape = 1; //
 
-
-                float xPos = Generator.randInt(100,500);
-                float yPos = Generator.randInt(100, 800);
-                if(whatShape == -1){
-                    return ;
-                }
-
-                Shape myShape = ShapeFactory.getShape(shapes[whatShape]);
-                myShape.draw(mFrame,xPos,yPos,getApplicationContext());
-
+                int xPos = Generator.randInt(100, 500);
+                int yPos = Generator.randInt(100, 800);
+                Shape myShape = new Circle(xPos, yPos, 50, Color.GRAY);
+                myShape.draw(mFrame, getApplicationContext());
                 // memento
-                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //agregando el ultimo com.rc.designpattern.view que inserte al frame
-                Memento currentMemento = mOriginator.save2Memento(); //guardar estado
-                aCaretaker.add(currentMemento, currentState); //guargar a la lista de estados
+                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
+                Memento currentMemento = mOriginator.save2Memento();
+                aCaretaker.add(currentMemento, currentState);
                 currentState++;
+
+
+//                whatShape = 1; //
+//                float xPos = Generator.randInt(100,500);
+//                float yPos = Generator.randInt(100, 800);
+//                if(whatShape == -1){
+//                    return ;
+//                }
+//
+//                Shape myShape = ShapeFactory.getShape(shapes[whatShape]);
+//                myShape.draw(mFrame,xPos,yPos,getApplicationContext());
+//
+//                // memento
+//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //agregando el ultimo com.rc.designpattern.view que inserte al frame
+//                Memento currentMemento = mOriginator.save2Memento(); //guardar estado
+//                aCaretaker.add(currentMemento, currentState); //guargar a la lista de estados
+//                currentState++;
 
 
             }
@@ -145,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
                 //mFrame = mOriginator.getState();
 
 
-                if(currentState == 0){
-                    return ;
+                if (currentState == 0) {
+                    return;
                 }
                 currentState--;
 
@@ -173,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
 //        setupGestureDetector();
@@ -235,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
-
                     // If a single tap intersects a BubbleView, then pop the BubbleView
                     // Otherwise, create a new BubbleView at the tap's location and add
                     // it to mFrame. You can get all views from mFrame with ViewGroup.getChildAt()
@@ -246,13 +239,13 @@ public class MainActivity extends AppCompatActivity {
                         // TODO - Implement onSingleTapConfirmed actions.
                         // You can get all Views in mFrame using the
                         // ViewGroup.getChildCount() method
-                        float xPos = event.getX();
-                        float yPos = event.getY()-YOFFSET;
-                        if(whatShape == -1){
-                            return false;
-                        }
-
-                        Shape myShape = ShapeFactory.getShape(shapes[whatShape]);
+//                        float xPos = event.getX();
+//                        float yPos = event.getY()-YOFFSET;
+//                        if(whatShape == -1){
+//                            return false;
+//                        }
+//
+//                        Shape myShape = ShapeFactory.getShape(shapes[whatShape]);
 
 //                        for (int i=0;i<mFrame.getChildCount();i++){
 //                            ShapeView myViewTmp = (ShapeView) mFrame.getChildAt(i);
@@ -277,17 +270,16 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 
 
-                        myShape.draw(mFrame,xPos,yPos,getApplicationContext());
+//                        myShape.draw(mFrame,xPos,yPos,getApplicationContext());
 //                        mSoundPool.play(mSoundID, (float)mStreamVolume , (float)mStreamVolume, 1, 0,1.0f);
 
 
-
-                        mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //agregando el ultimo com.rc.designpattern.view que inserte al frame
-                        Memento currentMemento = mOriginator.save2Memento(); //guardar estado
-
-                        aCaretaker.add(currentMemento, currentState); //guargar a la lista de estados
-
-                        currentState++;
+//                        mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //agregando el ultimo com.rc.designpattern.view que inserte al frame
+//                        Memento currentMemento = mOriginator.save2Memento(); //guardar estado
+//
+//                        aCaretaker.add(currentMemento, currentState); //guargar a la lista de estados
+//
+//                        currentState++;
 
                         return false;
                     }
@@ -303,9 +295,9 @@ public class MainActivity extends AppCompatActivity {
 //
 //    }
 
-    public void reDrawLayout(){
+    public void reDrawLayout() {
         mFrame.removeAllViews();
-        for (int i = 0 ; i< currentState;i++){
+        for (int i = 0; i < currentState; i++) {
             mFrame.addView(aCaretaker.get(i).getState());
         }
         //aCaretaker.get(currentState).switchUndone(); //le pongo flag en undone = true, al ultimo que hice undo
