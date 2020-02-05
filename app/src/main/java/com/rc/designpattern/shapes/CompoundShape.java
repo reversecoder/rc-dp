@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -49,16 +50,12 @@ public class CompoundShape implements Shape {
 
     @Override
     public void draw(RelativeLayout mFrame, final float x, final float y, Context aContext) {
-//        this.mFrame = mFrame;
-//        mDisplayHeight = mFrame.getHeight();
-//        mDisplayWidth = mFrame.getWidth();
-//        CircleView aCircleView = new CircleView(aContext,x,y);
-//        mFrame.addView(aCircleView);
-//        aCircleView.start();
+        this.mFrame = mFrame;
+        mDisplayHeight = mFrame.getHeight();
+        mDisplayWidth = mFrame.getWidth();
 
-        for (Shape child : children) {
-            child.draw(mFrame, x, y, aContext);
-        }
+        CompoundView compoundView = new CompoundView(aContext,x,y);
+        mFrame.addView(compoundView);
     }
 
     @Override
@@ -72,14 +69,14 @@ public class CompoundShape implements Shape {
     }
 
 
-    private class CircleView extends View implements ShapeView {
+    private class CompoundView extends View implements ShapeView {
 
         private float mXPos, mYPos, mDx, mDy;
 //        private long mRotate, mDRotate;
 //        private ScheduledFuture<?> mMoverFuture;
 
 
-        public CircleView(Context context, float x, float y) {
+        public CompoundView(Context context, float x, float y) {
             super(context);
             this.mXPos = x;
             this.mYPos = y;
@@ -101,8 +98,12 @@ public class CompoundShape implements Shape {
 
         @Override
         protected synchronized void onDraw(Canvas canvas) {
-            canvas.drawCircle(mXPos, mYPos, width / 2, myColor);
+//            canvas.drawCircle(mXPos, mYPos, width / 2, myColor);
             //Log.i("xd","Creating Circle at: x:" + x + "xpos" + xPos + " y:"+y+"ypos" + yPos);
+
+            for (Shape child : children) {
+                child.draw(mFrame, mXPos, mYPos, getContext());
+            }
         }
 //        @Override
 //        public void setSpeedAndDirection(Random r) {

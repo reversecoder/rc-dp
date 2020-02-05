@@ -29,6 +29,6 @@ public class ShapeFactory {
     }
 
     public static enum ShapeType{
-        RECTANGLE,CIRCLE,TRIANGLE;
+        COMPOUND, RECTANGLE,CIRCLE,TRIANGLE;
     }
 }

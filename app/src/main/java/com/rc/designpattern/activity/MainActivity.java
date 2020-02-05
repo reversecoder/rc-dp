@@ -84,12 +84,20 @@ public class MainActivity extends AppCompatActivity {
         bttnCompound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                whatShape = 3;
+
                 float xPos = Generator.randInt(100,500);
                 float yPos = Generator.randInt(100, 800);
                 Shape myShape = new CompoundShape(new Circle(Generator.generateColor(),100), new Circle(Generator.generateColor(),50));
                 myShape.setColor(Color.BLUE);
                 myShape.setWidth(100);
                 myShape.draw(mFrame,xPos,yPos,getApplicationContext());
+
+                // memento
+                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //adding the last com.rc.designpattern.view that you insert into the frame
+                Memento currentMemento = mOriginator.save2Memento(); //save status
+                aCaretaker.add(currentMemento, currentState); //save to status list
+                currentState++;
             }
         });
 
@@ -108,11 +116,11 @@ public class MainActivity extends AppCompatActivity {
 
                 Shape myShape = ShapeFactory.getShape(shapes[whatShape]);
                 myShape.draw(mFrame,xPos,yPos,getApplicationContext());
+
+                // memento
                 mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount()-1)); //agregando el ultimo com.rc.designpattern.view que inserte al frame
                 Memento currentMemento = mOriginator.save2Memento(); //guardar estado
-
                 aCaretaker.add(currentMemento, currentState); //guargar a la lista de estados
-
                 currentState++;
 
 
