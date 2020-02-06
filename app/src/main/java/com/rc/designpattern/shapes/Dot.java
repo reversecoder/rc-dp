@@ -5,9 +5,11 @@ import android.graphics.Canvas;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.rc.designpattern.view.DragLayout;
+
 public class Dot extends BaseShape {
 
-    private final int DOT_SIZE = 10;
+    private final int DOT_SIZE = 20;
 
     public Dot(int x, int y, int color) {
         super(x, y, color);
@@ -24,11 +26,11 @@ public class Dot extends BaseShape {
     }
 
     @Override
-    public void drawShape(RelativeLayout frame, Context context) {
+    public void drawShape(DragLayout frame, Context context) {
         super.drawShape(frame, context);
 
         DotView dotView = new DotView(context, getShapeX(), getShapeY());
-        frame.addView(dotView);
+        frame.addShapeView(this, dotView);
     }
 
     public class DotView extends View implements ShapeView {
@@ -46,5 +48,14 @@ public class Dot extends BaseShape {
         protected synchronized void onDraw(Canvas canvas) {
             canvas.drawRect(mXPos - getShapeWidth()/2, mYPos - getShapeHeight() / 2, mXPos + getShapeWidth(), mYPos + getShapeHeight() / 2, borderPaint);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Dot{" +
+                "DOT_SIZE=" + DOT_SIZE +
+                ", shapeX=" + shapeX +
+                ", shapeY=" + shapeY +
+                '}';
     }
 }

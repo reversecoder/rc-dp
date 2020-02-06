@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.rc.designpattern.view.DragLayout;
+
 public class Rectangle extends BaseShape {
 
     private int width;
@@ -27,11 +29,11 @@ public class Rectangle extends BaseShape {
     }
 
     @Override
-    public void drawShape(RelativeLayout frame, Context context) {
+    public void drawShape(DragLayout frame, Context context) {
         super.drawShape(frame, context);
 
         RectangleView rectangleView = new RectangleView(context, getShapeX(), getShapeY());
-        frame.addView(rectangleView);
+        frame.addShapeView(this, rectangleView);
     }
 
     public class RectangleView extends View implements ShapeView {
@@ -49,5 +51,15 @@ public class Rectangle extends BaseShape {
         protected synchronized void onDraw(Canvas canvas) {
             canvas.drawRect(mXPos - width/2, mYPos - height / 2, mXPos + width, mYPos + height / 2, borderPaint);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Rectangle{" +
+                "width=" + width +
+                ", height=" + height +
+                ", shapeX=" + shapeX +
+                ", shapeY=" + shapeY +
+                '}';
     }
 }

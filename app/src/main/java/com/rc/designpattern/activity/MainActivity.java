@@ -22,6 +22,7 @@ import com.rc.designpattern.shapes.Rectangle;
 import com.rc.designpattern.shapes.Shape;
 import com.rc.designpattern.shapes.Triangle;
 import com.rc.designpattern.tools.Generator;
+import com.rc.designpattern.view.DragLayout;
 
 import java.util.HashMap;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private static final float YOFFSET = 100;
 //    private final static int MAX_STREAMS = 10; //mio
 
-    private RelativeLayout mFrame;
+    private DragLayout mFrame;
     int mDisplayWidth;
     int mDisplayHeight;
     private GestureDetector mGestureDetector;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mFrame = (RelativeLayout) findViewById(R.id.frame);
+        mFrame = (DragLayout) findViewById(R.id.frame);
         bttnCompound = (ImageButton) findViewById(R.id.bttnCompound);
         bttnCircle = (ImageButton) findViewById(R.id.bttnCircle);
         bttnRectangle = (ImageButton) findViewById(R.id.bttnRectangle);

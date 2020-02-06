@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.widget.RelativeLayout;
 
+import com.rc.designpattern.view.DragLayout;
+
 import java.io.Serializable;
 
 public interface Shape extends Serializable {
@@ -36,5 +38,5 @@ public interface Shape extends Serializable {
 
     void setShapeColor(int color);
 
-    void drawShape(RelativeLayout frame, Context context);
+    void drawShape(DragLayout frame, Context context);
 }

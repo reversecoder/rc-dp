@@ -7,6 +7,8 @@ import android.graphics.Path;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.rc.designpattern.view.DragLayout;
+
 public class Triangle extends BaseShape {
 
     private int width;
@@ -29,11 +31,11 @@ public class Triangle extends BaseShape {
     }
 
     @Override
-    public void drawShape(RelativeLayout frame, Context context) {
+    public void drawShape(DragLayout frame, Context context) {
         super.drawShape(frame, context);
 
         TriangleView triangleView = new TriangleView(context, getShapeX(), getShapeY());
-        frame.addView(triangleView);
+        frame.addShapeView(this, triangleView);
     }
 
     public class TriangleView extends View implements ShapeView {
@@ -63,5 +65,15 @@ public class Triangle extends BaseShape {
 
             canvas.drawPath(path, paint);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Triangle{" +
+                "width=" + width +
+                ", height=" + height +
+                ", shapeX=" + shapeX +
+                ", shapeY=" + shapeY +
+                '}';
     }
 }

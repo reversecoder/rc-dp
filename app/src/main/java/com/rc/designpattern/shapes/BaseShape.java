@@ -4,13 +4,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.widget.RelativeLayout;
+
+import com.rc.designpattern.view.DragLayout;
 
 public abstract class BaseShape implements Shape {
 
     int shapeX, shapeY;
     Paint borderPaint, backgroundPaint;
-    RelativeLayout frame;
+    DragLayout frame;
     private int dx = 0, dy = 0;
     private int color;
     private boolean selected = false;
@@ -122,7 +123,7 @@ public abstract class BaseShape implements Shape {
     }
 
     @Override
-    public void drawShape(RelativeLayout frame, Context context) {
+    public void drawShape(DragLayout frame, Context context) {
         this.frame = frame;
         this.context = context;
         this.displayHeight = frame.getHeight();

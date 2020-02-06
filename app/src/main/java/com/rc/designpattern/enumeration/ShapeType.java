@@ -1,5 +1,16 @@
 package com.rc.designpattern.enumeration;
 
 public enum ShapeType {
-    COMPOUND, RECTANGLE, CIRCLE, TRIANGLE;
+
+    CIRCLE(0), RECTANGLE(1), TRIANGLE(2), COMPOSITE(3);
+
+    private int value;
+
+    ShapeType(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }

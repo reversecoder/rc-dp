@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.rc.designpattern.view.DragLayout;
+
 public class Circle extends BaseShape {
 
     private int radius;
@@ -25,11 +27,11 @@ public class Circle extends BaseShape {
     }
 
     @Override
-    public void drawShape(RelativeLayout frame, Context context) {
+    public void drawShape(DragLayout frame, Context context) {
         super.drawShape(frame, context);
 
         CircleView aCircleView = new CircleView(context, getShapeX(), getShapeY());
-        frame.addView(aCircleView);
+        frame.addShapeView(this, aCircleView);
     }
 
     private class CircleView extends View implements ShapeView {
@@ -46,5 +48,14 @@ public class Circle extends BaseShape {
         protected synchronized void onDraw(Canvas canvas) {
             canvas.drawCircle(mXPos, mYPos, radius / 2, borderPaint);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Circle{" +
+                "radius=" + radius +
+                ", shapeX=" + shapeX +
+                ", shapeY=" + shapeY +
+                '}';
     }
 }
