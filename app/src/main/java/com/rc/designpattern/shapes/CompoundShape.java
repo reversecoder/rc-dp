@@ -3,9 +3,15 @@ package com.rc.designpattern.shapes;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.rc.designpattern.gesture.TouchGestureDetector;
+import com.rc.designpattern.util.Util;
 import com.rc.designpattern.view.DragLayout;
 
 import java.util.ArrayList;
@@ -17,7 +23,9 @@ import java.util.List;
  */
 public class CompoundShape extends BaseShape {
 
+    private String TAG = CompoundShape.class.getSimpleName();
     private List<Shape> children = new ArrayList<>();
+    private int xDelta, yDelta;
 
     public CompoundShape(Shape... components) {
         super(0, 0, Color.BLACK);
@@ -183,12 +191,124 @@ public class CompoundShape extends BaseShape {
     }
 
     @Override
-    public void drawShape(DragLayout frame, Context context) {
+    public void drawShape(final DragLayout frame, final Context context) {
         super.drawShape(frame, context);
 
         CompoundView compoundView = new CompoundView(context);
+        compoundView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(getShapeWidth(), getShapeHeight());
+        layoutParams.setMargins(getShapeX()-10,getShapeY()-10,0,0);
+        compoundView.setLayoutParams(layoutParams);
+        Log.d(TAG, "drawShape>>getShapeWidth: " + getShapeWidth() + " getShapeHeight: " + getShapeHeight());
         frame.addShapeView(this, compoundView);
+        Log.d(TAG, "drawShape>>getWidth: " + layoutParams.width + " getHeight: " + layoutParams.height);
+        compoundView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+
+                int X = (int) event.getRawX();
+                int Y = (int) event.getRawY();
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
+                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_BOTTOM) == RelativeLayout.TRUE) {
+                            lParams.topMargin = v.getTop();
+                            lParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+                            Log.d("MainActivity", "added Rule bottom");
+                        }
+                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_TOP) == RelativeLayout.TRUE) {
+                            lParams.bottomMargin = v.getBottom();
+                            lParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+                            Log.d("MainActivity", "added Rule top");
+                        }
+                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_LEFT) == RelativeLayout.TRUE) {
+                            lParams.rightMargin = v.getRight();
+                            lParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
+                            Log.d("MainActivity", "added Rule left");
+                        }
+                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_RIGHT) == RelativeLayout.TRUE) {
+                            lParams.leftMargin = v.getLeft();//rootLayout.getMeasuredWidth()-v.getWidth();
+                            lParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+                            Log.d("MainActivity", "added Rule right");
+                        }
+
+                        Log.d("MainActivity", "leftPos:" + v.getLeft() + "topPos:" + v.getTop());
+
+                        xDelta = X - lParams.leftMargin;
+                        yDelta = Y - lParams.topMargin;
+
+                        Log.d("MainActivity", "Action_Down:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta + ",lm=" + lParams.leftMargin + ",tm=" + lParams.topMargin);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Log.d("MainActivity", "Action_up");
+                        break;
+                    case MotionEvent.ACTION_POINTER_DOWN:
+                        Log.d("MainActivity", "Action_Pointer_Down");
+                        break;
+                    case MotionEvent.ACTION_POINTER_UP:
+                        Log.d("MainActivity", "Action_Pointer_Up");
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
+                        layoutParams.leftMargin = X - xDelta;
+                        layoutParams.topMargin = Y - yDelta;
+                        layoutParams.rightMargin = 0;
+                        layoutParams.bottomMargin = 0;
+
+                        v.setLayoutParams(layoutParams);
+                        v.invalidate();
+                        //v.animate().x(X-xDelta).y(Y-yDelta).setDuration(0).start();
+                        Log.d("MainActivity", "Action_Move:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta);
+                        break;
+                }
+                frame.invalidate();
+
+
+                touchGestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
     }
+
+    private TouchGestureDetector touchGestureDetector = new TouchGestureDetector(new TouchGestureDetector.TouchGestureListener() {
+        @Override
+        public void onPress(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public void onTap(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public void onDrag(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public void onMove(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public void onRelease(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public void onLongPress(MotionEvent motionEvent) {
+            Util.doVibrate(context, 100);
+//            setViewSelected(!isViewSelected());
+//            requestLayout();
+        }
+
+        @Override
+        public void onMultiTap(MotionEvent motionEvent, int clicks) {
+
+        }
+    });
 
     private class CompoundView extends View implements ShapeView {
 

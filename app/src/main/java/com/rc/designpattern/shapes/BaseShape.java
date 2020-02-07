@@ -12,10 +12,10 @@ public abstract class BaseShape implements Shape {
     int shapeX, shapeY;
     Paint borderPaint, backgroundPaint;
     DragLayout frame;
+    Context context;
     private int dx = 0, dy = 0;
     private int color;
     private boolean selected = false;
-    private Context context;
     private int displayWidth, displayHeight;
 
     BaseShape(int x, int y, int color) {
