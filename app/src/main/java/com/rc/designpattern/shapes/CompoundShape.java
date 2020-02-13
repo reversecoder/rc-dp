@@ -348,7 +348,7 @@ public class CompoundShape extends ViewGroup implements Shape {
 
     public CompoundShape(Context context, Shape... components) {
         super(context);
-//        setWillNotDraw(false);
+        setWillNotDraw(false);
         add(components);
     }
 
@@ -412,17 +412,11 @@ public class CompoundShape extends ViewGroup implements Shape {
 //        setMeasuredDimension(size, size);
 //    }
 
-
+//
 //    @Override
 //    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        int widthSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST);
-//        int heightSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.AT_MOST);
-//
-//        super.onMeasure(widthSpec, heightSpec);
-//
-//        int width = CustomViewManager.reconcileSize(MeasureSpec.getSize(widthMeasureSpec), widthMeasureSpec);
-//        int height = CustomViewManager.reconcileSize(MeasureSpec.getSize(heightMeasureSpec), heightMeasureSpec);
-//        setMeasuredDimension(width, height);
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        setMeasuredDimension(getMeasuredWidth()/2, getMeasuredHeight()/2);
 //    }
 
     @Override
