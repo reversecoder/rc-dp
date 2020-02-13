@@ -1,11 +1,12 @@
 package com.rc.designpattern.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -17,10 +18,7 @@ import com.rc.designpattern.memento.Memento;
 import com.rc.designpattern.memento.Originator;
 import com.rc.designpattern.shapes.Circle;
 import com.rc.designpattern.shapes.CompoundShape;
-import com.rc.designpattern.shapes.Dot;
-import com.rc.designpattern.shapes.Rectangle;
 import com.rc.designpattern.shapes.Shape;
-import com.rc.designpattern.shapes.Triangle;
 import com.rc.designpattern.tools.Generator;
 import com.rc.designpattern.view.DragLayout;
 
@@ -85,24 +83,38 @@ public class MainActivity extends AppCompatActivity {
         bttnCompound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                int shapeX = Generator.randInt(100, 500);
-//                int shapeY = Generator.randInt(100, 800);
-//                int height = Generator.randInt(50, 100);
-//                int width = Generator.randInt(50, 100);
-                int color = Generator.generateColor();
-                Shape myShape = new CompoundShape(
-                        new Rectangle(250, 250, 120, 100, color)
-                        , new Dot(250 - 120 / 2, 250 - 15 - 120 / 2, Color.RED)
-                        , new Dot(250 + 120, 250 - 15 - 120 / 2, Color.RED)
-                        , new Dot(250 - 120 / 2, 250 + 15 + 120 / 2, Color.RED)
-                        , new Dot(250 + 120, 250 + 15 + 120 / 2, Color.RED)
-                );
-                myShape.drawShape(mFrame, getApplicationContext());
+////                int shapeX = Generator.randInt(100, 500);
+////                int shapeY = Generator.randInt(100, 800);
+////                int height = Generator.randInt(50, 100);
+////                int width = Generator.randInt(50, 100);
+//                int color = Generator.generateColor();
+//                Shape myShape = new CompoundShape(
+//                        new Rectangle(250, 250, 120, 100, color)
+//                        , new Dot(250 - 120 / 2, 250 - 15 - 120 / 2, Color.RED)
+//                        , new Dot(250 + 120, 250 - 15 - 120 / 2, Color.RED)
+//                        , new Dot(250 - 120 / 2, 250 + 15 + 120 / 2, Color.RED)
+//                        , new Dot(250 + 120, 250 + 15 + 120 / 2, Color.RED)
+//                );
+//                myShape.drawShape(mFrame, getApplicationContext());
+//
+//                // memento
+//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1)); //adding the last com.rc.designpattern.view that you insert into the frame
+//                Memento currentMemento = mOriginator.save2Memento(); //save status
+//                aCaretaker.add(currentMemento, currentState); //save to status list
+//                currentState++;
+
+                Shape myShape = new Circle(MainActivity.this, Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100));
+                myShape.setShapeColor(Generator.generateColor());
+                ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+
+                CompoundShape compoundShape = new CompoundShape(MainActivity.this, myShape);
+                compoundShape.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
+                mFrame.addView(compoundShape);
 
                 // memento
-                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1)); //adding the last com.rc.designpattern.view that you insert into the frame
-                Memento currentMemento = mOriginator.save2Memento(); //save status
-                aCaretaker.add(currentMemento, currentState); //save to status list
+                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
+                Memento currentMemento = mOriginator.save2Memento();
+                aCaretaker.add(currentMemento, currentState);
                 currentState++;
             }
         });
@@ -111,13 +123,24 @@ public class MainActivity extends AppCompatActivity {
         bttnCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Shape myShape = new CompoundShape(
-//                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor()),
-                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor())
-                );
+//                Shape myShape = new CompoundShape(
+////                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor()),
+//                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor())
+//                );
+//
+////                Shape myShape = ShapeFactory.getShape(ShapeType.CIRCLE);
+//                myShape.drawShape(mFrame, getApplicationContext());
+//
+//                // memento
+//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
+//                Memento currentMemento = mOriginator.save2Memento();
+//                aCaretaker.add(currentMemento, currentState);
+//                currentState++;
 
-//                Shape myShape = ShapeFactory.getShape(ShapeType.CIRCLE);
-                myShape.drawShape(mFrame, getApplicationContext());
+
+                Circle myShape = new Circle(MainActivity.this, Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100));
+                myShape.setShapeColor(Generator.generateColor());
+                mFrame.addView(myShape);
 
                 // memento
                 mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
@@ -129,31 +152,31 @@ public class MainActivity extends AppCompatActivity {
         bttnRectangle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Shape myShape = new Rectangle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.randInt(50, 100), Generator.generateColor());
-
-//                Shape myShape = ShapeFactory.getShape(ShapeType.RECTANGLE);
-                myShape.drawShape(mFrame, getApplicationContext());
-
-                // memento
-                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
-                Memento currentMemento = mOriginator.save2Memento();
-                aCaretaker.add(currentMemento, currentState);
-                currentState++;
+//                Shape myShape = new Rectangle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.randInt(50, 100), Generator.generateColor());
+//
+////                Shape myShape = ShapeFactory.getShape(ShapeType.RECTANGLE);
+//                myShape.drawShape(mFrame, getApplicationContext());
+//
+//                // memento
+//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
+//                Memento currentMemento = mOriginator.save2Memento();
+//                aCaretaker.add(currentMemento, currentState);
+//                currentState++;
             }
         });
         bttnTriangle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Shape myShape = new Triangle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.randInt(50, 100), Generator.generateColor());
-
-//                Shape myShape = ShapeFactory.getShape(ShapeType.TRIANGLE);
-                myShape.drawShape(mFrame, getApplicationContext());
-
-                // memento
-                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
-                Memento currentMemento = mOriginator.save2Memento();
-                aCaretaker.add(currentMemento, currentState);
-                currentState++;
+//                Shape myShape = new Triangle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.randInt(50, 100), Generator.generateColor());
+//
+////                Shape myShape = ShapeFactory.getShape(ShapeType.TRIANGLE);
+//                myShape.drawShape(mFrame, getApplicationContext());
+//
+//                // memento
+//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
+//                Memento currentMemento = mOriginator.save2Memento();
+//                aCaretaker.add(currentMemento, currentState);
+//                currentState++;
             }
         });
         bttnUndo.setOnClickListener(new View.OnClickListener() {

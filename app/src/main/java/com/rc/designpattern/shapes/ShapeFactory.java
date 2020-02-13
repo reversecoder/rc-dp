@@ -17,7 +17,7 @@ public class ShapeFactory {
             if (type.equals(ShapeType.RECTANGLE)) {
 //                shapeImpl = new Rectangle(Generator.generateColor(),Generator.randInt(MINWIDTH,MAXWIDTH));
             } else if (type.equals(ShapeType.CIRCLE)) {
-                shapeImpl = new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor());
+//                shapeImpl = new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor());
             } else if (type.equals(ShapeType.TRIANGLE)) {
 //                shapeImpl = new Triangle(Generator.generateColor(),Generator.randInt(MINWIDTH,MAXWIDTH));
             }

@@ -2,17 +2,11 @@ package com.rc.designpattern.shapes;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
-import com.rc.designpattern.gesture.TouchGestureDetector;
-import com.rc.designpattern.util.Util;
-import com.rc.designpattern.view.DragLayout;
+import com.rc.designpattern.util.CustomViewManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,37 +15,37 @@ import java.util.List;
 /**
  * Created by enrique on 04/08/14.
  */
-public class CompoundShape extends BaseShape {
+public class CompoundShape extends ViewGroup implements Shape {
 
-    private String TAG = CompoundShape.class.getSimpleName();
-    private List<Shape> children = new ArrayList<>();
-    private int xDelta, yDelta;
-
-    public CompoundShape(Shape... components) {
-        super(0, 0, Color.BLACK);
-        add(components);
-    }
-
-    public void add(Shape component) {
-        children.add(component);
-    }
-
-    public void add(Shape... components) {
-        children.addAll(Arrays.asList(components));
-    }
-
-    public void remove(Shape child) {
-        children.remove(child);
-    }
-
-    public void remove(Shape... components) {
-        children.removeAll(Arrays.asList(components));
-    }
-
-    public void clear() {
-        children.clear();
-    }
-
+    //    private String TAG = CompoundShape.class.getSimpleName();
+//    private List<Shape> children = new ArrayList<>();
+//    private int xDelta, yDelta;
+//
+//    public CompoundShape(Shape... components) {
+//        super(0, 0, Color.BLACK);
+//        add(components);
+//    }
+//
+//    public void add(Shape component) {
+//        children.add(component);
+//    }
+//
+//    public void add(Shape... components) {
+//        children.addAll(Arrays.asList(components));
+//    }
+//
+//    public void remove(Shape child) {
+//        children.remove(child);
+//    }
+//
+//    public void remove(Shape... components) {
+//        children.removeAll(Arrays.asList(components));
+//    }
+//
+//    public void clear() {
+//        children.clear();
+//    }
+//
     @Override
     public int getShapeX() {
         if (children.size() == 0) {
@@ -108,47 +102,47 @@ public class CompoundShape extends BaseShape {
         return maxHeight;
     }
 
-    @Override
-    public void drag() {
-        for (Shape child : children) {
-            child.drag();
-        }
-    }
-
-    @Override
-    public void drop() {
-        for (Shape child : children) {
-            child.drop();
-        }
-    }
-
-    @Override
-    public void moveTo(int x, int y) {
-        for (Shape child : children) {
-            child.moveTo(x, y);
-        }
-    }
-
-    @Override
-    public void moveBy(int x, int y) {
-        for (Shape child : children) {
-            child.moveBy(x, y);
-        }
-    }
-
-    @Override
-    public boolean isInsideBounds(int x, int y) {
-        for (Shape child : children) {
-            if (child.isInsideBounds(x, y)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    //
+//    @Override
+//    public void drag() {
+//        for (Shape child : children) {
+//            child.drag();
+//        }
+//    }
+//
+//    @Override
+//    public void drop() {
+//        for (Shape child : children) {
+//            child.drop();
+//        }
+//    }
+//
+//    @Override
+//    public void moveTo(int x, int y) {
+//        for (Shape child : children) {
+//            child.moveTo(x, y);
+//        }
+//    }
+//
+//    @Override
+//    public void moveBy(int x, int y) {
+//        for (Shape child : children) {
+//            child.moveBy(x, y);
+//        }
+//    }
+//
+//    @Override
+//    public boolean isInsideBounds(int x, int y) {
+//        for (Shape child : children) {
+//            if (child.isInsideBounds(x, y)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
     @Override
     public void setShapeColor(int color) {
-        super.setShapeColor(color);
         for (Shape child : children) {
             child.setShapeColor(color);
         }
@@ -156,186 +150,334 @@ public class CompoundShape extends BaseShape {
 
     @Override
     public void unSelect() {
-        super.unSelect();
         for (Shape child : children) {
             child.unSelect();
         }
     }
 
-    public Shape getChildAt(int x, int y) {
+    @Override
+    public void select() {
         for (Shape child : children) {
-            if (child.isInsideBounds(x, y)) {
-                return child;
-            }
-        }
-        return null;
-    }
-
-    public boolean selectChildAt(int x, int y) {
-        Shape child = getChildAt(x, y);
-        if (child != null) {
             child.select();
-            return true;
         }
-        return false;
+    }
+//
+//    public Shape getChildAt(int x, int y) {
+//        for (Shape child : children) {
+//            if (child.isInsideBounds(x, y)) {
+//                return child;
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public boolean selectChildAt(int x, int y) {
+//        Shape child = getChildAt(x, y);
+//        if (child != null) {
+//            child.select();
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    public List<Shape> getSelected() {
+//        List<Shape> selected = new ArrayList<>();
+//        for (Shape child : children) {
+//            if (child.isSelected()) {
+//                selected.add(child);
+//            }
+//        }
+//        return selected;
+//    }
+//
+//    @Override
+//    public void drawShape(final DragLayout frame, final Context context) {
+//        super.drawShape(frame, context);
+//
+//        CompoundView compoundView = new CompoundView(context);
+//        compoundView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark));
+//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(getShapeWidth(), getShapeHeight());
+//        layoutParams.setMargins(getShapeX()-10,getShapeY()-10,0,0);
+//        compoundView.setLayoutParams(layoutParams);
+//        Log.d(TAG, "drawShape>>getShapeWidth: " + getShapeWidth() + " getShapeHeight: " + getShapeHeight());
+//        frame.addShapeView(this, compoundView);
+//        Log.d(TAG, "drawShape>>getWidth: " + layoutParams.width + " getHeight: " + layoutParams.height);
+//        compoundView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//
+//                int X = (int) event.getRawX();
+//                int Y = (int) event.getRawY();
+//                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
+//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_BOTTOM) == RelativeLayout.TRUE) {
+//                            lParams.topMargin = v.getTop();
+//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+//                            Log.d("MainActivity", "added Rule bottom");
+//                        }
+//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_TOP) == RelativeLayout.TRUE) {
+//                            lParams.bottomMargin = v.getBottom();
+//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+//                            Log.d("MainActivity", "added Rule top");
+//                        }
+//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_LEFT) == RelativeLayout.TRUE) {
+//                            lParams.rightMargin = v.getRight();
+//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
+//                            Log.d("MainActivity", "added Rule left");
+//                        }
+//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_RIGHT) == RelativeLayout.TRUE) {
+//                            lParams.leftMargin = v.getLeft();//rootLayout.getMeasuredWidth()-v.getWidth();
+//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+//                            Log.d("MainActivity", "added Rule right");
+//                        }
+//
+//                        Log.d("MainActivity", "leftPos:" + v.getLeft() + "topPos:" + v.getTop());
+//
+//                        xDelta = X - lParams.leftMargin;
+//                        yDelta = Y - lParams.topMargin;
+//
+//                        Log.d("MainActivity", "Action_Down:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta + ",lm=" + lParams.leftMargin + ",tm=" + lParams.topMargin);
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        Log.d("MainActivity", "Action_up");
+//                        break;
+//                    case MotionEvent.ACTION_POINTER_DOWN:
+//                        Log.d("MainActivity", "Action_Pointer_Down");
+//                        break;
+//                    case MotionEvent.ACTION_POINTER_UP:
+//                        Log.d("MainActivity", "Action_Pointer_Up");
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
+//                        layoutParams.leftMargin = X - xDelta;
+//                        layoutParams.topMargin = Y - yDelta;
+//                        layoutParams.rightMargin = 0;
+//                        layoutParams.bottomMargin = 0;
+//
+//                        v.setLayoutParams(layoutParams);
+//                        v.invalidate();
+//                        //v.animate().x(X-xDelta).y(Y-yDelta).setDuration(0).start();
+//                        Log.d("MainActivity", "Action_Move:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta);
+//                        break;
+//                }
+//                frame.invalidate();
+//
+//
+//                touchGestureDetector.onTouchEvent(event);
+//                return true;
+//            }
+//        });
+//    }
+//
+//    private TouchGestureDetector touchGestureDetector = new TouchGestureDetector(new TouchGestureDetector.TouchGestureListener() {
+//        @Override
+//        public void onPress(MotionEvent motionEvent) {
+//
+//        }
+//
+//        @Override
+//        public void onTap(MotionEvent motionEvent) {
+//
+//        }
+//
+//        @Override
+//        public void onDrag(MotionEvent motionEvent) {
+//
+//        }
+//
+//        @Override
+//        public void onMove(MotionEvent motionEvent) {
+//
+//        }
+//
+//        @Override
+//        public void onRelease(MotionEvent motionEvent) {
+//
+//        }
+//
+//        @Override
+//        public void onLongPress(MotionEvent motionEvent) {
+//            Util.doVibrate(context, 100);
+////            setViewSelected(!isViewSelected());
+////            requestLayout();
+//        }
+//
+//        @Override
+//        public void onMultiTap(MotionEvent motionEvent, int clicks) {
+//
+//        }
+//    });
+//
+//    private class CompoundView extends View implements ShapeView {
+//
+//        public CompoundView(Context context) {
+//            super(context);
+//        }
+//
+//        @Override
+//        protected synchronized void onDraw(Canvas canvas) {
+//            if (isSelected()) {
+//                enableSelectionStyle();
+//                canvas.drawRect(getShapeX() - 1, getShapeY() - 1, getShapeWidth() + 1, getShapeHeight() + 1, borderPaint);
+//                disableSelectionStyle();
+//            }
+//
+//            for (Shape child : children) {
+//                child.drawShape(frame, getContext());
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "CompoundShape{" +
+//                "children=" + children +
+//                ", shapeX=" + shapeX +
+//                ", shapeY=" + shapeY +
+//                '}';
+//    }
+
+
+    private List<Shape> children = new ArrayList<>();
+
+    public CompoundShape(Context context, Shape... components) {
+        super(context);
+        setWillNotDraw(false);
+        add(components);
     }
 
-    public List<Shape> getSelected() {
-        List<Shape> selected = new ArrayList<>();
+    public void add(Shape component) {
+        children.add(component);
+    }
+
+    public void add(Shape... components) {
+        children.addAll(Arrays.asList(components));
+    }
+
+    public void remove(Shape child) {
+        children.remove(child);
+    }
+
+    public void remove(Shape... components) {
+        children.removeAll(Arrays.asList(components));
+    }
+
+    public void clear() {
+        children.clear();
+    }
+
+//    @Override
+//    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        // Optimized measurement
+//        int width = CustomViewManager.reconcileSize(MeasureSpec.getSize(widthMeasureSpec), widthMeasureSpec);
+//        int height = CustomViewManager.reconcileSize(MeasureSpec.getSize(heightMeasureSpec), heightMeasureSpec);
+//        Log.d("CompoundShape", "onMeasure>> width: " + width + " height: " + height);
+//        int size = Math.min(width, height);
+//        Log.d("CompoundShape", "onMeasure>> size: " + size);        // measure children size
+//        // set child view measure
+//        for (Shape child : children) {
+//            ((View) child).measure(child.getShapeWidth(), child.getShapeHeight());
+//        }
+//        // measure parent size
+//        setMeasuredDimension(size, size);
+//    }
+
+    @Override
+    public void onLayout(boolean changed, int l, int t, int r, int b) {
         for (Shape child : children) {
-            if (child.isSelected()) {
-                selected.add(child);
-            }
-        }
-        return selected;
-    }
-
-    @Override
-    public void drawShape(final DragLayout frame, final Context context) {
-        super.drawShape(frame, context);
-
-        CompoundView compoundView = new CompoundView(context);
-        compoundView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark));
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(getShapeWidth(), getShapeHeight());
-        layoutParams.setMargins(getShapeX()-10,getShapeY()-10,0,0);
-        compoundView.setLayoutParams(layoutParams);
-        Log.d(TAG, "drawShape>>getShapeWidth: " + getShapeWidth() + " getShapeHeight: " + getShapeHeight());
-        frame.addShapeView(this, compoundView);
-        Log.d(TAG, "drawShape>>getWidth: " + layoutParams.width + " getHeight: " + layoutParams.height);
-        compoundView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-
-                int X = (int) event.getRawX();
-                int Y = (int) event.getRawY();
-                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN:
-                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_BOTTOM) == RelativeLayout.TRUE) {
-                            lParams.topMargin = v.getTop();
-                            lParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-                            Log.d("MainActivity", "added Rule bottom");
-                        }
-                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_TOP) == RelativeLayout.TRUE) {
-                            lParams.bottomMargin = v.getBottom();
-                            lParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-                            Log.d("MainActivity", "added Rule top");
-                        }
-                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_LEFT) == RelativeLayout.TRUE) {
-                            lParams.rightMargin = v.getRight();
-                            lParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
-                            Log.d("MainActivity", "added Rule left");
-                        }
-                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_RIGHT) == RelativeLayout.TRUE) {
-                            lParams.leftMargin = v.getLeft();//rootLayout.getMeasuredWidth()-v.getWidth();
-                            lParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-                            Log.d("MainActivity", "added Rule right");
-                        }
-
-                        Log.d("MainActivity", "leftPos:" + v.getLeft() + "topPos:" + v.getTop());
-
-                        xDelta = X - lParams.leftMargin;
-                        yDelta = Y - lParams.topMargin;
-
-                        Log.d("MainActivity", "Action_Down:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta + ",lm=" + lParams.leftMargin + ",tm=" + lParams.topMargin);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        Log.d("MainActivity", "Action_up");
-                        break;
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        Log.d("MainActivity", "Action_Pointer_Down");
-                        break;
-                    case MotionEvent.ACTION_POINTER_UP:
-                        Log.d("MainActivity", "Action_Pointer_Up");
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-                        layoutParams.leftMargin = X - xDelta;
-                        layoutParams.topMargin = Y - yDelta;
-                        layoutParams.rightMargin = 0;
-                        layoutParams.bottomMargin = 0;
-
-                        v.setLayoutParams(layoutParams);
-                        v.invalidate();
-                        //v.animate().x(X-xDelta).y(Y-yDelta).setDuration(0).start();
-                        Log.d("MainActivity", "Action_Move:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta);
-                        break;
-                }
-                frame.invalidate();
-
-
-                touchGestureDetector.onTouchEvent(event);
-                return true;
-            }
-        });
-    }
-
-    private TouchGestureDetector touchGestureDetector = new TouchGestureDetector(new TouchGestureDetector.TouchGestureListener() {
-        @Override
-        public void onPress(MotionEvent motionEvent) {
-
-        }
-
-        @Override
-        public void onTap(MotionEvent motionEvent) {
-
-        }
-
-        @Override
-        public void onDrag(MotionEvent motionEvent) {
-
-        }
-
-        @Override
-        public void onMove(MotionEvent motionEvent) {
-
-        }
-
-        @Override
-        public void onRelease(MotionEvent motionEvent) {
-
-        }
-
-        @Override
-        public void onLongPress(MotionEvent motionEvent) {
-            Util.doVibrate(context, 100);
-//            setViewSelected(!isViewSelected());
-//            requestLayout();
-        }
-
-        @Override
-        public void onMultiTap(MotionEvent motionEvent, int clicks) {
-
-        }
-    });
-
-    private class CompoundView extends View implements ShapeView {
-
-        public CompoundView(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected synchronized void onDraw(Canvas canvas) {
-            if (isSelected()) {
-                enableSelectionStyle();
-                canvas.drawRect(getShapeX() - 1, getShapeY() - 1, getShapeWidth() + 1, getShapeHeight() + 1, borderPaint);
-                disableSelectionStyle();
-            }
-
-            for (Shape child : children) {
-                child.drawShape(frame, getContext());
-            }
+            int left = child.getShapeX() - child.getShapeWidth()/ 2;
+            int top = child.getShapeY() - child.getShapeHeight()/ 2;
+            int right = left + child.getShapeWidth();
+            int bottom = top + child.getShapeHeight();
+            Log.d("CompoundShape", "onLayout()>> left: " + left + " top: " + top + " right: " + right + " bottom: " + bottom);
+            ((View) child).layout(left, top, right, bottom);
         }
     }
 
     @Override
-    public String toString() {
-        return "CompoundShape{" +
-                "children=" + children +
-                ", shapeX=" + shapeX +
-                ", shapeY=" + shapeY +
-                '}';
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        drawShape(canvas);
     }
+
+    @Override
+    public void drawShape(Canvas canvas) {
+        removeAllViews();
+        for (Shape child : children) {
+//            ((View) child).draw(canvas);
+            addView(((View) child));
+        }
+    }
+
+//    setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//
+//                int X = (int) event.getRawX();
+//                int Y = (int) event.getRawY();
+//                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
+//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_BOTTOM) == RelativeLayout.TRUE) {
+//                            lParams.topMargin = v.getTop();
+//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+//                            Log.d("MainActivity", "added Rule bottom");
+//                        }
+//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_TOP) == RelativeLayout.TRUE) {
+//                            lParams.bottomMargin = v.getBottom();
+//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+//                            Log.d("MainActivity", "added Rule top");
+//                        }
+//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_LEFT) == RelativeLayout.TRUE) {
+//                            lParams.rightMargin = v.getRight();
+//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
+//                            Log.d("MainActivity", "added Rule left");
+//                        }
+//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_RIGHT) == RelativeLayout.TRUE) {
+//                            lParams.leftMargin = v.getLeft();//rootLayout.getMeasuredWidth()-v.getWidth();
+//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+//                            Log.d("MainActivity", "added Rule right");
+//                        }
+//
+//                        Log.d("MainActivity", "leftPos:" + v.getLeft() + "topPos:" + v.getTop());
+//
+//                        xDelta = X - lParams.leftMargin;
+//                        yDelta = Y - lParams.topMargin;
+//
+//                        Log.d("MainActivity", "Action_Down:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta + ",lm=" + lParams.leftMargin + ",tm=" + lParams.topMargin);
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        Log.d("MainActivity", "Action_up");
+//                        break;
+//                    case MotionEvent.ACTION_POINTER_DOWN:
+//                        Log.d("MainActivity", "Action_Pointer_Down");
+//                        break;
+//                    case MotionEvent.ACTION_POINTER_UP:
+//                        Log.d("MainActivity", "Action_Pointer_Up");
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
+//                        layoutParams.leftMargin = X - xDelta;
+//                        layoutParams.topMargin = Y - yDelta;
+//                        layoutParams.rightMargin = 0;
+//                        layoutParams.bottomMargin = 0;
+//
+//                        v.setLayoutParams(layoutParams);
+//                        v.invalidate();
+//                        //v.animate().x(X-xDelta).y(Y-yDelta).setDuration(0).start();
+//                        Log.d("MainActivity", "Action_Move:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta);
+//                        break;
+//                }
+//                frame.invalidate();
+//
+//
+//                touchGestureDetector.onTouchEvent(event);
+//                return true;
+//            }
+//        });
+
+
 }
