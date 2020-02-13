@@ -15,6 +15,10 @@ public interface Shape extends Serializable {
 
     int getShapeY();
 
+    void setShapeX(int shapeX);
+
+    void setShapeY(int shapeY);
+
     int getShapeWidth();
 
     int getShapeHeight();

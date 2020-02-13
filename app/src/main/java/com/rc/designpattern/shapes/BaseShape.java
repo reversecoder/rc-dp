@@ -36,6 +36,16 @@ public abstract class BaseShape extends View implements Shape {
     }
 
     @Override
+    public void setShapeX(int shapeX) {
+        this.shapeX = shapeX;
+    }
+
+    @Override
+    public void setShapeY(int shapeY) {
+        this.shapeY = shapeY;
+    }
+
+    @Override
     public int getShapeWidth() {
         return 0;
     }
