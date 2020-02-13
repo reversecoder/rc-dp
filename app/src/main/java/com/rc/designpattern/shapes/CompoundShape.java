@@ -3,8 +3,11 @@ package com.rc.designpattern.shapes;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.rc.designpattern.util.CustomViewManager;
 
@@ -17,8 +20,9 @@ import java.util.List;
  */
 public class CompoundShape extends ViewGroup implements Shape {
 
-    //    private String TAG = CompoundShape.class.getSimpleName();
-//    private List<Shape> children = new ArrayList<>();
+    private String TAG = CompoundShape.class.getSimpleName();
+
+    //    private List<Shape> children = new ArrayList<>();
 //    private int xDelta, yDelta;
 //
 //    public CompoundShape(Shape... components) {
@@ -344,7 +348,7 @@ public class CompoundShape extends ViewGroup implements Shape {
 
     public CompoundShape(Context context, Shape... components) {
         super(context);
-        setWillNotDraw(false);
+//        setWillNotDraw(false);
         add(components);
     }
 
@@ -375,8 +379,8 @@ public class CompoundShape extends ViewGroup implements Shape {
 //        int height = CustomViewManager.reconcileSize(MeasureSpec.getSize(heightMeasureSpec), heightMeasureSpec);
 //        Log.d("CompoundShape", "onMeasure>> width: " + width + " height: " + height);
 //        int size = Math.min(width, height);
-//        Log.d("CompoundShape", "onMeasure>> size: " + size);        // measure children size
-//        // set child view measure
+//        Log.d("CompoundShape", "onMeasure>> size: " + size);
+//        // measure children size
 //        for (Shape child : children) {
 //            ((View) child).measure(child.getShapeWidth(), child.getShapeHeight());
 //        }
@@ -384,21 +388,58 @@ public class CompoundShape extends ViewGroup implements Shape {
 //        setMeasuredDimension(size, size);
 //    }
 
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        Log.d(TAG, "onMeasure>> w: " + MeasureSpec.toString(widthMeasureSpec));
+//        Log.d(TAG, "onMeasure>> h: " + MeasureSpec.toString(heightMeasureSpec));
+//
+//        int desiredWidth = getSuggestedMinimumWidth() + getPaddingLeft() + getPaddingRight();
+//        int desiredHeight = getSuggestedMinimumHeight() + getPaddingTop() + getPaddingBottom();
+//
+//        int width = CustomViewManager.reconcileSize(MeasureSpec.getSize(widthMeasureSpec), widthMeasureSpec);
+//        int height = CustomViewManager.reconcileSize(MeasureSpec.getSize(heightMeasureSpec), heightMeasureSpec);
+//        Log.d(TAG, "onMeasure>> width: " + width + " height: " + height);
+//
+//        int size = Math.min(width, height);
+//        Log.d(TAG, "onMeasure>> size: " + size);
+//
+//        // set child view measure
+//        for (Shape child : children) {
+//            ((View) child).measure(child.getShapeWidth(), child.getShapeHeight());
+//        }
+//
+//        // set parent view measure
+//        setMeasuredDimension(size, size);
+//    }
+
+
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        int widthSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST);
+//        int heightSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.AT_MOST);
+//
+//        super.onMeasure(widthSpec, heightSpec);
+//
+//        int width = CustomViewManager.reconcileSize(MeasureSpec.getSize(widthMeasureSpec), widthMeasureSpec);
+//        int height = CustomViewManager.reconcileSize(MeasureSpec.getSize(heightMeasureSpec), heightMeasureSpec);
+//        setMeasuredDimension(width, height);
+//    }
+
     @Override
     public void onLayout(boolean changed, int l, int t, int r, int b) {
         for (Shape child : children) {
-            int left = child.getShapeX() - child.getShapeWidth()/ 2;
-            int top = child.getShapeY() - child.getShapeHeight()/ 2;
+            int left = child.getShapeX() - child.getShapeWidth() / 2;
+            int top = child.getShapeY() - child.getShapeHeight() / 2;
             int right = left + child.getShapeWidth();
             int bottom = top + child.getShapeHeight();
-            Log.d("CompoundShape", "onLayout()>> left: " + left + " top: " + top + " right: " + right + " bottom: " + bottom);
+            Log.d(TAG, "onLayout()>> left: " + left + " top: " + top + " right: " + right + " bottom: " + bottom);
             ((View) child).layout(left, top, right, bottom);
         }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+//        super.onDraw(canvas);
         drawShape(canvas);
     }
 
@@ -407,77 +448,54 @@ public class CompoundShape extends ViewGroup implements Shape {
         removeAllViews();
         for (Shape child : children) {
 //            ((View) child).draw(canvas);
+
+            setViewTouchListener(((View) child));
             addView(((View) child));
+            ((View) child).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
-//    setOnTouchListener(new View.OnTouchListener() {
+    //    private int _xDelta;
+//    private int _yDelta;
+    private void setViewTouchListener(View v) {
+//        v.setOnTouchListener(new OnTouchListener() {
 //            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//
-//                int X = (int) event.getRawX();
-//                int Y = (int) event.getRawY();
+//            public boolean onTouch(View view, MotionEvent event) {
+//                final int X = (int) event.getRawX();
+//                final int Y = (int) event.getRawY();
 //                switch (event.getAction() & MotionEvent.ACTION_MASK) {
 //                    case MotionEvent.ACTION_DOWN:
-//                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_BOTTOM) == RelativeLayout.TRUE) {
-//                            lParams.topMargin = v.getTop();
-//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-//                            Log.d("MainActivity", "added Rule bottom");
-//                        }
-//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_TOP) == RelativeLayout.TRUE) {
-//                            lParams.bottomMargin = v.getBottom();
-//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-//                            Log.d("MainActivity", "added Rule top");
-//                        }
-//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_LEFT) == RelativeLayout.TRUE) {
-//                            lParams.rightMargin = v.getRight();
-//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
-//                            Log.d("MainActivity", "added Rule left");
-//                        }
-//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_RIGHT) == RelativeLayout.TRUE) {
-//                            lParams.leftMargin = v.getLeft();//rootLayout.getMeasuredWidth()-v.getWidth();
-//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-//                            Log.d("MainActivity", "added Rule right");
-//                        }
-//
-//                        Log.d("MainActivity", "leftPos:" + v.getLeft() + "topPos:" + v.getTop());
-//
-//                        xDelta = X - lParams.leftMargin;
-//                        yDelta = Y - lParams.topMargin;
-//
-//                        Log.d("MainActivity", "Action_Down:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta + ",lm=" + lParams.leftMargin + ",tm=" + lParams.topMargin);
+//                        ViewGroup.LayoutParams lParams =  view.getLayoutParams();
+//                        RelativeLayout.LayoutParams containerParams = new RelativeLayout.LayoutParams(lParams);
+//                        Log.d(TAG, "setViewTouchListener()>>onTouch()>> containerParams: " + containerParams.toString());
+//                        _xDelta = X - containerParams.leftMargin;
+//                        _yDelta = Y - containerParams.topMargin;
 //                        break;
 //                    case MotionEvent.ACTION_UP:
-//                        Log.d("MainActivity", "Action_up");
 //                        break;
 //                    case MotionEvent.ACTION_POINTER_DOWN:
-//                        Log.d("MainActivity", "Action_Pointer_Down");
 //                        break;
 //                    case MotionEvent.ACTION_POINTER_UP:
-//                        Log.d("MainActivity", "Action_Pointer_Up");
 //                        break;
 //                    case MotionEvent.ACTION_MOVE:
-//                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-//                        layoutParams.leftMargin = X - xDelta;
-//                        layoutParams.topMargin = Y - yDelta;
-//                        layoutParams.rightMargin = 0;
-//                        layoutParams.bottomMargin = 0;
-//
-//                        v.setLayoutParams(layoutParams);
-//                        v.invalidate();
-//                        //v.animate().x(X-xDelta).y(Y-yDelta).setDuration(0).start();
-//                        Log.d("MainActivity", "Action_Move:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta);
+//                        ViewGroup.LayoutParams parentParams =  view.getLayoutParams();
+//                        RelativeLayout.LayoutParams updatedParams = new RelativeLayout.LayoutParams(parentParams);
+//                        updatedParams.leftMargin = X - _xDelta;
+//                        updatedParams.topMargin = Y - _yDelta;
+//                        updatedParams.rightMargin = -250;
+//                        updatedParams.bottomMargin = -250;
+//                        Log.d(TAG, "setViewTouchListener()>>onTouch()>> updatedParams: " + updatedParams.toString());
+//                        view.setLayoutParams(updatedParams);
 //                        break;
 //                }
-//                frame.invalidate();
-//
-//
-//                touchGestureDetector.onTouchEvent(event);
+//                view.requestLayout();
 //                return true;
 //            }
 //        });
-
-
+    }
 }

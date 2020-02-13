@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final float YOFFSET = 100;
 //    private final static int MAX_STREAMS = 10; //mio
 
-    private DragLayout mFrame;
+    private RelativeLayout mFrame;
     int mDisplayWidth;
     int mDisplayHeight;
     private GestureDetector mGestureDetector;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mFrame = (DragLayout) findViewById(R.id.frame);
+        mFrame = (RelativeLayout) findViewById(R.id.frame);
         bttnCompound = (ImageButton) findViewById(R.id.bttnCompound);
         bttnCircle = (ImageButton) findViewById(R.id.bttnCircle);
         bttnRectangle = (ImageButton) findViewById(R.id.bttnRectangle);

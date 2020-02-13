@@ -1,51 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="horizontal" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-    <com.rc.designpattern.view.DragLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+    <RelativeLayout
         android:id="@+id/frame"
-        android:layout_weight="0.8">
-    </com.rc.designpattern.view.DragLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
         android:background="#ff7e85db"
-        android:layout_weight="0.2"
         android:orientation="vertical">
+
         <ImageButton
             android:id="@+id/bttnCompound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/compound"/>
+            android:src="@drawable/compound" />
+
         <ImageButton
             android:id="@+id/bttnCircle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/circle" />
+
         <ImageButton
             android:id="@+id/bttnRectangle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/rectangle"/>
+            android:src="@drawable/rectangle" />
+
         <ImageButton
             android:id="@+id/bttnTriangle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/triangle"/>
+            android:src="@drawable/triangle" />
+
         <Button
             android:id="@+id/bttnUndo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/undo"/>
+            android:text="@string/undo" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/redo"/>
+            android:text="@string/redo" />
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

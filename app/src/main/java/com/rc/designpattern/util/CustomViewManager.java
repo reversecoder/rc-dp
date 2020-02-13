@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.TextPaint;
+import android.util.Log;
 import android.view.View;
 
 import java.util.Random;
@@ -74,6 +75,26 @@ public class CustomViewManager {
         if (param == null) {
             throw new IllegalArgumentException("Parameter \"" + paramName + "\" can't be null.");
         }
+    }
+
+    public static int measureDimension(int desiredSize, int measureSpec) {
+        int result;
+        int specMode = View.MeasureSpec.getMode(measureSpec);
+        int specSize = View.MeasureSpec.getSize(measureSpec);
+
+        if (specMode == View.MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else {
+            result = desiredSize;
+            if (specMode == View.MeasureSpec.AT_MOST) {
+                result = Math.min(result, specSize);
+            }
+        }
+
+        if (result < desiredSize){
+            Log.d("measureDimension", "The view is too small, the content might get cut");
+        }
+        return result;
     }
 
     public static int reconcileSize(int contentSize, int measureSpec) {
