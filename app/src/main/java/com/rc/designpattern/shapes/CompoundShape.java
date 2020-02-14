@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.rc.designpattern.util.CustomViewManager;
 
@@ -96,45 +98,6 @@ public class CompoundShape extends ViewGroup implements Shape {
         return maxHeight;
     }
 
-    //
-//    @Override
-//    public void drag() {
-//        for (Shape child : children) {
-//            child.drag();
-//        }
-//    }
-//
-//    @Override
-//    public void drop() {
-//        for (Shape child : children) {
-//            child.drop();
-//        }
-//    }
-//
-//    @Override
-//    public void moveTo(int x, int y) {
-//        for (Shape child : children) {
-//            child.moveTo(x, y);
-//        }
-//    }
-//
-//    @Override
-//    public void moveBy(int x, int y) {
-//        for (Shape child : children) {
-//            child.moveBy(x, y);
-//        }
-//    }
-//
-//    @Override
-//    public boolean isInsideBounds(int x, int y) {
-//        for (Shape child : children) {
-//            if (child.isInsideBounds(x, y)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
     @Override
     public void setShapeColor(int color) {
         for (Shape child : children) {
@@ -340,22 +303,38 @@ public class CompoundShape extends ViewGroup implements Shape {
         super(context);
         setWillNotDraw(false);
         add(components);
+
+        screenHeight = getResources().getDisplayMetrics().heightPixels;
+        screenWidth = getResources().getDisplayMetrics().widthPixels;
     }
-
-
-    private int _yDelta;
-    private int _xDelta;
 
     public void add(final Shape component) {
         children.add(component);
         addView(((View) component));
 
-//        ((View) component).setOnTouchListener(new View.OnTouchListener() {
+//        ((View) component).setOnClickListener(new OnClickListener() {
 //            @Override
-//            public boolean onTouch(View view, MotionEvent event) {
-//                component.setShapeX((int) event.getX());
-//                component.setShapeY((int) event.getY());
+//            public void onClick(View v) {
+//                Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+//        ((View) component).setOnTouchListener(new OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                Log.d(TAG, "onTouchListener>> X: " + (int)motionEvent.getX() + " Y: " + (int)motionEvent.getY());
+//
+//                // Set drawBallView currX and currY value to user finger x y ordinate value..
+//                component.setShapeX((int)motionEvent.getX());
+//                component.setShapeY((int)motionEvent.getY());
+//
+//                // Set ball color to blue.
+//                component.setShapeColor(Color.BLUE);
+//
+//                // Notify drawBallView to redraw. This will invoke DrawBallView's onDraw() method.
 //                ((View) component).invalidate();
+//
+//                // Return true means this listener has complete process this event successfully.
 //                return true;
 //            }
 //        });
@@ -396,7 +375,8 @@ public class CompoundShape extends ViewGroup implements Shape {
             ((View) child).measure(child.getShapeWidth(), child.getShapeHeight());
         }
         // measure parent size
-        setMeasuredDimension(size, size);
+//        setMeasuredDimension(size, size);
+        setMeasuredDimension(getShapeWidth() + 30, getShapeHeight() + 30);
     }
 
 //    @Override
@@ -526,4 +506,244 @@ public class CompoundShape extends ViewGroup implements Shape {
 //            }
 //        });
 //    }
+
+    /***********************
+     * Touch events
+     *************************/
+    private DIRECTION dragDirection;
+//    private static final int TOP = 0x15;
+//    private static final int LEFT = 0x16;
+//    private static final int BOTTOM = 0x17;
+//    private static final int RIGHT = 0x18;
+//    private static final int LEFT_TOP = 0x11;
+//    private static final int RIGHT_TOP = 0x12;
+//    private static final int LEFT_BOTTOM = 0x13;
+//    private static final int RIGHT_BOTTOM = 0x14;
+//    private static final int CENTER = 0x19;
+    public enum DIRECTION {TOP,LEFT, BOTTOM, RIGHT, LEFT_TOP, RIGHT_TOP,LEFT_BOTTOM,RIGHT_BOTTOM,CENTER}
+    private int lastX;
+    private int lastY;
+    private int screenWidth;
+    private int screenHeight;
+    private int oriLeft;
+    private int oriRight;
+    private int oriTop;
+    private int oriBottom;
+    private int touchAreaLength = 60;
+    private int minHeight = 120;
+    private int minWidth = 180;
+    private boolean mFixedSize = false;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                oriLeft = getLeft();
+                oriRight = getRight();
+                oriTop = getTop();
+                oriBottom = getBottom();
+
+                lastY = (int) event.getRawY();
+                lastX = (int) event.getRawX();
+                dragDirection = getDirection((int) event.getX(), (int) event.getY());
+                Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_DOWN): lastX: " + lastX + " lastY: " + lastY);
+                Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_DOWN): dragDirection: " + dragDirection);
+                Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_DOWN): oriLeft: " + oriLeft + " oriRight: " + oriRight + " oriTop: " + oriTop + " oriBottom: " + oriBottom);
+                Toast.makeText(getContext(), dragDirection.name(), Toast.LENGTH_SHORT).show();
+                break;
+            case MotionEvent.ACTION_UP:
+                //      Log.d(TAG, "onTouchEvent: up");
+//                spotLT = false;
+//                spotT = false;
+//                spotRT = false;
+//                spotR = false;
+//                spotRB = false;
+//                spotB = false;
+//                spotLB = false;
+//                spotL = false;
+//                requestLayout();
+                // invalidate();
+                break;
+//            case MotionEvent.ACTION_CANCEL:
+//                Log.d(TAG, "onTouchEvent: cancel");
+//                spotL = false;
+//                spotT = false;
+//                spotR = false;
+//                spotB = false;
+//                invalidate();
+//                break;
+            case MotionEvent.ACTION_MOVE:
+                // Log.d(TAG, "onTouchEvent: move");
+                int tempRawX = (int) event.getRawX();
+                int tempRawY = (int) event.getRawY();
+
+                int dx = tempRawX - lastX;
+                int dy = tempRawY - lastY;
+                lastX = tempRawX;
+                lastY = tempRawY;
+
+                switch (dragDirection) {
+                    case LEFT:
+                        left(dx);
+                        break;
+                    case RIGHT:
+                        right(dx);
+                        break;
+                    case BOTTOM:
+                        bottom(dy);
+                        break;
+                    case TOP:
+                        top(dy);
+                        break;
+                    case CENTER:
+                        center(dx, dy);
+                        break;
+                    case LEFT_BOTTOM:
+                        left(dx);
+                        bottom(dy);
+                        break;
+                    case LEFT_TOP:
+                        left(dx);
+                        top(dy);
+                        break;
+                    case RIGHT_BOTTOM:
+                        right(dx);
+                        bottom(dy);
+                        break;
+                    case RIGHT_TOP:
+                        right(dx);
+                        top(dy);
+                        break;
+                }
+
+                //new pos l t r b is set into oriLeft, oriTop, oriRight, oriBottom
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(oriRight - oriLeft, oriBottom - oriTop);
+                lp.setMargins(oriLeft, oriTop, 0, 0);
+                setLayoutParams(lp);
+                //   Log.d(TAG, "onTouchEvent: set layout width="+(oriRight - oriLeft)+" height="+(oriBottom - oriTop));
+                //   Log.d(TAG, "onTouchEvent: marginLeft="+oriLeft+"  marginTop"+oriTop);
+                break;
+        }
+        return true;
+    }
+
+    private void center(int dx, int dy) {
+        int left = getLeft() + dx;
+        int top = getTop() + dy;
+        int right = getRight() + dx;
+        int bottom = getBottom() + dy;
+
+        if (left < 0) {
+            left = 0;
+            right = left + getWidth();
+        }
+        if (right > screenWidth) {
+            right = screenWidth;
+            left = right - getWidth();
+        }
+        if (top < 0) {
+            top = 0;
+            bottom = top + getHeight();
+        }
+        if (bottom > screenHeight) {
+            bottom = screenHeight;
+            top = bottom - getHeight();
+        }
+
+        oriLeft = left;
+        oriTop = top;
+        oriRight = right;
+        oriBottom = bottom;
+    }
+
+    private void top(int dy) {
+        oriTop += dy;
+        if (oriTop < 0) {
+            oriTop = 0;
+        }
+        if (oriBottom - oriTop < minHeight) {
+            oriTop = oriBottom - minHeight;
+        }
+    }
+
+    private void bottom(int dy) {
+
+        oriBottom += dy;
+        if (oriBottom > screenHeight) {
+            oriBottom = screenHeight;
+        }
+        if (oriBottom - oriTop < minHeight) {
+            oriBottom = minHeight + oriTop;
+        }
+    }
+
+    private void right(int dx) {
+        oriRight += dx;
+        if (oriRight > screenWidth) {
+            oriRight = screenWidth;
+        }
+        if (oriRight - oriLeft < minWidth) {
+            oriRight = oriLeft + minWidth;
+        }
+    }
+
+    private void left(int dx) {
+        oriLeft += dx;
+        if (oriLeft < 0) {
+            oriLeft = 0;
+        }
+        if (oriRight - oriLeft < minWidth) {
+            oriLeft = oriRight - minWidth;
+        }
+    }
+
+    private DIRECTION getDirection(int x, int y) {
+        int left = getLeft();
+        int right = getRight();
+        int bottom = getBottom();
+        int top = getTop();
+
+        if (x < touchAreaLength && y < touchAreaLength) {
+//            spotLT = true;
+            return DIRECTION.LEFT_TOP;
+        }
+        if (y < touchAreaLength && right - left - x < touchAreaLength) {
+//            spotRT = true;
+            return DIRECTION.RIGHT_TOP;
+        }
+        if (x < touchAreaLength && bottom - top - y < touchAreaLength) {
+//            spotLB = true;
+            return DIRECTION.LEFT_BOTTOM;
+        }
+        if (right - left - x < touchAreaLength && bottom - top - y < touchAreaLength) {
+//            spotRB = true;
+            return DIRECTION.RIGHT_BOTTOM;
+        }
+        if (mFixedSize) {
+            return DIRECTION.CENTER;
+        }
+
+        if (x < touchAreaLength) {
+//            spotL = true;
+            requestLayout();
+            return DIRECTION.LEFT;
+        }
+        if (y < touchAreaLength) {
+//            spotT = true;
+            requestLayout();
+            return DIRECTION.TOP;
+        }
+        if (right - left - x < touchAreaLength) {
+//            spotR = true;
+            requestLayout();
+            return DIRECTION.RIGHT;
+        }
+        if (bottom - top - y < touchAreaLength) {
+//            spotB = true;
+            requestLayout();
+            return DIRECTION.BOTTOM;
+        }
+        return DIRECTION.CENTER;
+    }
 }

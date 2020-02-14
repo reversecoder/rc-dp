@@ -3,6 +3,7 @@ package com.rc.designpattern.shapes;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -73,4 +74,9 @@ public class Circle extends BaseShape {
 //                ", shapeY=" + shapeY +
 //                '}';
 //    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return false;
+    }
 }

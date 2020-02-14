@@ -1,8 +1,10 @@
 package com.rc.designpattern.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String TAG = MainActivity.class.getSimpleName();
     private static final float YOFFSET = 100;
 //    private final static int MAX_STREAMS = 10; //mio
 
@@ -106,9 +109,13 @@ public class MainActivity extends AppCompatActivity {
                 Shape myShape = new Circle(MainActivity.this, Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100));
                 myShape.setShapeColor(Generator.generateColor());
                 ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
-
                 CompoundShape compoundShape = new CompoundShape(MainActivity.this, myShape);
                 compoundShape.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                compoundShape.setLayoutParams(params);
+
                 mFrame.addView(compoundShape);
 
                 // memento
@@ -118,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
                 currentState++;
             }
         });
-
 
         bttnCircle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,21 +203,17 @@ public class MainActivity extends AppCompatActivity {
 
         //mOriginator.setState(mFrame,getApplicationContext());
         //aCaretaker.add(mOriginator.save2Memento());
-
-
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-
-            // Get the size of the display so this com.rc.designpattern.view knows where borders are
-            mDisplayWidth = mFrame.getWidth();
-            mDisplayHeight = mFrame.getHeight();
-
-        }
-    }
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        if (hasFocus) {
+//            // Get the size of the display so this com.rc.designpattern.view knows where borders are
+//            mDisplayWidth = mFrame.getWidth();
+//            mDisplayHeight = mFrame.getHeight();
+//        }
+//    }
 
     @Override
     public void onResume() {
@@ -349,5 +351,4 @@ public class MainActivity extends AppCompatActivity {
         }
         //aCaretaker.get(currentState).switchUndone(); //le pongo flag en undone = true, al ultimo que hice undo
     }
-
 }
