@@ -23,6 +23,41 @@ public class CompoundShape extends ViewGroup implements Shape {
     private String TAG = CompoundShape.class.getSimpleName();
     private int centerX = 0;
     private int centerY = 0;
+    private List<Shape> children = new ArrayList<>();
+
+    public CompoundShape(Context context, Shape... components) {
+        super(context);
+        setWillNotDraw(false);
+        add(components);
+
+        screenHeight = getResources().getDisplayMetrics().heightPixels;
+        screenWidth = getResources().getDisplayMetrics().widthPixels;
+    }
+
+    public void add(final Shape component) {
+        children.add(component);
+        addView(((View) component));
+    }
+
+    public void add(Shape... components) {
+//        children.addAll(Arrays.asList(components));
+        for (Shape child : components) {
+            add(child);
+        }
+    }
+
+    public void remove(Shape child) {
+        children.remove(child);
+    }
+
+    public void remove(Shape... components) {
+        children.removeAll(Arrays.asList(components));
+    }
+
+    public void clear() {
+        children.clear();
+        removeAllViews();
+    }
 
     @Override
     public int getShapeX() {
@@ -146,218 +181,22 @@ public class CompoundShape extends ViewGroup implements Shape {
 //        }
 //        return selected;
 //    }
-//
-//    @Override
-//    public void drawShape(final DragLayout frame, final Context context) {
-//        super.drawShape(frame, context);
-//
-//        CompoundView compoundView = new CompoundView(context);
-//        compoundView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_orange_dark));
-//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(getShapeWidth(), getShapeHeight());
-//        layoutParams.setMargins(getShapeX()-10,getShapeY()-10,0,0);
-//        compoundView.setLayoutParams(layoutParams);
-//        Log.d(TAG, "drawShape>>getShapeWidth: " + getShapeWidth() + " getShapeHeight: " + getShapeHeight());
-//        frame.addShapeView(this, compoundView);
-//        Log.d(TAG, "drawShape>>getWidth: " + layoutParams.width + " getHeight: " + layoutParams.height);
-//        compoundView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//
-//                int X = (int) event.getRawX();
-//                int Y = (int) event.getRawY();
-//                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_BOTTOM) == RelativeLayout.TRUE) {
-//                            lParams.topMargin = v.getTop();
-//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-//                            Log.d("MainActivity", "added Rule bottom");
-//                        }
-//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_TOP) == RelativeLayout.TRUE) {
-//                            lParams.bottomMargin = v.getBottom();
-//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-//                            Log.d("MainActivity", "added Rule top");
-//                        }
-//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_LEFT) == RelativeLayout.TRUE) {
-//                            lParams.rightMargin = v.getRight();
-//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
-//                            Log.d("MainActivity", "added Rule left");
-//                        }
-//                        if (lParams.getRule(RelativeLayout.ALIGN_PARENT_RIGHT) == RelativeLayout.TRUE) {
-//                            lParams.leftMargin = v.getLeft();//rootLayout.getMeasuredWidth()-v.getWidth();
-//                            lParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-//                            Log.d("MainActivity", "added Rule right");
-//                        }
-//
-//                        Log.d("MainActivity", "leftPos:" + v.getLeft() + "topPos:" + v.getTop());
-//
-//                        xDelta = X - lParams.leftMargin;
-//                        yDelta = Y - lParams.topMargin;
-//
-//                        Log.d("MainActivity", "Action_Down:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta + ",lm=" + lParams.leftMargin + ",tm=" + lParams.topMargin);
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        Log.d("MainActivity", "Action_up");
-//                        break;
-//                    case MotionEvent.ACTION_POINTER_DOWN:
-//                        Log.d("MainActivity", "Action_Pointer_Down");
-//                        break;
-//                    case MotionEvent.ACTION_POINTER_UP:
-//                        Log.d("MainActivity", "Action_Pointer_Up");
-//                        break;
-//                    case MotionEvent.ACTION_MOVE:
-//                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-//                        layoutParams.leftMargin = X - xDelta;
-//                        layoutParams.topMargin = Y - yDelta;
-//                        layoutParams.rightMargin = 0;
-//                        layoutParams.bottomMargin = 0;
-//
-//                        v.setLayoutParams(layoutParams);
-//                        v.invalidate();
-//                        //v.animate().x(X-xDelta).y(Y-yDelta).setDuration(0).start();
-//                        Log.d("MainActivity", "Action_Move:X=" + X + ",Y=" + Y + ",xD=" + xDelta + ",yD=" + yDelta);
-//                        break;
+
+    @Override
+    public void drawShape(Canvas canvas) {
+//        removeAllViews();
+//        for (Shape child : children) {
+//            ((View) child).draw(canvas);
+
+//            setViewTouchListener(((View) child));
+//            addView(((View) child));
+//            ((View) child).setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
 //                }
-//                frame.invalidate();
-//
-//
-//                touchGestureDetector.onTouchEvent(event);
-//                return true;
-//            }
-//        });
-//    }
-//
-//    private TouchGestureDetector touchGestureDetector = new TouchGestureDetector(new TouchGestureDetector.TouchGestureListener() {
-//        @Override
-//        public void onPress(MotionEvent motionEvent) {
-//
+//            });
 //        }
-//
-//        @Override
-//        public void onTap(MotionEvent motionEvent) {
-//
-//        }
-//
-//        @Override
-//        public void onDrag(MotionEvent motionEvent) {
-//
-//        }
-//
-//        @Override
-//        public void onMove(MotionEvent motionEvent) {
-//
-//        }
-//
-//        @Override
-//        public void onRelease(MotionEvent motionEvent) {
-//
-//        }
-//
-//        @Override
-//        public void onLongPress(MotionEvent motionEvent) {
-//            Util.doVibrate(context, 100);
-////            setViewSelected(!isViewSelected());
-////            requestLayout();
-//        }
-//
-//        @Override
-//        public void onMultiTap(MotionEvent motionEvent, int clicks) {
-//
-//        }
-//    });
-//
-//    private class CompoundView extends View implements ShapeView {
-//
-//        public CompoundView(Context context) {
-//            super(context);
-//        }
-//
-//        @Override
-//        protected synchronized void onDraw(Canvas canvas) {
-//            if (isSelected()) {
-//                enableSelectionStyle();
-//                canvas.drawRect(getShapeX() - 1, getShapeY() - 1, getShapeWidth() + 1, getShapeHeight() + 1, borderPaint);
-//                disableSelectionStyle();
-//            }
-//
-//            for (Shape child : children) {
-//                child.drawShape(frame, getContext());
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "CompoundShape{" +
-//                "children=" + children +
-//                ", shapeX=" + shapeX +
-//                ", shapeY=" + shapeY +
-//                '}';
-//    }
-
-
-    private List<Shape> children = new ArrayList<>();
-
-    public CompoundShape(Context context, Shape... components) {
-        super(context);
-        setWillNotDraw(false);
-        add(components);
-
-        screenHeight = getResources().getDisplayMetrics().heightPixels;
-        screenWidth = getResources().getDisplayMetrics().widthPixels;
-    }
-
-    public void add(final Shape component) {
-        children.add(component);
-        addView(((View) component));
-
-//        ((View) component).setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-//        ((View) component).setOnTouchListener(new OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                Log.d(TAG, "onTouchListener>> X: " + (int)motionEvent.getX() + " Y: " + (int)motionEvent.getY());
-//
-//                // Set drawBallView currX and currY value to user finger x y ordinate value..
-//                component.setShapeX((int)motionEvent.getX());
-//                component.setShapeY((int)motionEvent.getY());
-//
-//                // Set ball color to blue.
-//                component.setShapeColor(Color.BLUE);
-//
-//                // Notify drawBallView to redraw. This will invoke DrawBallView's onDraw() method.
-//                ((View) component).invalidate();
-//
-//                // Return true means this listener has complete process this event successfully.
-//                return true;
-//            }
-//        });
-    }
-
-    public void add(Shape... components) {
-//        children.addAll(Arrays.asList(components));
-        for (Shape child : components) {
-            add(child);
-        }
-    }
-
-    public void remove(Shape child) {
-        children.remove(child);
-    }
-
-    public void remove(Shape... components) {
-        children.removeAll(Arrays.asList(components));
-    }
-
-    public void clear() {
-        children.clear();
-        removeAllViews();
     }
 
     @Override
@@ -378,45 +217,6 @@ public class CompoundShape extends ViewGroup implements Shape {
 //        setMeasuredDimension(size, size);
         setMeasuredDimension(getShapeWidth() + 30, getShapeHeight() + 30);
     }
-
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        Log.d(TAG, "onMeasure>> w: " + MeasureSpec.toString(widthMeasureSpec));
-//        Log.d(TAG, "onMeasure>> h: " + MeasureSpec.toString(heightMeasureSpec));
-//
-//        int desiredWidth = getSuggestedMinimumWidth() + getPaddingLeft() + getPaddingRight();
-//        int desiredHeight = getSuggestedMinimumHeight() + getPaddingTop() + getPaddingBottom();
-//
-//        int width = CustomViewManager.reconcileSize(MeasureSpec.getSize(widthMeasureSpec), widthMeasureSpec);
-//        int height = CustomViewManager.reconcileSize(MeasureSpec.getSize(heightMeasureSpec), heightMeasureSpec);
-//        Log.d(TAG, "onMeasure>> width: " + width + " height: " + height);
-//
-//        int size = Math.min(width, height);
-//        Log.d(TAG, "onMeasure>> size: " + size);
-//
-//        // set child view measure
-//        for (Shape child : children) {
-//            ((View) child).measure(child.getShapeWidth(), child.getShapeHeight());
-//        }
-//
-//        // set parent view measure
-//        setMeasuredDimension(size, size);
-//    }
-
-//    @Override
-//    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        Log.d(TAG,"onLayout()>>INSIDE ON MEASURE SUPER VIEWGROUP");
-//
-//        for (Shape child : children) {
-//            View childView = (View)child;
-//            if (childView.getVisibility() != View.GONE) {
-//                //Make or work out measurements for children here (MeasureSpec.make...)
-//                measureChild (childView, widthMeasureSpec, heightMeasureSpec);
-//                childView.measure(widthMeasureSpec, heightMeasureSpec);
-//            }
-//        }
-//    }
 
     @Override
     public void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -451,76 +251,13 @@ public class CompoundShape extends ViewGroup implements Shape {
         drawShape(canvas);
     }
 
-    @Override
-    public void drawShape(Canvas canvas) {
-//        removeAllViews();
-//        for (Shape child : children) {
-//            ((View) child).draw(canvas);
-
-//            setViewTouchListener(((View) child));
-//            addView(((View) child));
-//            ((View) child).setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-    }
-
-//        private int _xDelta;
-//    private int _yDelta;
-//    private void setViewTouchListener(View v) {
-//        v.setOnTouchListener(new OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent event) {
-//                final int X = (int) event.getRawX();
-//                final int Y = (int) event.getRawY();
-//                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        ViewGroup.LayoutParams lParams =  view.getLayoutParams();
-//                        RelativeLayout.LayoutParams containerParams = new RelativeLayout.LayoutParams(lParams);
-//                        Log.d(TAG, "setViewTouchListener()>>onTouch()>> containerParams: " + containerParams.toString());
-//                        _xDelta = X - containerParams.leftMargin;
-//                        _yDelta = Y - containerParams.topMargin;
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        break;
-//                    case MotionEvent.ACTION_POINTER_DOWN:
-//                        break;
-//                    case MotionEvent.ACTION_POINTER_UP:
-//                        break;
-//                    case MotionEvent.ACTION_MOVE:
-//                        ViewGroup.LayoutParams parentParams =  view.getLayoutParams();
-//                        RelativeLayout.LayoutParams updatedParams = new RelativeLayout.LayoutParams(parentParams);
-//                        updatedParams.leftMargin = X - _xDelta;
-//                        updatedParams.topMargin = Y - _yDelta;
-//                        updatedParams.rightMargin = -250;
-//                        updatedParams.bottomMargin = -250;
-//                        Log.d(TAG, "setViewTouchListener()>>onTouch()>> updatedParams: " + updatedParams.toString());
-//                        view.setLayoutParams(updatedParams);
-//                        break;
-//                }
-//                view.requestLayout();
-//                return true;
-//            }
-//        });
-//    }
-
     /***********************
      * Touch events
      *************************/
     private DIRECTION dragDirection;
-//    private static final int TOP = 0x15;
-//    private static final int LEFT = 0x16;
-//    private static final int BOTTOM = 0x17;
-//    private static final int RIGHT = 0x18;
-//    private static final int LEFT_TOP = 0x11;
-//    private static final int RIGHT_TOP = 0x12;
-//    private static final int LEFT_BOTTOM = 0x13;
-//    private static final int RIGHT_BOTTOM = 0x14;
-//    private static final int CENTER = 0x19;
-    public enum DIRECTION {TOP,LEFT, BOTTOM, RIGHT, LEFT_TOP, RIGHT_TOP,LEFT_BOTTOM,RIGHT_BOTTOM,CENTER}
+
+    public enum DIRECTION {TOP, LEFT, BOTTOM, RIGHT, LEFT_TOP, RIGHT_TOP, LEFT_BOTTOM, RIGHT_BOTTOM, CENTER}
+
     private int lastX;
     private int lastY;
     private int screenWidth;
@@ -530,8 +267,8 @@ public class CompoundShape extends ViewGroup implements Shape {
     private int oriTop;
     private int oriBottom;
     private int touchAreaLength = 60;
-    private int minHeight = 120;
-    private int minWidth = 180;
+    private int minHeight = 150;
+    private int minWidth = 150;
     private boolean mFixedSize = false;
 
     @Override
@@ -582,6 +319,7 @@ public class CompoundShape extends ViewGroup implements Shape {
                 int dy = tempRawY - lastY;
                 lastX = tempRawX;
                 lastY = tempRawY;
+                Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): dx= " + dx + " dy= " + dy);
 
                 switch (dragDirection) {
                     case LEFT:
@@ -617,12 +355,22 @@ public class CompoundShape extends ViewGroup implements Shape {
                         break;
                 }
 
+                int finalWidth = oriRight - oriLeft;
+                int finalHeight = oriBottom - oriTop;
+
                 //new pos l t r b is set into oriLeft, oriTop, oriRight, oriBottom
                 RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(oriRight - oriLeft, oriBottom - oriTop);
                 lp.setMargins(oriLeft, oriTop, 0, 0);
+
+//                for(Shape child: children){
+//                    if(child instanceof Circle){
+//                        ((View)child).setLayoutParams(lp);
+//                    }
+//                }
+
                 setLayoutParams(lp);
-                //   Log.d(TAG, "onTouchEvent: set layout width="+(oriRight - oriLeft)+" height="+(oriBottom - oriTop));
-                //   Log.d(TAG, "onTouchEvent: marginLeft="+oriLeft+"  marginTop"+oriTop);
+                Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): finalWidth= " + finalWidth + " finalHeight= " + finalHeight);
+                Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): marginLeft= " + oriLeft + " marginTop= " + oriTop);
                 break;
         }
         return true;

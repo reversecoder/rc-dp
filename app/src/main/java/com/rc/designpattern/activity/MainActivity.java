@@ -86,33 +86,13 @@ public class MainActivity extends AppCompatActivity {
         bttnCompound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-////                int shapeX = Generator.randInt(100, 500);
-////                int shapeY = Generator.randInt(100, 800);
-////                int height = Generator.randInt(50, 100);
-////                int width = Generator.randInt(50, 100);
-//                int color = Generator.generateColor();
-//                Shape myShape = new CompoundShape(
-//                        new Rectangle(250, 250, 120, 100, color)
-//                        , new Dot(250 - 120 / 2, 250 - 15 - 120 / 2, Color.RED)
-//                        , new Dot(250 + 120, 250 - 15 - 120 / 2, Color.RED)
-//                        , new Dot(250 - 120 / 2, 250 + 15 + 120 / 2, Color.RED)
-//                        , new Dot(250 + 120, 250 + 15 + 120 / 2, Color.RED)
-//                );
-//                myShape.drawShape(mFrame, getApplicationContext());
-//
-//                // memento
-//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1)); //adding the last com.rc.designpattern.view that you insert into the frame
-//                Memento currentMemento = mOriginator.save2Memento(); //save status
-//                aCaretaker.add(currentMemento, currentState); //save to status list
-//                currentState++;
-
                 Shape myShape = new Circle(MainActivity.this, Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100));
                 myShape.setShapeColor(Generator.generateColor());
                 ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 CompoundShape compoundShape = new CompoundShape(MainActivity.this, myShape);
                 compoundShape.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
 
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(250, 250);
                 params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 compoundShape.setLayoutParams(params);
 
@@ -129,21 +109,6 @@ public class MainActivity extends AppCompatActivity {
         bttnCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Shape myShape = new CompoundShape(
-////                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor()),
-//                        new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor())
-//                );
-//
-////                Shape myShape = ShapeFactory.getShape(ShapeType.CIRCLE);
-//                myShape.drawShape(mFrame, getApplicationContext());
-//
-//                // memento
-//                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
-//                Memento currentMemento = mOriginator.save2Memento();
-//                aCaretaker.add(currentMemento, currentState);
-//                currentState++;
-
-
                 Circle myShape = new Circle(MainActivity.this, Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100));
                 myShape.setShapeColor(Generator.generateColor());
                 mFrame.addView(myShape);
