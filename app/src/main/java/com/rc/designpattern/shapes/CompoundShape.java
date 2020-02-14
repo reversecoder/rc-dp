@@ -186,16 +186,8 @@ public class CompoundShape extends ViewGroup implements Shape {
     public void drawShape(Canvas canvas) {
 //        removeAllViews();
 //        for (Shape child : children) {
-//            ((View) child).draw(canvas);
-
-//            setViewTouchListener(((View) child));
+////            ((View) child).draw(canvas);
 //            addView(((View) child));
-//            ((View) child).setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
-//                }
-//            });
 //        }
     }
 
@@ -211,11 +203,12 @@ public class CompoundShape extends ViewGroup implements Shape {
         centerX = centerY = size / 2;
         Log.d(TAG, "onMeasure>> centerX=centerY: " + centerX);
         for (Shape child : children) {
+//            ((View) child).measure(size, size);
             ((View) child).measure(child.getShapeWidth(), child.getShapeHeight());
         }
         // measure parent size
-//        setMeasuredDimension(size, size);
-        setMeasuredDimension(getShapeWidth() + 30, getShapeHeight() + 30);
+//        setMeasuredDimension(getShapeWidth() + 50, getShapeHeight() + 50);
+        setMeasuredDimension(size, size);
     }
 
     @Override
@@ -254,10 +247,9 @@ public class CompoundShape extends ViewGroup implements Shape {
     /***********************
      * Touch events
      *************************/
-    private DIRECTION dragDirection;
-
     public enum DIRECTION {TOP, LEFT, BOTTOM, RIGHT, LEFT_TOP, RIGHT_TOP, LEFT_BOTTOM, RIGHT_BOTTOM, CENTER}
 
+    private DIRECTION dragDirection;
     private int lastX;
     private int lastY;
     private int screenWidth;
@@ -362,11 +354,14 @@ public class CompoundShape extends ViewGroup implements Shape {
                 RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(oriRight - oriLeft, oriBottom - oriTop);
                 lp.setMargins(oriLeft, oriTop, 0, 0);
 
-//                for(Shape child: children){
-//                    if(child instanceof Circle){
-//                        ((View)child).setLayoutParams(lp);
-//                    }
-//                }
+                for (Shape child : children) {
+                    if (child instanceof Circle) {
+                        int circleRadius = Math.min(finalWidth / 2, finalHeight / 2);
+                        Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): circleRadius= " + circleRadius);
+                        ((Circle) child).setRadius(circleRadius);
+                        ((View) child).setLayoutParams(lp);
+                    }
+                }
 
                 setLayoutParams(lp);
                 Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): finalWidth= " + finalWidth + " finalHeight= " + finalHeight);

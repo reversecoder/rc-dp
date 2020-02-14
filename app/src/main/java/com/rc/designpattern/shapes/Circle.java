@@ -31,7 +31,8 @@ public class Circle extends BaseShape {
 
     @Override
     public void drawShape(Canvas canvas) {
-        canvas.drawCircle(getShapeWidth() / 2, getShapeHeight() / 2, radius - Util.dpToPx(5, getContext()), borderPaint);
+//        canvas.drawCircle(getShapeWidth() / 2, getShapeHeight() / 2, radius - Util.dpToPx(5, getContext()), borderPaint);
+        canvas.drawCircle(getShapeWidth() / 2, getShapeHeight() / 2, radius -10 , borderPaint);
 
 //        int left = getShapeX() - getShapeWidth()/ 2;
 //        int top = getShapeY() - getShapeHeight()/ 2;

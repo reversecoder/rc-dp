@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 CompoundShape compoundShape = new CompoundShape(MainActivity.this, myShape);
                 compoundShape.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
 
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(250, 250);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 200);
                 params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 compoundShape.setLayoutParams(params);
 
