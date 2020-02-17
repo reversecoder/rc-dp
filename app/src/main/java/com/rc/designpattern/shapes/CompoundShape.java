@@ -3,12 +3,15 @@ package com.rc.designpattern.shapes;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.rc.designpattern.R;
 import com.rc.designpattern.util.CustomViewManager;
 
 import java.util.ArrayList;
@@ -24,19 +27,25 @@ public class CompoundShape extends ViewGroup implements Shape {
     private int centerX = 0;
     private int centerY = 0;
     private List<Shape> children = new ArrayList<>();
+    private View editableView;
 
     public CompoundShape(Context context, Shape... components) {
         super(context);
         setWillNotDraw(false);
+        // Add component views
         add(components);
-
+        // Fixed screen size
         screenHeight = getResources().getDisplayMetrics().heightPixels;
         screenWidth = getResources().getDisplayMetrics().widthPixels;
+        // Edit view
+        editableView = CustomViewManager.getChildView(getContext(), this, R.layout.layout_editable_border_controller);
+        editableView.setOnTouchListener(null);
     }
 
     public void add(final Shape component) {
         children.add(component);
         addView(((View) component));
+        ((View) component).setOnTouchListener(null);
     }
 
     public void add(Shape... components) {
@@ -206,6 +215,7 @@ public class CompoundShape extends ViewGroup implements Shape {
 //            ((View) child).measure(size, size);
             ((View) child).measure(child.getShapeWidth(), child.getShapeHeight());
         }
+        editableView.measure(size, size);
         // measure parent size
 //        setMeasuredDimension(getShapeWidth() + 50, getShapeHeight() + 50);
         setMeasuredDimension(size, size);
@@ -213,13 +223,14 @@ public class CompoundShape extends ViewGroup implements Shape {
 
     @Override
     public void onLayout(boolean changed, int l, int t, int r, int b) {
-//        for (Shape child : children) {
-//            int left = child.getShapeX() - child.getShapeWidth() / 2;
-//            int top = child.getShapeY() - child.getShapeHeight() / 2;
-//            int right = left + child.getShapeWidth();
-//            int bottom = top + child.getShapeHeight();
-//            Log.d(TAG, "onLayout()>> left: " + left + " top: " + top + " right: " + right + " bottom: " + bottom);
-//            ((View) child).layout(left, top, right, bottom);
+//        for(int i = 0 ; i < getChildCount() ; i++){
+//            getChildAt(i).layout(l, t, r, b);
+//            View view = getChildAt(i);
+//            Log.d(TAG, "onLayout()>>view>>" + view.getClass().getSimpleName() + " width: " + view.getLayoutParams().width + " height: " + view.getLayoutParams().height);
+//
+//            if(view.getVisibility() != GONE && view instanceof FrameLayout){
+//                view.layout(l, t, r, b);
+//            }
 //        }
 
         for (Shape child : children) {
@@ -230,9 +241,29 @@ public class CompoundShape extends ViewGroup implements Shape {
 
             View childView = (View) child;
             if (childView.getVisibility() != GONE) {
-                Log.d(TAG, "onLayout()>> left: " + left + " top: " + top + " right: " + right + " bottom: " + bottom);
+                Log.d(TAG, "onLayout()>>child>>" + child.getClass().getSimpleName() + " left: " + left + " top: " + top + " right: " + right + " bottom: " + bottom);
                 childView.layout(left, top, right, bottom);
             }
+        }
+
+        if (editableView.getVisibility() != GONE) {
+            int left = centerX - getMeasuredWidth() / 2;
+            int top = centerY - getMeasuredHeight() / 2;
+            int right = left + getMeasuredWidth();
+            int bottom = top + getMeasuredHeight();
+
+//            editableView.layout(
+//                    14
+//                    , 14
+//                    , 186
+//                    , 186
+//            );
+            editableView.layout(
+                    left
+                    , top
+                    , right
+                    , bottom
+            );
         }
 
         Log.d(TAG, "onLayout()>>Inside onLayout()");
@@ -359,10 +390,12 @@ public class CompoundShape extends ViewGroup implements Shape {
                         int circleRadius = Math.min(finalWidth / 2, finalHeight / 2);
                         Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): circleRadius= " + circleRadius);
                         ((Circle) child).setRadius(circleRadius);
-                        ((View) child).setLayoutParams(lp);
+//                        ((View) child).setLayoutParams(lp);
                     }
                 }
 
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(lp);
+                editableView.setLayoutParams(layoutParams);
                 setLayoutParams(lp);
                 Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): finalWidth= " + finalWidth + " finalHeight= " + finalHeight);
                 Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): marginLeft= " + oriLeft + " marginTop= " + oriTop);

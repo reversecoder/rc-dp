@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Shape myShape = new Circle(MainActivity.this, Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100));
                 myShape.setShapeColor(Generator.generateColor());
-                ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+//                ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 CompoundShape compoundShape = new CompoundShape(MainActivity.this, myShape);
                 compoundShape.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
 

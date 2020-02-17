@@ -15,7 +15,9 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.TextPaint;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.Random;
 
@@ -24,6 +26,13 @@ import java.util.Random;
  * Email: rashed.droid@gmail.com
  */
 public class CustomViewManager {
+
+    public static View getChildView(Context context, ViewGroup parentView, int childLayoutRes) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View childView = inflater.inflate(childLayoutRes, null);
+        parentView.addView(childView);
+        return childView;
+    }
 
     public static void doVibrate(Context context, long duration) {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -91,7 +100,7 @@ public class CustomViewManager {
             }
         }
 
-        if (result < desiredSize){
+        if (result < desiredSize) {
             Log.d("measureDimension", "The view is too small, the content might get cut");
         }
         return result;
