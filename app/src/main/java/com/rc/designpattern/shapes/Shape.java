@@ -37,11 +37,11 @@ public interface Shape extends Serializable {
 //
 //    float area();
 //
-    void select();
+    void selectShape();
 
-    void unSelect();
+    void unselectShape();
 
-    boolean isSelected();
+    boolean isShapeSelected();
 
     void setShapeColor(int color);
 

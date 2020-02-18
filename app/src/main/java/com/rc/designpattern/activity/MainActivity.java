@@ -1,14 +1,11 @@
 package com.rc.designpattern.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -22,7 +19,6 @@ import com.rc.designpattern.shapes.Circle;
 import com.rc.designpattern.shapes.CompoundShape;
 import com.rc.designpattern.shapes.Shape;
 import com.rc.designpattern.tools.Generator;
-import com.rc.designpattern.view.DragLayout;
 
 import java.util.HashMap;
 
@@ -42,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton bttnTriangle;
     private Originator mOriginator = new Originator();
     private CareTaker aCaretaker = new CareTaker();
-    private Button bttnUndo;
+    private Button bttnUndo, bttnUnselect;
     private int currentState = 0;
     private final int duration = Toast.LENGTH_SHORT;
 //    private AudioManager mAudioManager;
@@ -69,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     private final String RECTANGLECLASS = "com.rc.designpattern.shapes.Rectangle$RectangleView";
     private final String TRIANGLECLASS = "com.rc.designpattern.shapes.Triangle$TriangleView";
 
+    private CompoundShape compoundShape;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         bttnRectangle = (ImageButton) findViewById(R.id.bttnRectangle);
         bttnTriangle = (ImageButton) findViewById(R.id.bttnTriangle);
         bttnUndo = (Button) findViewById(R.id.bttnUndo);
+        bttnUnselect = (Button) findViewById(R.id.bttnUnselect);
         shapeMapping.put(CIRCLECLASS, 1);
         shapeMapping.put(RECTANGLECLASS, 0);
         shapeMapping.put(TRIANGLECLASS, 2);
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 Shape myShape = new Circle(MainActivity.this, Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100));
                 myShape.setShapeColor(Generator.generateColor());
 //                ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
-                CompoundShape compoundShape = new CompoundShape(MainActivity.this, myShape);
+                compoundShape = new CompoundShape(MainActivity.this, myShape);
                 compoundShape.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
 
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 200);
@@ -163,6 +162,15 @@ public class MainActivity extends AppCompatActivity {
                 currentState--;
 
                 reDrawLayout();
+            }
+        });
+
+        bttnUnselect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (compoundShape != null) {
+                    compoundShape.unselectShape();
+                }
             }
         });
 

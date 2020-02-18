@@ -96,17 +96,17 @@ public abstract class BaseShape extends View implements Shape {
 //    }
 //
 //    @Override
-//    public void select() {
+//    public void selectShape() {
 //        selected = true;
 //    }
 //
 //    @Override
-//    public void unSelect() {
+//    public void unselectShape() {
 //        selected = false;
 //    }
 //
 //    @Override
-//    public boolean isSelected() {
+//    public boolean isShapeSelected() {
 //        return selected;
 //    }
 //
@@ -139,7 +139,7 @@ public abstract class BaseShape extends View implements Shape {
 //        this.displayHeight = frame.getHeight();
 //        this.displayWidth = frame.getWidth();
 //
-//        if (isSelected()) {
+//        if (isShapeSelected()) {
 //            enableSelectionStyle();
 //        } else {
 //            disableSelectionStyle();
@@ -174,17 +174,17 @@ public abstract class BaseShape extends View implements Shape {
 //    }
 
     @Override
-    public void select() {
+    public void selectShape() {
         selected = true;
     }
 
     @Override
-    public void unSelect() {
+    public void unselectShape() {
         selected = false;
     }
 
     @Override
-    public boolean isSelected() {
+    public boolean isShapeSelected() {
         return selected;
     }
 
@@ -196,7 +196,7 @@ public abstract class BaseShape extends View implements Shape {
     @Override
     public void onDraw(Canvas canvas) {
 //        super.onDraw(canvas);
-        if (isSelected()) {
+        if (isShapeSelected()) {
             enableSelectionStyle();
         } else {
             disableSelectionStyle();

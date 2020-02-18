@@ -51,6 +51,12 @@
             android:layout_height="wrap_content"
             android:text="@string/redo" />
 
+        <Button
+            android:id="@+id/bttnUnselect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Unselect" />
+
     </LinearLayout>
 
 </RelativeLayout>
