@@ -167,6 +167,8 @@ public class CompoundShape extends ViewGroup implements Shape {
         for (Shape child : children) {
             child.unselectShape();
         }
+
+        refreshView();
     }
 
     @Override
@@ -174,6 +176,8 @@ public class CompoundShape extends ViewGroup implements Shape {
         for (Shape child : children) {
             child.selectShape();
         }
+
+        refreshView();
     }
 
     @Override
@@ -482,7 +486,6 @@ public class CompoundShape extends ViewGroup implements Shape {
                 Log.d(TAG, "touchGestureDetector>>onLongPress: ");
                 CustomViewManager.doVibrate(getContext(), 100);
                 selectShape();
-                refreshView();
             }
         }
 

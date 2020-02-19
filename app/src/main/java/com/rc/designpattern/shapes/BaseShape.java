@@ -221,5 +221,6 @@ public abstract class BaseShape extends View implements Shape {
         borderPaint.setColor(color);
         borderPaint.setStyle(Paint.Style.STROKE);
         borderPaint.setStrokeWidth(5f);
+        borderPaint.setPathEffect(null);
     }
 }
