@@ -46,4 +46,6 @@ public interface Shape extends Serializable {
     void setShapeColor(int color);
 
     void drawShape(Canvas canvas);
+
+    void refreshView();
 }

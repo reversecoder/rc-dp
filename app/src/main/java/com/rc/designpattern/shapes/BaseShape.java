@@ -194,6 +194,11 @@ public abstract class BaseShape extends View implements Shape {
     }
 
     @Override
+    public void refreshView() {
+        invalidate();
+    }
+
+    @Override
     public void onDraw(Canvas canvas) {
 //        super.onDraw(canvas);
         if (isShapeSelected()) {

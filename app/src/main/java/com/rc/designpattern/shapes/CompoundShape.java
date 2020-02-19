@@ -37,15 +37,15 @@ public class CompoundShape extends ViewGroup implements Shape {
         // Fixed screen size
         screenHeight = getResources().getDisplayMetrics().heightPixels;
         screenWidth = getResources().getDisplayMetrics().widthPixels;
-        // Edit view
-        editableView = CustomViewManager.getChildView(getContext(), this, R.layout.layout_editable_border_controller);
-        editableView.setOnTouchListener(null);
+
+        // Draw views
+        drawViews();
     }
 
-    public void add(final Shape component) {
+    public void add(Shape component) {
         children.add(component);
-        addView(((View) component));
-        ((View) component).setOnTouchListener(null);
+//        addView(((View) component));
+//        ((View) component).setOnTouchListener(null);
     }
 
     public void add(Shape... components) {
@@ -150,6 +150,19 @@ public class CompoundShape extends ViewGroup implements Shape {
     }
 
     @Override
+    public void refreshView() {
+        for (Shape child : children) {
+            child.refreshView();
+        }
+
+        if (editableView != null) {
+            editableView.setVisibility((isShapeSelected()) ? VISIBLE : GONE);
+        }
+
+        invalidate();
+    }
+
+    @Override
     public void unselectShape() {
         for (Shape child : children) {
             child.unselectShape();
@@ -209,6 +222,9 @@ public class CompoundShape extends ViewGroup implements Shape {
 ////            ((View) child).draw(canvas);
 //            addView(((View) child));
 //        }
+
+//        removeAllViews();
+//        drawViews();
     }
 
     @Override
@@ -226,10 +242,23 @@ public class CompoundShape extends ViewGroup implements Shape {
 //            ((View) child).measure(size, size);
             ((View) child).measure(child.getShapeWidth(), child.getShapeHeight());
         }
-        editableView.measure(size, size);
+        if (editableView != null) {
+            editableView.measure(size, size);
+        }
         // measure parent size
 //        setMeasuredDimension(getShapeWidth() + 50, getShapeHeight() + 50);
         setMeasuredDimension(size, size);
+    }
+
+    private void drawViews() {
+        for (Shape child : children) {
+            addView(((View) child));
+            ((View) child).setOnTouchListener(null);
+        }
+
+        editableView = CustomViewManager.getChildView(getContext(), this, R.layout.layout_editable_border_controller);
+        editableView.setOnTouchListener(null);
+        editableView.setVisibility((isShapeSelected()) ? VISIBLE : GONE);
     }
 
     @Override
@@ -257,7 +286,7 @@ public class CompoundShape extends ViewGroup implements Shape {
             }
         }
 
-        if (editableView.getVisibility() != GONE) {
+        if (editableView != null && editableView.getVisibility() != GONE) {
             int left = centerX - getMeasuredWidth() / 2;
             int top = centerY - getMeasuredHeight() / 2;
             int right = left + getMeasuredWidth();
@@ -408,7 +437,9 @@ public class CompoundShape extends ViewGroup implements Shape {
                     }
 
                     FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(lp);
-                    editableView.setLayoutParams(layoutParams);
+                    if (editableView != null) {
+                        editableView.setLayoutParams(layoutParams);
+                    }
                     setLayoutParams(lp);
                     Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): finalWidth= " + finalWidth + " finalHeight= " + finalHeight);
                     Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): marginLeft= " + oriLeft + " marginTop= " + oriTop);
@@ -451,7 +482,7 @@ public class CompoundShape extends ViewGroup implements Shape {
                 Log.d(TAG, "touchGestureDetector>>onLongPress: ");
                 CustomViewManager.doVibrate(getContext(), 100);
                 selectShape();
-                requestLayout();
+                refreshView();
             }
         }
 

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
-import com.rc.designpattern.util.Util;
-
 public class Circle extends BaseShape {
 
     private int radius = 0;
@@ -32,7 +30,7 @@ public class Circle extends BaseShape {
     @Override
     public void drawShape(Canvas canvas) {
 //        canvas.drawCircle(getShapeWidth() / 2, getShapeHeight() / 2, radius - Util.dpToPx(5, getContext()), borderPaint);
-        canvas.drawCircle(getShapeWidth() / 2, getShapeHeight() / 2, radius -10 , borderPaint);
+        canvas.drawCircle(getShapeWidth() / 2, getShapeHeight() / 2, radius - 10, borderPaint);
 
 //        int left = getShapeX() - getShapeWidth()/ 2;
 //        int top = getShapeY() - getShapeHeight()/ 2;
@@ -40,6 +38,11 @@ public class Circle extends BaseShape {
 //        int bottom = top + getShapeHeight();
 //
 //        canvas.drawOval(new RectF(left, top, right, bottom), borderPaint);
+    }
+
+    @Override
+    public void refreshView() {
+        invalidate();
     }
 
     @Override
