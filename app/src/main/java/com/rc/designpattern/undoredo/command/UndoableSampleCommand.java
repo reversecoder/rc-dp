@@ -22,5 +22,4 @@ public class UndoableSampleCommand implements Command {
 	public void undoIt() {
 		target.doBackward();
 	}
-
 }

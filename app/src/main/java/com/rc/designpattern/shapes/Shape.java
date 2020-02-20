@@ -1,11 +1,6 @@
 package com.rc.designpattern.shapes;
 
-import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.widget.RelativeLayout;
-
-import com.rc.designpattern.view.DragLayout;
 
 import java.io.Serializable;
 
@@ -23,7 +18,7 @@ public interface Shape extends Serializable {
 
     int getShapeHeight();
 
-//    void drag();
+    //    void drag();
 //
 //    void drop();
 //

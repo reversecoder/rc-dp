@@ -18,5 +18,4 @@ public class SampleCommandClient {
 		System.out.print("Redo action: ");
 		exec.redoLastUndoedCommand();
 	}
-
 }

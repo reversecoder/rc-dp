@@ -257,11 +257,11 @@ public class CompoundShape extends ViewGroup implements Shape {
     private void drawViews() {
         for (Shape child : children) {
             addView(((View) child));
-            ((View) child).setOnTouchListener(null);
+//            ((View) child).setOnTouchListener(null);
         }
 
         editableView = CustomViewManager.getChildView(getContext(), this, R.layout.layout_editable_border_controller);
-        editableView.setOnTouchListener(null);
+//        editableView.setOnTouchListener(null);
         editableView.setVisibility((isShapeSelected()) ? VISIBLE : GONE);
     }
 
@@ -449,6 +449,7 @@ public class CompoundShape extends ViewGroup implements Shape {
                     Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): marginLeft= " + oriLeft + " marginTop= " + oriTop);
                     break;
             }
+
             return true;
         }
         return false;

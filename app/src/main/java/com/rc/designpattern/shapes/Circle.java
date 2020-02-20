@@ -44,9 +44,9 @@ public class Circle extends BaseShape {
     public void refreshView() {
         invalidate();
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return false;
-    }
+//
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        return false;
+//    }
 }

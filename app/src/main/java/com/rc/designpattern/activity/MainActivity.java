@@ -3,6 +3,7 @@ package com.rc.designpattern.activity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,13 +13,13 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rc.designpattern.R;
-import com.rc.designpattern.memento.CareTaker;
-import com.rc.designpattern.memento.Memento;
-import com.rc.designpattern.memento.Originator;
 import com.rc.designpattern.shapes.Circle;
 import com.rc.designpattern.shapes.CompoundShape;
 import com.rc.designpattern.shapes.Shape;
 import com.rc.designpattern.tools.Generator;
+import com.rc.designpattern.undoredo.memento.CareTaker;
+import com.rc.designpattern.undoredo.memento.GenericMemento;
+import com.rc.designpattern.undoredo.memento.GenericOriginator;
 
 import java.util.HashMap;
 
@@ -36,9 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton bttnRectangle;
     private ImageButton bttnCircle;
     private ImageButton bttnTriangle;
-    private Originator mOriginator = new Originator();
     private CareTaker aCaretaker = new CareTaker();
-    private Button bttnUndo, bttnUnselect;
+    private Button bttnUndo, bttnUnselect, bttnRedo;
     private int currentState = 0;
     private final int duration = Toast.LENGTH_SHORT;
 //    private AudioManager mAudioManager;
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         bttnRectangle = (ImageButton) findViewById(R.id.bttnRectangle);
         bttnTriangle = (ImageButton) findViewById(R.id.bttnTriangle);
         bttnUndo = (Button) findViewById(R.id.bttnUndo);
+        bttnRedo = (Button) findViewById(R.id.bttnRedo);
         bttnUnselect = (Button) findViewById(R.id.bttnUnselect);
         shapeMapping.put(CIRCLECLASS, 1);
         shapeMapping.put(RECTANGLECLASS, 0);
@@ -98,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
                 mFrame.addView(compoundShape);
 
                 // memento
-                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
-                Memento currentMemento = mOriginator.save2Memento();
+                GenericOriginator<View> mOriginator = new GenericOriginator<>(mFrame.getChildAt(mFrame.getChildCount() - 1));
+                GenericMemento<View> currentMemento = (GenericMemento<View>) mOriginator.saveToMemento();
                 aCaretaker.add(currentMemento, currentState);
                 currentState++;
             }
@@ -113,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
                 mFrame.addView(myShape);
 
                 // memento
-                mOriginator.setState(mFrame.getChildAt(mFrame.getChildCount() - 1));
-                Memento currentMemento = mOriginator.save2Memento();
+                GenericOriginator<View> mOriginator = new GenericOriginator<>(mFrame.getChildAt(mFrame.getChildCount() - 1));
+                GenericMemento<View> currentMemento = (GenericMemento<View>) mOriginator.saveToMemento();
                 aCaretaker.add(currentMemento, currentState);
                 currentState++;
             }
@@ -162,6 +163,18 @@ public class MainActivity extends AppCompatActivity {
                 currentState--;
 
                 reDrawLayout();
+            }
+        });
+
+        bttnRedo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                if (currentState == 0) {
+//                    return;
+//                }
+//                currentState++;
+//
+//                reDrawLayout();
             }
         });
 
@@ -320,8 +333,13 @@ public class MainActivity extends AppCompatActivity {
     public void reDrawLayout() {
         mFrame.removeAllViews();
         for (int i = 0; i < currentState; i++) {
-            mFrame.addView(aCaretaker.get(i).getState());
+            GenericMemento mMemento = aCaretaker.get(i);
+            if (mMemento != null) {
+                mFrame.addView((View) mMemento.getState());
+            } else {
+                Log.d("MainActivity", "redo>>could not found memento");
+            }
         }
-        //aCaretaker.get(currentState).switchUndone(); //le pongo flag en undone = true, al ultimo que hice undo
+//        aCaretaker.get(currentState).switchUndone(); // I put a flag on undone = true, the last one I did undo
     }
 }
