@@ -352,11 +352,12 @@ public class CompoundShape extends ViewGroup implements Shape {
 
                     lastY = (int) event.getRawY();
                     lastX = (int) event.getRawX();
+
                     dragDirection = getDirection((int) event.getX(), (int) event.getY());
                     Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_DOWN): lastX: " + lastX + " lastY: " + lastY);
-                    Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_DOWN): dragDirection: " + dragDirection);
                     Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_DOWN): oriLeft: " + oriLeft + " oriRight: " + oriRight + " oriTop: " + oriTop + " oriBottom: " + oriBottom);
-                    Toast.makeText(getContext(), dragDirection.name(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_DOWN): dragDirection: " + dragDirection);
+                    Toast.makeText(getContext(), "" + dragDirection, Toast.LENGTH_SHORT).show();
                     break;
                 case MotionEvent.ACTION_UP:
                     //      Log.d(TAG, "onTouchEvent: up");
@@ -390,69 +391,71 @@ public class CompoundShape extends ViewGroup implements Shape {
                     lastY = tempRawY;
                     Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): dx= " + dx + " dy= " + dy);
 
-                    switch (dragDirection) {
-                        case LEFT:
-                            left(dx);
-                            break;
-                        case RIGHT:
-                            right(dx);
-                            break;
-                        case BOTTOM:
-                            bottom(dy);
-                            break;
-                        case TOP:
-                            top(dy);
-                            break;
-                        case CENTER:
-                            center(dx, dy);
-                            break;
-                        case LEFT_BOTTOM:
-                            left(dx);
-                            bottom(dy);
-                            break;
-                        case LEFT_TOP:
-                            left(dx);
-                            top(dy);
-                            break;
-                        case RIGHT_BOTTOM:
-                            right(dx);
-                            bottom(dy);
-                            break;
-                        case RIGHT_TOP:
-                            right(dx);
-                            top(dy);
-                            break;
-                    }
-
-                    int finalWidth = oriRight - oriLeft;
-                    int finalHeight = oriBottom - oriTop;
-
-                    //new pos l t r b is set into oriLeft, oriTop, oriRight, oriBottom
-                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(oriRight - oriLeft, oriBottom - oriTop);
-                    lp.setMargins(oriLeft, oriTop, 0, 0);
-
-                    for (Shape child : children) {
-                        if (child instanceof Circle) {
-                            int circleRadius = Math.min(finalWidth / 2, finalHeight / 2);
-                            Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): circleRadius= " + circleRadius);
-                            ((Circle) child).setRadius(circleRadius);
-//                        ((View) child).setLayoutParams(lp);
+                    if (dragDirection != null) {
+                        switch (dragDirection) {
+                            case LEFT:
+                                left(dx);
+                                break;
+                            case RIGHT:
+                                right(dx);
+                                break;
+                            case BOTTOM:
+                                bottom(dy);
+                                break;
+                            case TOP:
+                                top(dy);
+                                break;
+                            case CENTER:
+                                center(dx, dy);
+                                break;
+                            case LEFT_BOTTOM:
+                                left(dx);
+                                bottom(dy);
+                                break;
+                            case LEFT_TOP:
+                                left(dx);
+                                top(dy);
+                                break;
+                            case RIGHT_BOTTOM:
+                                right(dx);
+                                bottom(dy);
+                                break;
+                            case RIGHT_TOP:
+                                right(dx);
+                                top(dy);
+                                break;
                         }
-                    }
 
-                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(lp);
-                    if (editableView != null) {
-                        editableView.setLayoutParams(layoutParams);
+                        int finalWidth = oriRight - oriLeft;
+                        int finalHeight = oriBottom - oriTop;
+
+                        //new pos l t r b is set into oriLeft, oriTop, oriRight, oriBottom
+                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(oriRight - oriLeft, oriBottom - oriTop);
+                        lp.setMargins(oriLeft, oriTop, 0, 0);
+
+                        for (Shape child : children) {
+                            if (child instanceof Circle) {
+                                int circleRadius = Math.min(finalWidth / 2, finalHeight / 2);
+                                Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): circleRadius= " + circleRadius);
+                                ((Circle) child).setRadius(circleRadius);
+//                        ((View) child).setLayoutParams(lp);
+                            }
+                        }
+
+                        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(lp);
+                        if (editableView != null) {
+                            editableView.setLayoutParams(layoutParams);
+                        }
+                        setLayoutParams(lp);
+                        Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): finalWidth= " + finalWidth + " finalHeight= " + finalHeight);
+                        Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): marginLeft= " + oriLeft + " marginTop= " + oriTop);
                     }
-                    setLayoutParams(lp);
-                    Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): finalWidth= " + finalWidth + " finalHeight= " + finalHeight);
-                    Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): marginLeft= " + oriLeft + " marginTop= " + oriTop);
                     break;
             }
 
             return true;
         }
-        return false;
+        return true;
     }
 
     TouchGestureDetector touchGestureDetector = new TouchGestureDetector(new TouchGestureDetector.TouchGestureListener() {
