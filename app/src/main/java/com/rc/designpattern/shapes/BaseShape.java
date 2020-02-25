@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.view.View;
 
 import com.rc.designpattern.state.ShapeState;
+import com.rc.designpattern.tools.RandomManager;
 
 public abstract class BaseShape extends View implements Shape {
 
@@ -27,6 +28,7 @@ public abstract class BaseShape extends View implements Shape {
 //        this.borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 //    }
 //
+
     @Override
     public int getShapeX() {
         return shapeX;
@@ -154,6 +156,7 @@ public abstract class BaseShape extends View implements Shape {
     //    private boolean selected = false;
     private int color;
     private ShapeState shapeState;
+    private int shapeId;
 
     public BaseShape(Context context, int x, int y) {
         super(context);
@@ -162,6 +165,8 @@ public abstract class BaseShape extends View implements Shape {
         this.color = Color.BLACK;
         this.shapeState = ShapeState.UNSELECTED;
         this.borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        this.shapeId = RandomManager.getRandom(9);
+        setId(shapeId);
     }
 
 //    public BaseShape(Context context, @Nullable AttributeSet attrs) {

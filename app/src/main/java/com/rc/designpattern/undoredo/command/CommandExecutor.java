@@ -2,10 +2,18 @@ package com.rc.designpattern.undoredo.command;
 
 public class CommandExecutor {
 
-    private final CommandStack commandStack;
+    private static CommandStack commandStack;
+    private static CommandExecutor commandExecutor;
+    private static final int DEFAULT_UNDO_BUFFER_SIZE = 20;
 
-    public CommandExecutor(int undoBufferSize) {
-        super();
+    public static CommandExecutor getInstance(){
+        if(commandExecutor == null){
+            commandExecutor = new CommandExecutor(DEFAULT_UNDO_BUFFER_SIZE);
+        }
+        return commandExecutor;
+    }
+
+    private CommandExecutor(int undoBufferSize) {
         commandStack = new CommandStack(undoBufferSize);
     }
 
@@ -16,11 +24,15 @@ public class CommandExecutor {
 
     public void undoLastCommand() {
         Command cmd = commandStack.getLastCommand();
-        cmd.undoIt();
+        if (cmd != null) {
+            cmd.undoIt();
+        }
     }
 
     public void redoLastUndoedCommand() {
         Command cmd = commandStack.recoverLastGettedCommand();
-        cmd.doIt();
+        if (cmd != null) {
+            cmd.doIt();
+        }
     }
 }

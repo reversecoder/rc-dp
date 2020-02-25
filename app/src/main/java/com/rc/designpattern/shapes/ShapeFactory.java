@@ -1,7 +1,6 @@
 package com.rc.designpattern.shapes;
 
 import com.rc.designpattern.enumeration.ShapeType;
-import com.rc.designpattern.tools.Generator;
 
 import java.util.HashMap;
 
@@ -15,11 +14,11 @@ public class ShapeFactory {
 
         if (shapeImpl == null) {
             if (type.equals(ShapeType.RECTANGLE)) {
-//                shapeImpl = new Rectangle(Generator.generateColor(),Generator.randInt(MINWIDTH,MAXWIDTH));
+//                shapeImpl = new Rectangle(Generator.getRandomColor(),Generator.getRandom(MINWIDTH,MAXWIDTH));
             } else if (type.equals(ShapeType.CIRCLE)) {
-//                shapeImpl = new Circle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.generateColor());
+//                shapeImpl = new Circle(Generator.getRandom(100, 500), Generator.getRandom(100, 800), Generator.getRandom(50, 100), Generator.getRandomColor());
             } else if (type.equals(ShapeType.TRIANGLE)) {
-//                shapeImpl = new Triangle(Generator.generateColor(),Generator.randInt(MINWIDTH,MAXWIDTH));
+//                shapeImpl = new Triangle(Generator.getRandomColor(),Generator.getRandom(MINWIDTH,MAXWIDTH));
             }
             shapes.put(type, shapeImpl);
         }

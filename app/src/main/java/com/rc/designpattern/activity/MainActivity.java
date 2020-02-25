@@ -3,7 +3,6 @@ package com.rc.designpattern.activity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,10 +16,9 @@ import com.rc.designpattern.shapes.Circle;
 import com.rc.designpattern.shapes.CompoundShape;
 import com.rc.designpattern.shapes.Shape;
 import com.rc.designpattern.state.ShapeState;
-import com.rc.designpattern.tools.Generator;
-import com.rc.designpattern.undoredo.memento.CareTaker;
-import com.rc.designpattern.undoredo.memento.GenericMemento;
-import com.rc.designpattern.undoredo.memento.GenericOriginator;
+import com.rc.designpattern.tools.RandomManager;
+import com.rc.designpattern.undoredo.command.AddShapeCommand;
+import com.rc.designpattern.undoredo.command.CommandExecutor;
 
 import java.util.HashMap;
 
@@ -38,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton bttnRectangle;
     private ImageButton bttnCircle;
     private ImageButton bttnTriangle;
-    private CareTaker aCaretaker = new CareTaker();
     private Button bttnUndo, bttnUnselect, bttnRedo;
     private int currentState = 0;
     private final int duration = Toast.LENGTH_SHORT;
@@ -66,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
     private final String RECTANGLECLASS = "com.rc.designpattern.shapes.Rectangle$RectangleView";
     private final String TRIANGLECLASS = "com.rc.designpattern.shapes.Triangle$TriangleView";
 
-    private CompoundShape compoundShape;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,44 +82,52 @@ public class MainActivity extends AppCompatActivity {
         bttnCompound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Shape myShape = new Circle(MainActivity.this, Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100));
-                myShape.setShapeColor(Generator.generateColor());
+                Shape myShape = new Circle(MainActivity.this, RandomManager.getRandom(100, 500), RandomManager.getRandom(100, 800), RandomManager.getRandom(50, 100));
+                myShape.setShapeColor(RandomManager.getRandomColor());
 //                ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
-                compoundShape = new CompoundShape(MainActivity.this, myShape);
+                CompoundShape compoundShape = new CompoundShape(MainActivity.this, myShape);
                 compoundShape.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
 
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 200);
                 params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 compoundShape.setLayoutParams(params);
 
-                mFrame.addView(compoundShape);
-
+//                mFrame.addView(compoundShape);
                 // memento
-                GenericOriginator<View> mOriginator = new GenericOriginator<>(mFrame.getChildAt(mFrame.getChildCount() - 1));
-                GenericMemento<View> currentMemento = (GenericMemento<View>) mOriginator.saveToMemento();
-                aCaretaker.add(currentMemento, currentState);
-                currentState++;
+//                GenericOriginator<View> mOriginator = new GenericOriginator<>((View)compoundShape);
+//                GenericMemento<View> currentMemento = (GenericMemento<View>) mOriginator.saveToMemento();
+//                CareTaker.getInstance().add(currentMemento, currentState);
+//                currentState++;
+
+                AddShapeCommand addShapeCommand = new AddShapeCommand(mFrame, compoundShape);
+                CommandExecutor.getInstance().executeCommand(addShapeCommand);
             }
         });
 
         bttnCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Circle myShape = new Circle(MainActivity.this, Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100));
-                myShape.setShapeColor(Generator.generateColor());
-                mFrame.addView(myShape);
+                Circle myShape = new Circle(MainActivity.this, RandomManager.getRandom(100, 500), RandomManager.getRandom(100, 800), RandomManager.getRandom(50, 100));
+                myShape.setShapeColor(RandomManager.getRandomColor());
+//                mFrame.addView(myShape);
 
-                // memento
-                GenericOriginator<View> mOriginator = new GenericOriginator<>(mFrame.getChildAt(mFrame.getChildCount() - 1));
-                GenericMemento<View> currentMemento = (GenericMemento<View>) mOriginator.saveToMemento();
-                aCaretaker.add(currentMemento, currentState);
-                currentState++;
+
+                AddShapeCommand addShapeCommand = new AddShapeCommand(mFrame, myShape);
+                CommandExecutor.getInstance().executeCommand(addShapeCommand);
+
+
+
+//                // memento
+//                GenericOriginator<View> mOriginator = new GenericOriginator<>(mFrame.getChildAt(mFrame.getChildCount() - 1));
+//                GenericMemento<View> currentMemento = (GenericMemento<View>) mOriginator.saveToMemento();
+//                CareTaker.getInstance().add(currentMemento, currentState);
+//                currentState++;
             }
         });
         bttnRectangle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Shape myShape = new Rectangle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.randInt(50, 100), Generator.generateColor());
+//                Shape myShape = new Rectangle(Generator.getRandom(100, 500), Generator.getRandom(100, 800), Generator.getRandom(50, 100), Generator.getRandom(50, 100), Generator.getRandomColor());
 //
 ////                Shape myShape = ShapeFactory.getShape(ShapeType.RECTANGLE);
 //                myShape.drawShape(mFrame, getApplicationContext());
@@ -139,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         bttnTriangle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Shape myShape = new Triangle(Generator.randInt(100, 500), Generator.randInt(100, 800), Generator.randInt(50, 100), Generator.randInt(50, 100), Generator.generateColor());
+//                Shape myShape = new Triangle(Generator.getRandom(100, 500), Generator.getRandom(100, 800), Generator.getRandom(50, 100), Generator.getRandom(50, 100), Generator.getRandomColor());
 //
 ////                Shape myShape = ShapeFactory.getShape(ShapeType.TRIANGLE);
 //                myShape.drawShape(mFrame, getApplicationContext());
@@ -158,12 +161,15 @@ public class MainActivity extends AppCompatActivity {
                 //mFrame = mOriginator.getState();
 
 
-                if (currentState == 0) {
-                    return;
-                }
-                currentState--;
+                CommandExecutor.getInstance().undoLastCommand();
 
-                reDrawLayout();
+
+//                if (currentState == 0) {
+//                    return;
+//                }
+//                currentState--;
+//
+//                reDrawLayout();
             }
         });
 
@@ -176,15 +182,19 @@ public class MainActivity extends AppCompatActivity {
 //                currentState++;
 //
 //                reDrawLayout();
+
+
+                CommandExecutor.getInstance().redoLastUndoedCommand();
+
             }
         });
 
         bttnUnselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (compoundShape != null) {
-                    compoundShape.setShapeState(ShapeState.UNSELECTED);
-                }
+//                if (compoundShape != null) {
+//                    compoundShape.setShapeState(ShapeState.UNSELECTED);
+//                }
             }
         });
 
@@ -297,8 +307,8 @@ public class MainActivity extends AppCompatActivity {
 //                                toast.show();
 //                                int index = shapeMapping.get(myViewTmp.getClass().getName());
 //                                myShape = ShapeFactory.getShape(com.rc.designpattern.shapes[index]);
-//                                myShape.setShapeColor(Generator.generateColor());
-//                                myShape.setWidth(Generator.randInt(ShapeFactory.MINWIDTH,ShapeFactory.MAXWIDTH));
+//                                myShape.setShapeColor(Generator.getRandomColor());
+//                                myShape.setWidth(Generator.getRandom(ShapeFactory.MINWIDTH,ShapeFactory.MAXWIDTH));
 //                                reDrawLayout();
 //                                return true;
 //                            }
@@ -331,16 +341,16 @@ public class MainActivity extends AppCompatActivity {
 //
 //    }
 
-    public void reDrawLayout() {
-        mFrame.removeAllViews();
-        for (int i = 0; i < currentState; i++) {
-            GenericMemento mMemento = aCaretaker.get(i);
-            if (mMemento != null) {
-                mFrame.addView((View) mMemento.getState());
-            } else {
-                Log.d("MainActivity", "redo>>could not found memento");
-            }
-        }
-//        aCaretaker.get(currentState).switchUndone(); // I put a flag on undone = true, the last one I did undo
-    }
+//    public void reDrawLayout() {
+//        mFrame.removeAllViews();
+//        for (int i = 0; i < currentState; i++) {
+//            GenericMemento mMemento = CareTaker.getInstance().get(i);
+//            if (mMemento != null) {
+//                mFrame.addView((View) mMemento.getState());
+//            } else {
+//                Log.d("MainActivity", "redo>>could not found memento");
+//            }
+//        }
+////        aCaretaker.get(currentState).switchUndone(); // I put a flag on undone = true, the last one I did undo
+//    }
 }
