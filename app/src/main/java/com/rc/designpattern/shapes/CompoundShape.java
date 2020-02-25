@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.rc.designpattern.R;
 import com.rc.designpattern.gesture.TouchGestureDetector;
+import com.rc.designpattern.state.ShapeState;
 import com.rc.designpattern.util.CustomViewManager;
 
 import java.util.ArrayList;
@@ -162,24 +163,24 @@ public class CompoundShape extends ViewGroup implements Shape {
         invalidate();
     }
 
-    @Override
-    public void unselectShape() {
-        for (Shape child : children) {
-            child.unselectShape();
-        }
-
-        refreshView();
-    }
-
-    @Override
-    public void selectShape() {
-        for (Shape child : children) {
-            child.selectShape();
-        }
-
-        refreshView();
-    }
-
+    //    @Override
+//    public void unselectShape() {
+//        for (Shape child : children) {
+//            child.unselectShape();
+//        }
+//
+//        refreshView();
+//    }
+//
+//    @Override
+//    public void selectShape() {
+//        for (Shape child : children) {
+//            child.selectShape();
+//        }
+//
+//        refreshView();
+//    }
+//
     @Override
     public boolean isShapeSelected() {
         for (Shape child : children) {
@@ -188,6 +189,23 @@ public class CompoundShape extends ViewGroup implements Shape {
             }
         }
         return true;
+    }
+
+    @Override
+    public void setShapeState(ShapeState shapeState) {
+        for (Shape child : children) {
+            child.setShapeState(shapeState);
+        }
+
+        refreshView();
+    }
+
+    @Override
+    public ShapeState getShapeState() {
+        if (children.size() > 0) {
+            return children.get(0).getShapeState();
+        }
+        return null;
     }
 
     //
@@ -489,7 +507,7 @@ public class CompoundShape extends ViewGroup implements Shape {
             if (!isShapeSelected()) {
                 Log.d(TAG, "touchGestureDetector>>onLongPress: ");
                 CustomViewManager.doVibrate(getContext(), 100);
-                selectShape();
+                setShapeState(ShapeState.SELECTED);
             }
         }
 

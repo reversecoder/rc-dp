@@ -7,9 +7,11 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.view.View;
 
+import com.rc.designpattern.state.ShapeState;
+
 public abstract class BaseShape extends View implements Shape {
 
-//    int shapeX, shapeY;
+    //    int shapeX, shapeY;
 //    Paint borderPaint, backgroundPaint;
 //    DragLayout frame;
 //    Context context;
@@ -149,15 +151,16 @@ public abstract class BaseShape extends View implements Shape {
 
     int shapeX, shapeY;
     Paint borderPaint;
-    private boolean selected = false;
+    //    private boolean selected = false;
     private int color;
+    private ShapeState shapeState;
 
     public BaseShape(Context context, int x, int y) {
         super(context);
         this.shapeX = x;
         this.shapeY = y;
         this.color = Color.BLACK;
-        this.selected = false;
+        this.shapeState = ShapeState.UNSELECTED;
         this.borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
@@ -173,19 +176,29 @@ public abstract class BaseShape extends View implements Shape {
 //        super(context, attrs, defStyleAttr, defStyleRes);
 //    }
 
-    @Override
-    public void selectShape() {
-        selected = true;
-    }
-
-    @Override
-    public void unselectShape() {
-        selected = false;
-    }
-
+    //    @Override
+//    public void selectShape() {
+//        selected = true;
+//    }
+//
+//    @Override
+//    public void unselectShape() {
+//        selected = false;
+//    }
+//
     @Override
     public boolean isShapeSelected() {
-        return selected;
+        return (shapeState == ShapeState.SELECTED);
+    }
+
+    @Override
+    public void setShapeState(ShapeState shapeState) {
+        this.shapeState = shapeState;
+    }
+
+    @Override
+    public ShapeState getShapeState() {
+        return shapeState;
     }
 
     @Override

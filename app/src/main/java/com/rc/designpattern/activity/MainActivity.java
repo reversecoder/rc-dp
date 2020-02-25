@@ -16,6 +16,7 @@ import com.rc.designpattern.R;
 import com.rc.designpattern.shapes.Circle;
 import com.rc.designpattern.shapes.CompoundShape;
 import com.rc.designpattern.shapes.Shape;
+import com.rc.designpattern.state.ShapeState;
 import com.rc.designpattern.tools.Generator;
 import com.rc.designpattern.undoredo.memento.CareTaker;
 import com.rc.designpattern.undoredo.memento.GenericMemento;
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (compoundShape != null) {
-                    compoundShape.unselectShape();
+                    compoundShape.setShapeState(ShapeState.UNSELECTED);
                 }
             }
         });

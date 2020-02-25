@@ -2,6 +2,8 @@ package com.rc.designpattern.shapes;
 
 import android.graphics.Canvas;
 
+import com.rc.designpattern.state.ShapeState;
+
 import java.io.Serializable;
 
 public interface Shape extends Serializable {
@@ -32,11 +34,17 @@ public interface Shape extends Serializable {
 //
 //    float area();
 //
-    void selectShape();
 
-    void unselectShape();
+
+//    void selectShape();
+//
+//    void unselectShape();
 
     boolean isShapeSelected();
+
+    void setShapeState(ShapeState shapeState);
+
+    ShapeState getShapeState();
 
     void setShapeColor(int color);
 

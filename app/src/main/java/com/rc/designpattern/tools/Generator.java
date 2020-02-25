@@ -35,4 +35,20 @@ public class Generator {
         return randomNum;
     }
 
+    public static String getRandomNumbersAndLetters(int length) {
+        String NUMBERS_AND_LETTERS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String randomOutput = "";
+
+        char[] sourceChar = NUMBERS_AND_LETTERS.toCharArray();
+        if (sourceChar != null && sourceChar.length > 0) {
+            StringBuilder str = new StringBuilder(length);
+            Random random = new Random();
+            for (int i = 0; i < length; i++) {
+                str.append(sourceChar[random.nextInt(sourceChar.length)]);
+            }
+            randomOutput = str.toString();
+        }
+
+        return randomOutput;
+    }
 }
