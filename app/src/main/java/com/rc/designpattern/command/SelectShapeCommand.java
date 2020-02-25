@@ -23,7 +23,8 @@ public class SelectShapeCommand implements Command {
 
     @Override
     public void doIt() {
-        ((Shape) this.shape).setShapeState(ShapeState.SELECTED);
+        Shape mShape = (Shape) this.shape;
+        mShape.setShapeState(mShape.getShapeState() == ShapeState.SELECTED ? ShapeState.UNSELECTED : ShapeState.SELECTED);
         // Memento
         GenericOriginator<View> mOriginator = new GenericOriginator<>(shape);
         GenericMemento<View> currentMemento = (GenericMemento<View>) mOriginator.saveToMemento();
@@ -40,6 +41,6 @@ public class SelectShapeCommand implements Command {
         // Memento
         GenericMemento mMemento = CareTaker.getInstance().get(key);
         Shape mShape = (Shape) mMemento.getState();
-        mShape.setShapeState(ShapeState.UNSELECTED);
+        mShape.setShapeState(mShape.getShapeState() == ShapeState.SELECTED ? ShapeState.UNSELECTED : ShapeState.SELECTED);
     }
 }

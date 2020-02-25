@@ -12,13 +12,15 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rc.designpattern.R;
+import com.rc.designpattern.command.AddShapeCommand;
 import com.rc.designpattern.command.Command;
+import com.rc.designpattern.command.CommandExecutor;
 import com.rc.designpattern.composite.Circle;
 import com.rc.designpattern.composite.CompoundShape;
 import com.rc.designpattern.composite.Shape;
+import com.rc.designpattern.controller.ActionController;
+import com.rc.designpattern.state.ActionType;
 import com.rc.designpattern.tools.RandomManager;
-import com.rc.designpattern.command.AddShapeCommand;
-import com.rc.designpattern.command.CommandExecutor;
 
 import java.util.HashMap;
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton bttnRectangle;
     private ImageButton bttnCircle;
     private ImageButton bttnTriangle;
-    private Button bttnUndo, bttnUnselect, bttnRedo;
+    private Button bttnUndo, bttnRedo;
     private int currentState = 0;
     private final int duration = Toast.LENGTH_SHORT;
 //    private AudioManager mAudioManager;
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     private final String RECTANGLECLASS = "com.rc.designpattern.shapes.Rectangle$RectangleView";
     private final String TRIANGLECLASS = "com.rc.designpattern.shapes.Triangle$TriangleView";
 
+    private ActionController actionController = new ActionController();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         bttnTriangle = (ImageButton) findViewById(R.id.bttnTriangle);
         bttnUndo = (Button) findViewById(R.id.bttnUndo);
         bttnRedo = (Button) findViewById(R.id.bttnRedo);
-        bttnUnselect = (Button) findViewById(R.id.bttnUnselect);
         shapeMapping.put(CIRCLECLASS, 1);
         shapeMapping.put(RECTANGLECLASS, 0);
         shapeMapping.put(TRIANGLECLASS, 2);
@@ -82,15 +85,15 @@ public class MainActivity extends AppCompatActivity {
         bttnCompound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Shape myShape = new Circle(MainActivity.this, RandomManager.getRandom(100, 500), RandomManager.getRandom(100, 800), RandomManager.getRandom(50, 100));
-                myShape.setShapeColor(RandomManager.getRandomColor());
-//                ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
-                CompoundShape compoundShape = new CompoundShape(MainActivity.this, myShape);
-                compoundShape.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
-
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 200);
-                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-                compoundShape.setLayoutParams(params);
+//                Shape myShape = new Circle(MainActivity.this, RandomManager.getRandom(100, 500), RandomManager.getRandom(100, 800), RandomManager.getRandom(50, 100));
+//                myShape.setShapeColor(RandomManager.getRandomColor());
+////                ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+//                CompoundShape compoundShape = new CompoundShape(MainActivity.this, myShape);
+//                compoundShape.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
+//
+//                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 200);
+//                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+//                compoundShape.setLayoutParams(params);
 
 //                mFrame.addView(compoundShape);
                 // memento
@@ -99,22 +102,23 @@ public class MainActivity extends AppCompatActivity {
 //                CareTaker.getInstance().add(currentMemento, currentState);
 //                currentState++;
 
-                AddShapeCommand addShapeCommand = new AddShapeCommand(mFrame, compoundShape);
-                CommandExecutor.getInstance().executeCommand(addShapeCommand);
+//                AddShapeCommand addShapeCommand = new AddShapeCommand(mFrame, compoundShape);
+//                CommandExecutor.getInstance().executeCommand(addShapeCommand);
+
+                actionController.dispatchRequest(MainActivity.this, ActionType.COMPOSITE, mFrame);
             }
         });
 
         bttnCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Circle myShape = new Circle(MainActivity.this, RandomManager.getRandom(100, 500), RandomManager.getRandom(100, 800), RandomManager.getRandom(50, 100));
-                myShape.setShapeColor(RandomManager.getRandomColor());
-//                mFrame.addView(myShape);
-
-
-                AddShapeCommand addShapeCommand = new AddShapeCommand(mFrame, myShape);
-                CommandExecutor.getInstance().executeCommand(addShapeCommand);
-
+//                Circle myShape = new Circle(MainActivity.this, RandomManager.getRandom(100, 500), RandomManager.getRandom(100, 800), RandomManager.getRandom(50, 100));
+//                myShape.setShapeColor(RandomManager.getRandomColor());
+////                mFrame.addView(myShape);
+//
+//
+//                AddShapeCommand addShapeCommand = new AddShapeCommand(mFrame, myShape);
+//                CommandExecutor.getInstance().executeCommand(addShapeCommand);
 
 
 //                // memento
@@ -122,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
 //                GenericMemento<View> currentMemento = (GenericMemento<View>) mOriginator.saveToMemento();
 //                CareTaker.getInstance().add(currentMemento, currentState);
 //                currentState++;
+
+                actionController.dispatchRequest(MainActivity.this, ActionType.CIRCLE, mFrame);
             }
         });
         bttnRectangle.setOnClickListener(new View.OnClickListener() {
@@ -160,10 +166,10 @@ public class MainActivity extends AppCompatActivity {
                 //mOriginator.getStateFromMemento(aCaretaker.get(0));
                 //mFrame = mOriginator.getState();
 
-               Command command = CommandExecutor.getInstance().undoLastCommand();
-               if(command != null){
-                   Toast.makeText(MainActivity.this, command.whoAmI(), Toast.LENGTH_SHORT).show();
-               }
+//                Command command = CommandExecutor.getInstance().undoLastCommand();
+//                if (command != null) {
+//                    Toast.makeText(MainActivity.this, command.whoAmI(), Toast.LENGTH_SHORT).show();
+//                }
 
 //                if (currentState == 0) {
 //                    return;
@@ -171,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
 //                currentState--;
 //
 //                reDrawLayout();
+
+                actionController.dispatchRequest(MainActivity.this, ActionType.UNDO, mFrame);
             }
         });
 
@@ -185,17 +193,9 @@ public class MainActivity extends AppCompatActivity {
 //                reDrawLayout();
 
 
-                CommandExecutor.getInstance().redoLastUndoedCommand();
+//                CommandExecutor.getInstance().redoLastUndoedCommand();
 
-            }
-        });
-
-        bttnUnselect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                if (compoundShape != null) {
-//                    compoundShape.setShapeState(ShapeState.UNSELECTED);
-//                }
+                actionController.dispatchRequest(MainActivity.this, ActionType.REDO, mFrame);
             }
         });
 
