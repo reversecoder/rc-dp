@@ -11,8 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rc.designpattern.R;
+import com.rc.designpattern.command.CommandExecutor;
+import com.rc.designpattern.command.SelectShapeCommand;
 import com.rc.designpattern.gesture.TouchGestureDetector;
+import com.rc.designpattern.state.DirectionType;
 import com.rc.designpattern.state.ShapeState;
+import com.rc.designpattern.tools.RandomManager;
 import com.rc.designpattern.util.CustomViewManager;
 
 import java.util.ArrayList;
@@ -29,9 +33,14 @@ public class CompoundShape extends ViewGroup implements Shape {
     private int centerY = 0;
     private List<Shape> children = new ArrayList<>();
     private View editableView;
+    private ShapeState shapeState;
+    private int shapeId;
 
     public CompoundShape(Context context, Shape... components) {
         super(context);
+        this.shapeState = ShapeState.UNSELECTED;
+        this.shapeId = RandomManager.getRandom(5);
+        setId(this.shapeId);
         setWillNotDraw(false);
         // Add component views
         add(components);
@@ -67,6 +76,16 @@ public class CompoundShape extends ViewGroup implements Shape {
     public void clear() {
         children.clear();
         removeAllViews();
+    }
+
+    @Override
+    public int getShapeId() {
+        return this.shapeId;
+    }
+
+    @Override
+    public Shape getShape() {
+        return this;
     }
 
     @Override
@@ -110,7 +129,7 @@ public class CompoundShape extends ViewGroup implements Shape {
     public void setShapeY(int shapeY) {
         if (children.size() > 0) {
             for (Shape child : children) {
-                child.setShapeX(shapeY);
+                child.setShapeY(shapeY);
             }
         }
     }
@@ -180,38 +199,26 @@ public class CompoundShape extends ViewGroup implements Shape {
 //
 //        refreshView();
 //    }
-//
+
     @Override
     public boolean isShapeSelected() {
-        for (Shape child : children) {
-            if (!child.isShapeSelected()) {
-                return false;
-            }
-        }
-        return true;
+        return (shapeState == ShapeState.SELECTED);
     }
 
     @Override
     public void setShapeState(ShapeState shapeState) {
+        this.shapeState = shapeState;
+
         for (Shape child : children) {
             child.setShapeState(shapeState);
         }
 
-//        UpdateShapeCommand previousState = new UpdateShapeCommand(this);
-//        CommandExecutor.getInstance().executeCommand(previousState);
-
         refreshView();
-
-//        UpdateShapeCommand updateState = new UpdateShapeCommand(this);
-//        CommandExecutor.getInstance().executeCommand(updateState);
     }
 
     @Override
     public ShapeState getShapeState() {
-        if (children.size() > 0) {
-            return children.get(0).getShapeState();
-        }
-        return null;
+        return shapeState;
     }
 
     //
@@ -346,9 +353,7 @@ public class CompoundShape extends ViewGroup implements Shape {
     /***********************
      * Touch events
      *************************/
-    public enum DIRECTION {TOP, LEFT, BOTTOM, RIGHT, LEFT_TOP, RIGHT_TOP, LEFT_BOTTOM, RIGHT_BOTTOM, CENTER}
-
-    private DIRECTION dragDirection;
+    private DirectionType dragDirection;
     private int lastX;
     private int lastY;
     private int screenWidth;
@@ -513,7 +518,9 @@ public class CompoundShape extends ViewGroup implements Shape {
             if (!isShapeSelected()) {
                 Log.d(TAG, "touchGestureDetector>>onLongPress: ");
                 CustomViewManager.doVibrate(getContext(), 100);
-                setShapeState(ShapeState.SELECTED);
+
+                SelectShapeCommand previousState = new SelectShapeCommand((View) getShape());
+                CommandExecutor.getInstance().executeCommand(previousState);
             }
         }
 
@@ -593,7 +600,7 @@ public class CompoundShape extends ViewGroup implements Shape {
         }
     }
 
-    private DIRECTION getDirection(int x, int y) {
+    private DirectionType getDirection(int x, int y) {
         int left = getLeft();
         int right = getRight();
         int bottom = getBottom();
@@ -601,44 +608,44 @@ public class CompoundShape extends ViewGroup implements Shape {
 
         if (x < touchAreaLength && y < touchAreaLength) {
 //            spotLT = true;
-            return DIRECTION.LEFT_TOP;
+            return DirectionType.LEFT_TOP;
         }
         if (y < touchAreaLength && right - left - x < touchAreaLength) {
 //            spotRT = true;
-            return DIRECTION.RIGHT_TOP;
+            return DirectionType.RIGHT_TOP;
         }
         if (x < touchAreaLength && bottom - top - y < touchAreaLength) {
 //            spotLB = true;
-            return DIRECTION.LEFT_BOTTOM;
+            return DirectionType.LEFT_BOTTOM;
         }
         if (right - left - x < touchAreaLength && bottom - top - y < touchAreaLength) {
 //            spotRB = true;
-            return DIRECTION.RIGHT_BOTTOM;
+            return DirectionType.RIGHT_BOTTOM;
         }
         if (mFixedSize) {
-            return DIRECTION.CENTER;
+            return DirectionType.CENTER;
         }
 
         if (x < touchAreaLength) {
 //            spotL = true;
             requestLayout();
-            return DIRECTION.LEFT;
+            return DirectionType.LEFT;
         }
         if (y < touchAreaLength) {
 //            spotT = true;
             requestLayout();
-            return DIRECTION.TOP;
+            return DirectionType.TOP;
         }
         if (right - left - x < touchAreaLength) {
 //            spotR = true;
             requestLayout();
-            return DIRECTION.RIGHT;
+            return DirectionType.RIGHT;
         }
         if (bottom - top - y < touchAreaLength) {
 //            spotB = true;
             requestLayout();
-            return DIRECTION.BOTTOM;
+            return DirectionType.BOTTOM;
         }
-        return DIRECTION.CENTER;
+        return DirectionType.CENTER;
     }
 }

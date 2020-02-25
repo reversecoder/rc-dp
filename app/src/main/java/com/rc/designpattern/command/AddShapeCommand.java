@@ -1,12 +1,13 @@
 package com.rc.designpattern.command;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rc.designpattern.tools.RandomManager;
 import com.rc.designpattern.memento.CareTaker;
 import com.rc.designpattern.memento.GenericMemento;
 import com.rc.designpattern.memento.GenericOriginator;
+import com.rc.designpattern.tools.RandomManager;
 
 public class AddShapeCommand implements Command {
 
@@ -17,7 +18,8 @@ public class AddShapeCommand implements Command {
     public AddShapeCommand(ViewGroup parentView, View shape) {
         this.parentView = parentView;
         this.shape = shape;
-        this.key = RandomManager.getRandomNumbersAndLetters(20);
+        this.key = RandomManager.getRandomNumbersAndLetters(30);
+        Log.d(AddShapeCommand.class.getSimpleName(), "key: " + key);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class AddShapeCommand implements Command {
 
     @Override
     public String whoAmI() {
-        return AddShapeCommand.class.getSimpleName();
+        return AddShapeCommand.class.getSimpleName() + "\n(" + key + ")";
     }
 
     @Override

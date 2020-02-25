@@ -165,11 +165,21 @@ public abstract class BaseShape extends View implements Shape {
         this.color = Color.BLACK;
         this.shapeState = ShapeState.UNSELECTED;
         this.borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.shapeId = RandomManager.getRandom(9);
-        setId(shapeId);
+        this.shapeId = RandomManager.getRandom(5);
+        setId(this.shapeId);
     }
 
-//    public BaseShape(Context context, @Nullable AttributeSet attrs) {
+    @Override
+    public Shape getShape() {
+        return this;
+    }
+
+    @Override
+    public int getShapeId() {
+        return this.shapeId;
+    }
+
+    //    public BaseShape(Context context, @Nullable AttributeSet attrs) {
 //        super(context, attrs);
 //    }
 //

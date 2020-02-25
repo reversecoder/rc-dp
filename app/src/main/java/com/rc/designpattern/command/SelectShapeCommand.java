@@ -1,24 +1,29 @@
 package com.rc.designpattern.command;
 
+import android.util.Log;
 import android.view.View;
 
-import com.rc.designpattern.tools.RandomManager;
+import com.rc.designpattern.composite.Shape;
 import com.rc.designpattern.memento.CareTaker;
 import com.rc.designpattern.memento.GenericMemento;
 import com.rc.designpattern.memento.GenericOriginator;
+import com.rc.designpattern.state.ShapeState;
+import com.rc.designpattern.tools.RandomManager;
 
-public class UpdateShapeCommand implements Command {
+public class SelectShapeCommand implements Command {
 
     private View shape;
     private String key;
 
-    public UpdateShapeCommand(View shape) {
+    public SelectShapeCommand(View shape) {
         this.shape = shape;
-        this.key = RandomManager.getRandomNumbersAndLetters(20);
+        this.key = RandomManager.getRandomNumbersAndLetters(30);
+        Log.d(SelectShapeCommand.class.getSimpleName(), "key: " + key);
     }
 
     @Override
     public void doIt() {
+        ((Shape) this.shape).setShapeState(ShapeState.SELECTED);
         // Memento
         GenericOriginator<View> mOriginator = new GenericOriginator<>(shape);
         GenericMemento<View> currentMemento = (GenericMemento<View>) mOriginator.saveToMemento();
@@ -27,13 +32,14 @@ public class UpdateShapeCommand implements Command {
 
     @Override
     public String whoAmI() {
-        return UpdateShapeCommand.class.getSimpleName();
+        return SelectShapeCommand.class.getSimpleName() + "\n(" + key + ")";
     }
 
     @Override
     public void undoIt() {
         // Memento
         GenericMemento mMemento = CareTaker.getInstance().get(key);
-        ((View) mMemento.getState()).requestLayout();
+        Shape mShape = (Shape) mMemento.getState();
+        mShape.setShapeState(ShapeState.UNSELECTED);
     }
 }

@@ -8,6 +8,10 @@ import java.io.Serializable;
 
 public interface Shape extends Serializable {
 
+    Shape getShape();
+
+    int getShapeId();
+
     int getShapeX();
 
     int getShapeY();

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rc.designpattern.R;
+import com.rc.designpattern.command.Command;
 import com.rc.designpattern.composite.Circle;
 import com.rc.designpattern.composite.CompoundShape;
 import com.rc.designpattern.composite.Shape;
@@ -159,9 +160,10 @@ public class MainActivity extends AppCompatActivity {
                 //mOriginator.getStateFromMemento(aCaretaker.get(0));
                 //mFrame = mOriginator.getState();
 
-
-                CommandExecutor.getInstance().undoLastCommand();
-
+               Command command = CommandExecutor.getInstance().undoLastCommand();
+               if(command != null){
+                   Toast.makeText(MainActivity.this, command.whoAmI(), Toast.LENGTH_SHORT).show();
+               }
 
 //                if (currentState == 0) {
 //                    return;

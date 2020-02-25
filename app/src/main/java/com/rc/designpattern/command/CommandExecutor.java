@@ -22,17 +22,19 @@ public class CommandExecutor {
         cmd.doIt();
     }
 
-    public void undoLastCommand() {
+    public Command undoLastCommand() {
         Command cmd = commandStack.getLastCommand();
         if (cmd != null) {
             cmd.undoIt();
         }
+        return cmd;
     }
 
-    public void redoLastUndoedCommand() {
+    public Command redoLastUndoedCommand() {
         Command cmd = commandStack.recoverLastGettedCommand();
         if (cmd != null) {
             cmd.doIt();
         }
+        return cmd;
     }
 }
