@@ -1,28 +1,5 @@
-//package com.rc.designpattern.memento;
-//
-//import android.view.View;
-//
-///**
-// * Created by enrique on 08/08/14.
-// */
-//public class Memento {
-//
-//    private View mViewState;
-//    public boolean undone;
-//
-//    public Memento(View mViewState){
-//        this.mViewState = mViewState;
-//        undone = false;
-//    }
-//    public View getState(){
-//        return mViewState;
-//    }
-//    public void switchUndone(){
-//        if(undone) undone=false;
-//        else undone = true;
-//    }
-//    public boolean isUndone(){   // was it already undone?
-//        if ( undone == true) return true; // if this object was already undone return true
-//        return false;
-//    }
-//}
+package com.rc.designpattern.memento;
+
+public interface Memento<T> {
+	T getState();
+}

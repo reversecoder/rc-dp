@@ -1,6 +1,7 @@
-package com.rc.designpattern.shapes;
+package com.rc.designpattern.factory;
 
-import com.rc.designpattern.enumeration.ShapeType;
+import com.rc.designpattern.composite.Shape;
+import com.rc.designpattern.state.ShapeType;
 
 import java.util.HashMap;
 

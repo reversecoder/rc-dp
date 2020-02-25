@@ -1,4 +1,4 @@
-package com.rc.designpattern.shapes;
+package com.rc.designpattern.composite;
 
 /**
  * Created by enrique on 17/08/14.

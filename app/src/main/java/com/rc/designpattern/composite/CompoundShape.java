@@ -1,4 +1,4 @@
-package com.rc.designpattern.shapes;
+package com.rc.designpattern.composite;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.rc.designpattern.R;
 import com.rc.designpattern.gesture.TouchGestureDetector;
 import com.rc.designpattern.state.ShapeState;
-import com.rc.designpattern.undoredo.command.CommandExecutor;
-import com.rc.designpattern.undoredo.command.UpdateShapeCommand;
 import com.rc.designpattern.util.CustomViewManager;
 
 import java.util.ArrayList;

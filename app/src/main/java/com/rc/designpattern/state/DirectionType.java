@@ -1,4 +1,4 @@
-package com.rc.designpattern.enumeration;
+package com.rc.designpattern.state;
 
 public enum DirectionType {
 

@@ -1,8 +1,7 @@
-package com.rc.designpattern.shapes;
+package com.rc.designpattern.composite;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.view.MotionEvent;
 
 public class Circle extends BaseShape {
 

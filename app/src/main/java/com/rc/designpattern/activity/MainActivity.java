@@ -12,13 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rc.designpattern.R;
-import com.rc.designpattern.shapes.Circle;
-import com.rc.designpattern.shapes.CompoundShape;
-import com.rc.designpattern.shapes.Shape;
-import com.rc.designpattern.state.ShapeState;
+import com.rc.designpattern.composite.Circle;
+import com.rc.designpattern.composite.CompoundShape;
+import com.rc.designpattern.composite.Shape;
 import com.rc.designpattern.tools.RandomManager;
-import com.rc.designpattern.undoredo.command.AddShapeCommand;
-import com.rc.designpattern.undoredo.command.CommandExecutor;
+import com.rc.designpattern.command.AddShapeCommand;
+import com.rc.designpattern.command.CommandExecutor;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.rc.designpattern.shapes;
+package com.rc.designpattern.composite;
 
 import android.graphics.Canvas;
 

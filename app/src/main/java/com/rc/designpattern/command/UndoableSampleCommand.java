@@ -1,4 +1,4 @@
-//package com.rc.designpattern.undoredo.command;
+//package com.rc.designpattern.command;
 //
 //public class UndoableSampleCommand implements Command {
 //

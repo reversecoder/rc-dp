@@ -1,4 +1,4 @@
-package com.rc.designpattern.undoredo.memento;
+package com.rc.designpattern.memento;
 
 public class GenericMemento<T> implements Memento<T> {
 

@@ -1,4 +1,4 @@
-package com.rc.designpattern.undoredo.command;
+package com.rc.designpattern.command;
 
 import java.util.ArrayList;
 import java.util.List;
