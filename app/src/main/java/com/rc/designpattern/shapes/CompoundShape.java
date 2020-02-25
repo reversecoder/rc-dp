@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.rc.designpattern.R;
 import com.rc.designpattern.gesture.TouchGestureDetector;
 import com.rc.designpattern.state.ShapeState;
+import com.rc.designpattern.undoredo.command.CommandExecutor;
+import com.rc.designpattern.undoredo.command.UpdateShapeCommand;
 import com.rc.designpattern.util.CustomViewManager;
 
 import java.util.ArrayList;
@@ -197,7 +199,13 @@ public class CompoundShape extends ViewGroup implements Shape {
             child.setShapeState(shapeState);
         }
 
+//        UpdateShapeCommand previousState = new UpdateShapeCommand(this);
+//        CommandExecutor.getInstance().executeCommand(previousState);
+
         refreshView();
+
+//        UpdateShapeCommand updateState = new UpdateShapeCommand(this);
+//        CommandExecutor.getInstance().executeCommand(updateState);
     }
 
     @Override
