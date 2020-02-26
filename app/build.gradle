@@ -7,7 +7,7 @@ android {
     buildToolsVersion appBuildToolsVersion
 
     defaultConfig {
-        applicationId "com.rc.shapecreator"
+        applicationId "com.rc.designpattern.demo"
 
         minSdkVersion appMinSdkVersion
         targetSdkVersion appTargetSdkVersion
