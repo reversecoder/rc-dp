@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="cm_triangle" type="id" />
+    <item name="cm_circle" type="id" />
+    <item name="cm_rectangle" type="id" />
+</resources>

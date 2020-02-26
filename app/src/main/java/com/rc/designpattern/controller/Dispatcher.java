@@ -1,10 +1,11 @@
 package com.rc.designpattern.controller;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.rc.designpattern.R;
 import com.rc.designpattern.command.AddShapeCommand;

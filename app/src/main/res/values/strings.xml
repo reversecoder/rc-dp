@@ -1,9 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">Design Pattern</string>
+    <string name="app_name">DesignPatternDemo</string>
 
     <string name="undo">Undo</string>
     <string name="redo">Redo</string>
 
+    <!-- Activity title -->
+    <string name="title_activity_main">Shape Creator</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Dialog -->
+    <string name="dialog_close_app_title">Message</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">CANCEL</string>
+    <string name="dialog_do_you_want_to_close_the_app">Do you want to close the app?</string>
+
+    <!-- Settings -->
+    <string name="txt_my_shapes">My Shapes</string>
+    <string name="txt_third_party_notice">Third Party Notice</string>
+
+    <!-- Attributes -->
+    <string name="txt_history">History</string>
+    <string name="txt_attributes">Attributes</string>
+    <string name="txt_position_percent">Position(in %)</string>
+    <string name="txt_measurement">Measurement</string>
+    <string name="txt_circle_property">Circle Properties</string>
+    <string name="txt_circle_x">X</string>
+    <string name="txt_circle_y">Y</string>
+    <string name="txt_circle_radius">Radius</string>
+    <string name="txt_background">Background</string>
+    <string name="txt_height">Height</string>
+    <string name="txt_width">Width</string>
+    <string name="txt_rotation">Rotation</string>
+    <string name="txt_color">Color</string>
+    <string name="txt_border">Border</string>
+    <string name="txt_enable">Enable</string>
+
+    <string-array name="divider_type">
+        <item>Normal</item>
+        <item>Dashed</item>
+    </string-array>
+
+    <string-array name="scallop_position">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="corner_type">
+        <item>Normal</item>
+        <item>Rounded</item>
+        <item>Scallop</item>
+    </string-array>
 </resources>

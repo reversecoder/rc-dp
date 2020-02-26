@@ -1,8 +1,6 @@
 package com.rc.designpattern.activity;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,16 +9,11 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.rc.designpattern.R;
-import com.rc.designpattern.command.AddShapeCommand;
-import com.rc.designpattern.command.Command;
-import com.rc.designpattern.command.CommandExecutor;
-import com.rc.designpattern.composite.Circle;
-import com.rc.designpattern.composite.CompoundShape;
-import com.rc.designpattern.composite.Shape;
 import com.rc.designpattern.controller.ActionController;
 import com.rc.designpattern.state.ActionType;
-import com.rc.designpattern.tools.RandomManager;
 
 import java.util.HashMap;
 
