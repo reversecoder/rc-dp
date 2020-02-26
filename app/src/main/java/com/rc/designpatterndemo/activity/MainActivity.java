@@ -2,6 +2,8 @@ package com.rc.designpatterndemo.activity;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -46,7 +48,7 @@ import cn.ymex.popup.dialog.PopupDialog;
 
 public class MainActivity extends AppCompatActivity {
 
-//////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     private String TAG = "MainActivity";
     //Toolbar
     private ImageView leftMenu;
@@ -74,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
     // Settings
     private Flourish flourish;
     private ViewGroup parentLayout;
+
+    // Tap sound
+    private AudioManager mAudioManager;
+    private float mStreamVolume;
+    private SoundPool mSoundPool;
+    private int mSoundID;
+    private final static int MAX_STREAMS = 10;
+
     //////////////////////////////////////////
 //    private String TAG = MainActivity.class.getSimpleName();
     private static final float YOFFSET = 100;
@@ -90,12 +100,6 @@ public class MainActivity extends AppCompatActivity {
     private Button bttnUndo, bttnRedo;
     private int currentState = 0;
     private final int duration = Toast.LENGTH_SHORT;
-//    private AudioManager mAudioManager;
-//    private float mStreamVolume;
-    // SoundPool
-//    private SoundPool mSoundPool;
-    // ID for the bubble popping sound
-//    private int mSoundID;
     //speeed mode
 //    public final static int RANDOM = 0;
 //    public static int speedMode = RANDOM;
@@ -273,25 +277,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
 //        setupGestureDetector();
-
-//        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-//        mStreamVolume = (float) mAudioManager
-//                .getStreamVolume(AudioManager.STREAM_MUSIC)
-//                / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-//
-//        mSoundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC,0);
-//
-//
-//        mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() { // sellama cuando el sonido se carga totalmente
-//            @Override
-//            public void onLoadComplete(SoundPool soundPool, int sampleId,
-//                                       int status) {
-//                if (status == 0)
-//                    setupGestureDetector();
-//            }
-//        });
-//        mSoundID = mSoundPool.load(this, R.raw.bubble_pop,1);
-
     }
 
     private void setupGestureDetector() {
@@ -437,6 +422,7 @@ public class MainActivity extends AppCompatActivity {
         ivBackgroundColor = (ImageView) findViewById(R.id.image_background_color);
         ivBorderColor = (ImageView) findViewById(R.id.image_border_color);
 
+        initTapSound();
         initShapeCreator();
         initToolbar();
         initCycleMenu();
@@ -520,7 +506,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Close the cycle menu
-                cycleMenuWidget.close(true);
+//                cycleMenuWidget.close(true);
+
+                // Play tap sound
+                mSoundPool.play(mSoundID, (float)mStreamVolume , (float)mStreamVolume, 1, 0,1.0f);
 
                 // Update attribute view
                 updateAttributeView();
@@ -789,6 +778,20 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }))
                 .show();
+    }
+
+    private void initTapSound() {
+        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        mStreamVolume = (float) mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC) / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        mSoundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0);
+        mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                if (status == 0)
+                    setupGestureDetector();
+            }
+        });
+        mSoundID = mSoundPool.load(this, R.raw.bubble_pop, 1);
     }
 
     @Override
