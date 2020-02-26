@@ -6,7 +6,7 @@
     <string name="redo">Redo</string>
 
     <!-- Activity title -->
-    <string name="title_activity_main">Shape Creator</string>
+    <string name="title_activity_main">Design Pattern</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Dialog -->
