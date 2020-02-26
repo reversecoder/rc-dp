@@ -2,4 +2,6 @@ include ':app',
         ':library:designpattern',
         ':library:pdialog',
         ':library:attributionpresenter',
-        ':library:cyclemenu'
+        ':library:cyclemenu',
+        ':library:discreteseekbar',
+        ':library:spectrum'

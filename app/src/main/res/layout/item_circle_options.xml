@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Heading"
+        android:text="@string/txt_circle_property" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_circle_x"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            style="@style/DiscreteSeekBar"
+            android:id="@+id/seekbar_circle_x"
+            app:dsb_min="0"
+            app:dsb_max="500"
+            app:dsb_value="200"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_circle_y"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            style="@style/DiscreteSeekBar"
+            android:id="@+id/seekbar_circle_y"
+            app:dsb_min="0"
+            app:dsb_max="500"
+            app:dsb_value="250"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_circle_radius"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            style="@style/DiscreteSeekBar"
+            android:id="@+id/seekbar_circle_radius"
+            app:dsb_min="0"
+            app:dsb_max="360"
+            app:dsb_value="90"/>
+
+    </LinearLayout>
+
+</LinearLayout>

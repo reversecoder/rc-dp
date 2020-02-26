@@ -39,20 +39,12 @@ dependencies {
 
     //misc
     implementation 'com.dmitrymalkovich.android:material-design-dimens:1.4'
-    implementation ('com.thebluealliance:spectrum:0.7.1') {
-        exclude group: 'com.android.support'
-        exclude module: 'appcompat-v7'
-        exclude module: 'support-v4'
-    }
-    implementation ('org.adw.library:discrete-seekbar:1.0.1') {
-        exclude group: 'com.android.support'
-        exclude module: 'appcompat-v7'
-        exclude module: 'support-v4'
-    }
 
     // Library projects
     implementation project(":library:designpattern")
     implementation project(":library:cyclemenu")
     implementation project(":library:pdialog")
     implementation project(":library:attributionpresenter")
+    implementation project(":library:discreteseekbar")
+    implementation project(":library:spectrum")
 }

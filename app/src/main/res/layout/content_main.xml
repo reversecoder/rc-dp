@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <RelativeLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.cleveroad.cyclemenuwidget.CycleMenuWidget
+        android:id="@+id/itemCycleMenuWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cm_autoMaxRadius="150dp"
+        app:cm_autoMinRadius="10dp"
+        app:cm_corner="right_top"
+        app:cm_item_background_tint="#0e65a9"
+        app:cm_ripple_color="#0e65a9"
+        app:cm_scroll_type="endless" />
+
+</FrameLayout>
