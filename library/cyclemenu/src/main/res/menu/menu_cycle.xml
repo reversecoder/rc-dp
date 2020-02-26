@@ -6,11 +6,19 @@
         android:icon="@drawable/vector_triangle"
         tools:ignore="MenuTitle" />
     <item
+        android:id="@id/cm_rectangle"
+        android:icon="@drawable/vector_rectangle"
+        tools:ignore="MenuTitle" />
+    <item
         android:id="@id/cm_circle"
         android:icon="@drawable/vector_circle"
         tools:ignore="MenuTitle" />
     <item
-        android:id="@id/cm_rectangle"
-        android:icon="@drawable/vector_rectangle"
+        android:id="@id/cm_undo"
+        android:icon="@drawable/vector_undo"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@id/cm_redo"
+        android:icon="@drawable/vector_redo"
         tools:ignore="MenuTitle" />
 </menu>

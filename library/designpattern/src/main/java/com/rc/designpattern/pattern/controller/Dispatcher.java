@@ -21,7 +21,7 @@ public class Dispatcher {
 
     public void dispatch(Context context, ActionType actionType, ViewGroup parentView) {
         switch (actionType) {
-            case COMPOSITE:
+            case CIRCLE:
                 Shape chileCircle = new Circle(context, RandomManager.getRandom(100, 500), RandomManager.getRandom(100, 800), RandomManager.getRandom(50, 100));
                 chileCircle.setShapeColor(RandomManager.getRandomColor());
 //                ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
@@ -34,13 +34,6 @@ public class Dispatcher {
 
                 AddShapeCommand addShapeCommand = new AddShapeCommand(parentView, compoundShape);
                 CommandExecutor.getInstance().executeCommand(addShapeCommand);
-                break;
-            case CIRCLE:
-                Circle circleShape = new Circle(context, RandomManager.getRandom(100, 500), RandomManager.getRandom(100, 800), RandomManager.getRandom(50, 100));
-                circleShape.setShapeColor(RandomManager.getRandomColor());
-
-                AddShapeCommand addCircleCommand = new AddShapeCommand(parentView, circleShape);
-                CommandExecutor.getInstance().executeCommand(addCircleCommand);
                 break;
             case RECTANGLE:
                 break;

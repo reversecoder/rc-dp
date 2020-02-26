@@ -48,11 +48,11 @@
             android:orientation="vertical"
             android:paddingBottom="10dp">
 
-            <include layout="@layout/item_history" />
+<!--            <include layout="@layout/item_history" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                android:layout_height="20dp" />-->
 
             <include layout="@layout/item_circle_options" />
 

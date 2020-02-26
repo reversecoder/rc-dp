@@ -3,4 +3,6 @@
     <item name="cm_triangle" type="id" />
     <item name="cm_circle" type="id" />
     <item name="cm_rectangle" type="id" />
+    <item name="cm_undo" type="id" />
+    <item name="cm_redo" type="id" />
 </resources>
