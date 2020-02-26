@@ -7,7 +7,7 @@ android {
     buildToolsVersion appBuildToolsVersion
 
     defaultConfig {
-        applicationId "com.rc.designpattern.demo"
+        applicationId "com.rc.designpatterndemo"
 
         minSdkVersion appMinSdkVersion
         targetSdkVersion appTargetSdkVersion
