@@ -102,15 +102,12 @@ public class CircleProperty implements Property {
 
     @Override
     public Paint getShapePaint() {
+        shapePaint.setColor(getShapeColor());
+        shapePaint.setStyle(Paint.Style.STROKE);
+        shapePaint.setStrokeWidth(5f);
         if (isShapeSelected()) {
-            shapePaint.setColor(Color.RED);
-            shapePaint.setStyle(Paint.Style.STROKE);
-            shapePaint.setStrokeWidth(5f);
             shapePaint.setPathEffect(new DashPathEffect(new float[]{5, 10}, 0));
         } else {
-            shapePaint.setColor(getShapeColor());
-            shapePaint.setStyle(Paint.Style.STROKE);
-            shapePaint.setStrokeWidth(5f);
             shapePaint.setPathEffect(null);
         }
         return shapePaint;
