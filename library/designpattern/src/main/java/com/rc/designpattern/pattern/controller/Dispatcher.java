@@ -11,6 +11,7 @@ import com.rc.designpattern.R;
 import com.rc.designpattern.pattern.behavioural.command.AddShapeCommand;
 import com.rc.designpattern.pattern.behavioural.command.Command;
 import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
+import com.rc.designpattern.pattern.creational.singleton.ShapeManager;
 import com.rc.designpattern.pattern.structural.composite.Circle;
 import com.rc.designpattern.pattern.structural.composite.CompoundShape;
 import com.rc.designpattern.pattern.structural.composite.Shape;
@@ -22,9 +23,7 @@ public class Dispatcher {
     public void dispatch(Context context, ActionType actionType, ViewGroup parentView) {
         switch (actionType) {
             case CIRCLE:
-                Shape chileCircle = new Circle(context, RandomManager.getRandom(100, 500), RandomManager.getRandom(100, 800), RandomManager.getRandom(50, 100));
-                chileCircle.setShapeColor(RandomManager.getRandomColor());
-//                ((View)myShape).setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                Shape chileCircle = ShapeManager.getInstance(context).getCircleShape();
                 CompoundShape compoundShape = new CompoundShape(context, chileCircle);
                 compoundShape.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
 
@@ -32,7 +31,7 @@ public class Dispatcher {
                 params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 compoundShape.setLayoutParams(params);
 
-                AddShapeCommand addShapeCommand = new AddShapeCommand(parentView, compoundShape);
+                AddShapeCommand addShapeCommand = new AddShapeCommand(parentView, compoundShape.getShapeView());
                 CommandExecutor.getInstance().executeCommand(addShapeCommand);
                 break;
             case RECTANGLE:

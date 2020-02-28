@@ -4,4 +4,5 @@ include ':app',
         ':library:attributionpresenter',
         ':library:cyclemenu',
         ':library:discreteseekbar',
+        ':library:shapemanager',
         ':library:spectrum'

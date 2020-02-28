@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMenuItemClick(View view, int itemPosition) {
                 switch (itemPosition) {
-                    case 0:
+//                    case 0:
 //                        if (shapeList.size() > 0) {
 //                            RectangleProperty rectangleProperty = (RectangleProperty) shapeList.get(shapeList.size() - 1).getTopicValue();
 //                            ((Rectangle) shapeList.get(shapeList.size() - 1).getShapeView()).setProperty(rectangleProperty.setHeight(rectangleProperty.getHeight() + 10));
@@ -162,18 +162,18 @@ public class MainActivity extends AppCompatActivity {
 //                        shapeList.add(triangle);
 //                        dragView.addView(triangle.getShapeView());
 
-                        actionController.dispatchRequest(MainActivity.this, ActionType.TRIANGLE, shapeContainer);
-                        break;
-                    case 1:
+//                        actionController.dispatchRequest(MainActivity.this, ActionType.TRIANGLE, shapeContainer);
+//                        break;
+//                    case 1:
 //                        RectangleProperty rectangleProperty = new RectangleProperty(200, 100, 5, Color.BLUE, Color.CYAN);
 //                        Shape rectangle = shapeFactory.createShape(MainActivity.this, ShapeType.RECTANGLE, rectangleProperty);
 //                        shapeList.add(rectangle);
 //                        dragView.addView(rectangle.getShapeView());
 //                        break;
 
-                        actionController.dispatchRequest(MainActivity.this, ActionType.RECTANGLE, shapeContainer);
-                        break;
-                    case 2:
+//                        actionController.dispatchRequest(MainActivity.this, ActionType.RECTANGLE, shapeContainer);
+//                        break;
+                    case 0:
 //                        circleViewGroup = ShapeManager.getInstance(MainActivity.this).getCircleShape();
 //                        compositeShape = ShapeManager.getInstance(MainActivity.this).getCompositeShape();
 //                        compositeShape.add(circleViewGroup);
@@ -188,10 +188,10 @@ public class MainActivity extends AppCompatActivity {
 
                         actionController.dispatchRequest(MainActivity.this, ActionType.CIRCLE, shapeContainer);
                         break;
-                    case 3:
+                    case 1:
                         actionController.dispatchRequest(MainActivity.this, ActionType.UNDO, shapeContainer);
                         break;
-                    case 4:
+                    case 2:
                         actionController.dispatchRequest(MainActivity.this, ActionType.REDO, shapeContainer);
                         break;
                 }

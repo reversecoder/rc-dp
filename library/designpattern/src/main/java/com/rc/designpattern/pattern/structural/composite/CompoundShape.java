@@ -11,13 +11,18 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rc.designpattern.R;
+import com.rc.designpattern.gesture.TouchGestureDetector;
 import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
 import com.rc.designpattern.pattern.behavioural.command.SelectShapeCommand;
-import com.rc.designpattern.gesture.TouchGestureDetector;
 import com.rc.designpattern.pattern.behavioural.state.DirectionType;
 import com.rc.designpattern.pattern.behavioural.state.ShapeState;
-import com.rc.designpattern.util.RandomManager;
+import com.rc.designpattern.pattern.behavioural.state.ShapeType;
+import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
+import com.rc.designpattern.pattern.structural.bridge.CompoundProperty;
+import com.rc.designpattern.pattern.structural.bridge.Property;
+import com.rc.designpattern.pattern.structural.facade.PropertyKeeper;
 import com.rc.designpattern.util.CustomViewManager;
+import com.rc.designpattern.util.RandomManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,16 +36,14 @@ public class CompoundShape extends ViewGroup implements Shape {
     private String TAG = CompoundShape.class.getSimpleName();
     private int centerX = 0;
     private int centerY = 0;
-    private List<Shape> children = new ArrayList<>();
     private View editableView;
-    private ShapeState shapeState;
-    private int shapeId;
+    private CompoundProperty property;
 
     public CompoundShape(Context context, Shape... components) {
         super(context);
-        this.shapeState = ShapeState.UNSELECTED;
-        this.shapeId = RandomManager.getRandom(5);
-        setId(this.shapeId);
+
+        property = prepareProperty(components);
+        setId(property.getShapeId());
         setWillNotDraw(false);
         // Add component views
         add(components);
@@ -53,34 +56,48 @@ public class CompoundShape extends ViewGroup implements Shape {
     }
 
     public void add(Shape component) {
-        children.add(component);
-//        addView(((View) component));
-//        ((View) component).setOnTouchListener(null);
+        property.add(component);
     }
 
     public void add(Shape... components) {
-//        children.addAll(Arrays.asList(components));
-        for (Shape child : components) {
-            add(child);
-        }
+        property.add(components);
     }
 
-    public void remove(Shape child) {
-        children.remove(child);
+    public void remove(Shape component) {
+        property.remove(component);
     }
 
     public void remove(Shape... components) {
-        children.removeAll(Arrays.asList(components));
+        property.remove(components);
     }
 
     public void clear() {
-        children.clear();
+        property.clear();
         removeAllViews();
     }
 
+    private CompoundProperty prepareProperty(Shape... components){
+        return new PropertyKeeper(getContext()).getCompoundProperty(components);
+    }
+
     @Override
-    public int getShapeId() {
-        return this.shapeId;
+    public ShapeType getShapeType() {
+        return ShapeType.COMPOSITE;
+    }
+
+    @Override
+    public Property getShapeProperty() {
+        return property;
+    }
+
+    @Override
+    public void setShapeProperty(Property shapeProperty) {
+        this.property = (CompoundProperty)shapeProperty;
+    }
+
+    @Override
+    public View getShapeView() {
+        return this;
     }
 
     @Override
@@ -89,177 +106,21 @@ public class CompoundShape extends ViewGroup implements Shape {
     }
 
     @Override
-    public int getShapeX() {
-        if (children.size() == 0) {
-            return 0;
-        }
-        int x = children.get(0).getShapeX();
-        for (Shape child : children) {
-            if (child.getShapeX() < x) {
-                x = child.getShapeX();
-            }
-        }
-        return x;
-    }
-
-    @Override
-    public int getShapeY() {
-        if (children.size() == 0) {
-            return 0;
-        }
-        int y = children.get(0).getShapeY();
-        for (Shape child : children) {
-            if (child.getShapeY() < y) {
-                y = child.getShapeY();
-            }
-        }
-        return y;
-    }
-
-    @Override
-    public void setShapeX(int shapeX) {
-        if (children.size() > 0) {
-            for (Shape child : children) {
-                child.setShapeX(shapeX);
-            }
-        }
-    }
-
-    @Override
-    public void setShapeY(int shapeY) {
-        if (children.size() > 0) {
-            for (Shape child : children) {
-                child.setShapeY(shapeY);
-            }
-        }
-    }
-
-    @Override
-    public int getShapeWidth() {
-        int maxWidth = 0;
-        int x = getShapeX();
-        for (Shape child : children) {
-            int childsRelativeX = child.getShapeX() - x;
-            int childWidth = childsRelativeX + child.getShapeWidth();
-            if (childWidth > maxWidth) {
-                maxWidth = childWidth;
-            }
-        }
-        return maxWidth;
-    }
-
-    @Override
-    public int getShapeHeight() {
-        int maxHeight = 0;
-        int y = getShapeY();
-        for (Shape child : children) {
-            int childsRelativeY = child.getShapeY() - y;
-            int childHeight = childsRelativeY + child.getShapeHeight();
-            if (childHeight > maxHeight) {
-                maxHeight = childHeight;
-            }
-        }
-        return maxHeight;
-    }
-
-    @Override
-    public void setShapeColor(int color) {
-        for (Shape child : children) {
-            child.setShapeColor(color);
-        }
-    }
-
-    @Override
     public void refreshView() {
-        for (Shape child : children) {
+        for (Shape child : property.getChildren()) {
             child.refreshView();
         }
 
         if (editableView != null) {
-            editableView.setVisibility((isShapeSelected()) ? VISIBLE : GONE);
+            editableView.setVisibility((getShapeProperty().isShapeSelected()) ? VISIBLE : GONE);
         }
 
         invalidate();
     }
 
-    //    @Override
-//    public void unselectShape() {
-//        for (Shape child : children) {
-//            child.unselectShape();
-//        }
-//
-//        refreshView();
-//    }
-//
-//    @Override
-//    public void selectShape() {
-//        for (Shape child : children) {
-//            child.selectShape();
-//        }
-//
-//        refreshView();
-//    }
-
-    @Override
-    public boolean isShapeSelected() {
-        return (shapeState == ShapeState.SELECTED);
-    }
-
-    @Override
-    public void setShapeState(ShapeState shapeState) {
-        this.shapeState = shapeState;
-
-        for (Shape child : children) {
-            child.setShapeState(shapeState);
-        }
-
-        refreshView();
-    }
-
-    @Override
-    public ShapeState getShapeState() {
-        return shapeState;
-    }
-
-    //
-//    public Shape getChildAt(int x, int y) {
-//        for (Shape child : children) {
-//            if (child.isInsideBounds(x, y)) {
-//                return child;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    public boolean selectChildAt(int x, int y) {
-//        Shape child = getChildAt(x, y);
-//        if (child != null) {
-//            child.selectShape();
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    public List<Shape> getSelected() {
-//        List<Shape> selected = new ArrayList<>();
-//        for (Shape child : children) {
-//            if (child.isShapeSelected()) {
-//                selected.add(child);
-//            }
-//        }
-//        return selected;
-//    }
-
     @Override
     public void drawShape(Canvas canvas) {
-//        removeAllViews();
-//        for (Shape child : children) {
-////            ((View) child).draw(canvas);
-//            addView(((View) child));
-//        }
 
-//        removeAllViews();
-//        drawViews();
     }
 
     @Override
@@ -273,9 +134,9 @@ public class CompoundShape extends ViewGroup implements Shape {
         // measure children size
         centerX = centerY = size / 2;
         Log.d(TAG, "onMeasure>> centerX=centerY: " + centerX);
-        for (Shape child : children) {
+        for (Shape child : property.getChildren()) {
 //            ((View) child).measure(size, size);
-            ((View) child).measure(child.getShapeWidth(), child.getShapeHeight());
+            ((View) child).measure(child.getShapeProperty().getShapeWidth(), child.getShapeProperty().getShapeHeight());
         }
         if (editableView != null) {
             editableView.measure(size, size);
@@ -286,14 +147,13 @@ public class CompoundShape extends ViewGroup implements Shape {
     }
 
     private void drawViews() {
-        for (Shape child : children) {
-            addView(((View) child));
-//            ((View) child).setOnTouchListener(null);
+        for (Shape child : property.getChildren()) {
+            removeView(child.getShapeView());
+            addView(child.getShapeView());
         }
 
         editableView = CustomViewManager.getChildView(getContext(), this, R.layout.layout_editable_border_controller);
-//        editableView.setOnTouchListener(null);
-        editableView.setVisibility((isShapeSelected()) ? VISIBLE : GONE);
+        editableView.setVisibility((getShapeProperty().isShapeSelected()) ? VISIBLE : GONE);
     }
 
     @Override
@@ -308,11 +168,11 @@ public class CompoundShape extends ViewGroup implements Shape {
 //            }
 //        }
 
-        for (Shape child : children) {
-            int left = centerX - child.getShapeWidth() / 2;
-            int top = centerY - child.getShapeHeight() / 2;
-            int right = left + child.getShapeWidth();
-            int bottom = top + child.getShapeHeight();
+        for (Shape child : property.getChildren()) {
+            int left = centerX - child.getShapeProperty().getShapeWidth() / 2;
+            int top = centerY - child.getShapeProperty().getShapeHeight() / 2;
+            int right = left + child.getShapeProperty().getShapeWidth();
+            int bottom = top + child.getShapeProperty().getShapeHeight();
 
             View childView = (View) child;
             if (childView.getVisibility() != GONE) {
@@ -370,7 +230,7 @@ public class CompoundShape extends ViewGroup implements Shape {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         touchGestureDetector.onTouchEvent(event);
-        if (isShapeSelected()) {
+        if (getShapeProperty().isShapeSelected()) {
             int action = event.getAction();
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
@@ -462,11 +322,11 @@ public class CompoundShape extends ViewGroup implements Shape {
                         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(oriRight - oriLeft, oriBottom - oriTop);
                         lp.setMargins(oriLeft, oriTop, 0, 0);
 
-                        for (Shape child : children) {
+                        for (Shape child : property.getChildren()) {
                             if (child instanceof Circle) {
                                 int circleRadius = Math.min(finalWidth / 2, finalHeight / 2);
                                 Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): circleRadius= " + circleRadius);
-                                ((Circle) child).setRadius(circleRadius);
+                                ((CircleProperty) ((Circle) child).getShapeProperty()).setShapeRadius(circleRadius);
 //                        ((View) child).setLayoutParams(lp);
                             }
                         }
@@ -515,7 +375,7 @@ public class CompoundShape extends ViewGroup implements Shape {
 
         @Override
         public void onLongPress(MotionEvent motionEvent) {
-            if (!isShapeSelected()) {
+            if (!getShapeProperty().isShapeSelected()) {
                 Log.d(TAG, "touchGestureDetector>>onLongPress: ");
                 CustomViewManager.doVibrate(getContext(), 100);
 
