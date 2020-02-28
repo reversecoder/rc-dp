@@ -6,7 +6,7 @@ import com.rc.designpattern.pattern.creational.builder.CirclePropertyBuilder;
 import com.rc.designpattern.pattern.creational.builder.CompoundPropertyBuilder;
 import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
 import com.rc.designpattern.pattern.structural.bridge.CompoundProperty;
-import com.rc.designpattern.pattern.structural.composite.Shape;
+import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.util.RandomManager;
 
 /**

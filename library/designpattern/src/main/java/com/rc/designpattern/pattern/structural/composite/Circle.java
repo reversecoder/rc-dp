@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 
 import com.rc.designpattern.pattern.behavioural.state.ShapeType;
+import com.rc.designpattern.pattern.creational.abstractfactory.ShapeView;
 import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
 import com.rc.designpattern.pattern.structural.bridge.Property;
 

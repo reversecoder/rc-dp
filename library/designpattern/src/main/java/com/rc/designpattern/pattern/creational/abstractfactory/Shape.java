@@ -1,7 +1,6 @@
-package com.rc.designpattern.pattern.structural.composite;
+package com.rc.designpattern.pattern.creational.abstractfactory;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.view.View;
 
 import com.rc.designpattern.pattern.behavioural.state.ShapeType;

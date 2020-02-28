@@ -15,18 +15,13 @@ import com.rc.designpattern.gesture.TouchGestureDetector;
 import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
 import com.rc.designpattern.pattern.behavioural.command.SelectShapeCommand;
 import com.rc.designpattern.pattern.behavioural.state.DirectionType;
-import com.rc.designpattern.pattern.behavioural.state.ShapeState;
 import com.rc.designpattern.pattern.behavioural.state.ShapeType;
+import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
 import com.rc.designpattern.pattern.structural.bridge.CompoundProperty;
 import com.rc.designpattern.pattern.structural.bridge.Property;
 import com.rc.designpattern.pattern.structural.facade.PropertyKeeper;
 import com.rc.designpattern.util.CustomViewManager;
-import com.rc.designpattern.util.RandomManager;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by enrique on 04/08/14.

@@ -3,7 +3,7 @@ package com.rc.designpattern.pattern.structural.bridge;
 import android.graphics.Paint;
 
 import com.rc.designpattern.pattern.behavioural.state.ShapeState;
-import com.rc.designpattern.pattern.structural.composite.Shape;
+import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.util.RandomManager;
 
 import java.util.ArrayList;

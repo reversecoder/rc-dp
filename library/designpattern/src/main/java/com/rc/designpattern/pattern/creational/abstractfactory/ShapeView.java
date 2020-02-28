@@ -1,17 +1,10 @@
-package com.rc.designpattern.pattern.structural.composite;
+package com.rc.designpattern.pattern.creational.abstractfactory;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-
-import com.rc.designpattern.pattern.behavioural.state.ShapeState;
 import com.rc.designpattern.pattern.structural.bridge.Property;
-import com.rc.designpattern.util.RandomManager;
 
 public abstract class ShapeView extends View implements Shape{
 

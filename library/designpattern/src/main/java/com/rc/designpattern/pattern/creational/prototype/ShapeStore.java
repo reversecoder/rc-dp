@@ -4,12 +4,9 @@ import android.content.Context;
 
 import com.rc.designpattern.pattern.behavioural.state.ShapeType;
 import com.rc.designpattern.pattern.creational.factory.ShapeFactory;
-import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
 import com.rc.designpattern.pattern.structural.bridge.Property;
-import com.rc.designpattern.pattern.structural.composite.Shape;
-import com.rc.designpattern.pattern.structural.composite.ShapeView;
+import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.pattern.structural.facade.PropertyKeeper;
-import com.rc.designpattern.util.RandomManager;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -7,7 +7,7 @@ import com.rc.designpattern.pattern.behavioural.memento.CareTaker;
 import com.rc.designpattern.pattern.behavioural.memento.GenericMemento;
 import com.rc.designpattern.pattern.behavioural.memento.GenericOriginator;
 import com.rc.designpattern.pattern.behavioural.state.ShapeState;
-import com.rc.designpattern.pattern.structural.composite.Shape;
+import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.util.RandomManager;
 
 public class SelectShapeCommand implements Command {

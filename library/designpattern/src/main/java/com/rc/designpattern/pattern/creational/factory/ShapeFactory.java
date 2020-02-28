@@ -5,7 +5,7 @@ import android.content.Context;
 import com.rc.designpattern.pattern.behavioural.state.ShapeType;
 import com.rc.designpattern.pattern.structural.bridge.Property;
 import com.rc.designpattern.pattern.structural.composite.Circle;
-import com.rc.designpattern.pattern.structural.composite.Shape;
+import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 
 /**
  * @author Md. Rashadul Alam

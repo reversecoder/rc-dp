@@ -12,11 +12,9 @@ import com.rc.designpattern.pattern.behavioural.command.AddShapeCommand;
 import com.rc.designpattern.pattern.behavioural.command.Command;
 import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
 import com.rc.designpattern.pattern.creational.singleton.ShapeManager;
-import com.rc.designpattern.pattern.structural.composite.Circle;
 import com.rc.designpattern.pattern.structural.composite.CompoundShape;
-import com.rc.designpattern.pattern.structural.composite.Shape;
+import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.pattern.behavioural.state.ActionType;
-import com.rc.designpattern.util.RandomManager;
 
 public class Dispatcher {
 

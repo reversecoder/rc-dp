@@ -1,7 +1,7 @@
 package com.rc.designpattern.pattern.creational.builder;
 
 import com.rc.designpattern.pattern.structural.bridge.CompoundProperty;
-import com.rc.designpattern.pattern.structural.composite.Shape;
+import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 
 public class CompoundPropertyBuilder {
     private Shape[] components;
