@@ -56,6 +56,7 @@ public abstract class ShapeView extends View implements Shape{
         super(context);
         this.shapeProperty = shapeProperty;
         setId(shapeProperty.getShapeId());
+        setBackgroundColor(shapeProperty.getShapeBackgroundColor());
     }
 
     @Override

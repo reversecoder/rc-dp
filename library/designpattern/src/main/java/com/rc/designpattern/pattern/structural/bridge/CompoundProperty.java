@@ -187,6 +187,23 @@ public class CompoundProperty implements Property {
     }
 
     @Override
+    public int getShapeBackgroundColor() {
+        if (children.size() > 0) {
+            return children.get(0).getShapeProperty().getShapeBackgroundColor();
+        }
+        return 0;
+    }
+
+    @Override
+    public void setShapeBackgroundColor(int shapeBackgroundColor) {
+        if (children.size() > 0) {
+            for (Shape child : children) {
+                child.getShapeProperty().setShapeBackgroundColor(shapeBackgroundColor);
+            }
+        }
+    }
+
+    @Override
     public Paint getShapePaint() {
         if (children.size() > 0) {
             return children.get(0).getShapeProperty().getShapePaint();

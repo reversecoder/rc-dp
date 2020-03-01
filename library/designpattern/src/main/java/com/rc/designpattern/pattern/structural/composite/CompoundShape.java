@@ -14,6 +14,7 @@ import com.rc.designpattern.R;
 import com.rc.designpattern.gesture.TouchGestureDetector;
 import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
 import com.rc.designpattern.pattern.behavioural.command.SelectShapeCommand;
+import com.rc.designpattern.pattern.behavioural.observer.Subscriber;
 import com.rc.designpattern.pattern.behavioural.state.DirectionType;
 import com.rc.designpattern.pattern.behavioural.state.ShapeType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
@@ -26,7 +27,7 @@ import com.rc.designpattern.util.CustomViewManager;
 /**
  * Created by enrique on 04/08/14.
  */
-public class CompoundShape extends ViewGroup implements Shape {
+public class CompoundShape extends ViewGroup implements Shape, Subscriber<CompoundShape> {
 
     private String TAG = CompoundShape.class.getSimpleName();
     private int centerX = 0;
@@ -39,6 +40,7 @@ public class CompoundShape extends ViewGroup implements Shape {
 
         property = prepareProperty(components);
         setId(property.getShapeId());
+        setBackgroundColor(property.getShapeBackgroundColor());
         setWillNotDraw(false);
         // Add component views
         add(components);
@@ -502,5 +504,10 @@ public class CompoundShape extends ViewGroup implements Shape {
             return DirectionType.BOTTOM;
         }
         return DirectionType.CENTER;
+    }
+
+    @Override
+    public void updateSubscriber(CompoundShape item) {
+
     }
 }

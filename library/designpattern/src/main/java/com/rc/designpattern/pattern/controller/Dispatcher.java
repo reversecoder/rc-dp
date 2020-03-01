@@ -23,7 +23,6 @@ public class Dispatcher {
             case CIRCLE:
                 Shape chileCircle = ShapeManager.getInstance(context).getCircleShape();
                 CompoundShape compoundShape = new CompoundShape(context, chileCircle);
-                compoundShape.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
 
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 200);
                 params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);

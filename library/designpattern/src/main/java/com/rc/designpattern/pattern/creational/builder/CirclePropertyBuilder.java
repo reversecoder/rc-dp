@@ -12,7 +12,7 @@ public class CirclePropertyBuilder {
     private int shapeY;
     private int shapeRadius;
     private Paint shapePaint;
-    private int shapeColor;
+    private int shapeColor, shapeBackgroundColor;
     private ShapeState shapeState;
 
     public CirclePropertyBuilder setShapeId(int shapeId) {
@@ -42,6 +42,11 @@ public class CirclePropertyBuilder {
 
     public CirclePropertyBuilder setShapeColor(int shapeColor) {
         this.shapeColor = shapeColor;
+        return this;
+    }
+
+    public CirclePropertyBuilder setShapeBackgroundColor(int shapeBackgroundColor) {
+        this.shapeBackgroundColor = shapeBackgroundColor;
         return this;
     }
 

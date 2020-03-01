@@ -17,7 +17,7 @@ public class CircleProperty implements Property {
     private int shapeX, shapeY;
     private int shapeRadius;
     private Paint shapePaint;
-    private int shapeColor;
+    private int shapeColor, shapeBackgroundColor;
     private ShapeState shapeState;
 
     public CircleProperty(int shapeX, int shapeY, int shapeRadius) {
@@ -27,6 +27,7 @@ public class CircleProperty implements Property {
         this.shapeRadius = shapeRadius;
         this.shapePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.shapeColor = RandomManager.getRandomColor();
+        this.shapeBackgroundColor = RandomManager.getRandomColor();
         this.shapeState = ShapeState.UNSELECTED;
     }
 
@@ -98,6 +99,16 @@ public class CircleProperty implements Property {
     @Override
     public void setShapeColor(int shapeColor) {
         this.shapeColor = shapeColor;
+    }
+
+    @Override
+    public int getShapeBackgroundColor() {
+        return shapeBackgroundColor;
+    }
+
+    @Override
+    public void setShapeBackgroundColor(int shapeBackgroundColor) {
+        this.shapeBackgroundColor = shapeBackgroundColor;
     }
 
     @Override

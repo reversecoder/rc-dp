@@ -38,6 +38,10 @@ public interface Property {
 
     void setShapeColor(int shapeColor);
 
+    int getShapeBackgroundColor();
+
+    void setShapeBackgroundColor(int shapeBackgroundColor);
+
     Paint getShapePaint();
 
     void setShapePaint(Paint shapePaint);

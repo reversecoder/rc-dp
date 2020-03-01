@@ -187,6 +187,10 @@ public class MainActivity extends AppCompatActivity {
 //                        circleCommandManager = new CommandManager();
 
                         actionController.dispatchRequest(MainActivity.this, ActionType.CIRCLE, shapeContainer);
+
+                        for(int i=0;i<shapeContainer.getChildCount();i++){
+                            Log.d(TAG, "Added views "+i+" is "+ shapeContainer.getChildAt(i).getClass().getSimpleName());
+                        }
                         break;
                     case 1:
                         actionController.dispatchRequest(MainActivity.this, ActionType.UNDO, shapeContainer);
