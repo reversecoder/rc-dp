@@ -27,7 +27,7 @@ import com.rc.designpattern.util.CustomViewManager;
 /**
  * Created by enrique on 04/08/14.
  */
-public class CompoundShape extends ViewGroup implements Shape, Subscriber<CompoundShape> {
+public class CompoundShape extends ViewGroup implements Shape, Subscriber<Property> {
 
     private String TAG = CompoundShape.class.getSimpleName();
     private int centerX = 0;
@@ -73,7 +73,7 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Compou
         removeAllViews();
     }
 
-    private CompoundProperty prepareProperty(Shape... components){
+    private CompoundProperty prepareProperty(Shape... components) {
         return new PropertyKeeper(getContext()).getCompoundProperty(components);
     }
 
@@ -89,7 +89,7 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Compou
 
     @Override
     public void setShapeProperty(Property shapeProperty) {
-        this.property = (CompoundProperty)shapeProperty;
+        this.property = (CompoundProperty) shapeProperty;
     }
 
     @Override
@@ -507,7 +507,9 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Compou
     }
 
     @Override
-    public void updateSubscriber(CompoundShape item) {
-
+    public void updateSubscriber(Property item) {
+        setShapeProperty(item);
+        refreshView();
+        Log.d("AddShapeCommand", "AddShapeCommand>>background after: " + property.getShapeBackgroundColor());
     }
 }

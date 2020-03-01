@@ -2,16 +2,19 @@ package com.rc.designpattern.pattern.behavioural.iterator;
 
 import com.rc.designpattern.pattern.behavioural.observer.Topic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Md. Rashadul Alam
  * Email: rashed.droid@gmail.com
  */
 public class TopicIterator implements Iterator<Topic> {
 
-    private Topic[] topics;
+    private List<Topic> topics ;
     private int position;
 
-    public TopicIterator(Topic[] topics) {
+    public TopicIterator(List<Topic> topics) {
         this.topics = topics;
         position = 0;
     }
@@ -23,17 +26,17 @@ public class TopicIterator implements Iterator<Topic> {
 
     @Override
     public Topic next() {
-        return topics[position++];
+        return topics.get(position++);
     }
 
     @Override
     public Topic currentItem() {
-        return topics[position];
+        return topics.get(position);
     }
 
     @Override
     public boolean hasNext() {
-        if (position >= topics.length)
+        if (position >= topics.size())
             return false;
         return true;
     }

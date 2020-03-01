@@ -25,10 +25,13 @@ import com.cleveroad.cyclemenuwidget.OnStateChangedListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.rc.attributionpresenter.activity.LicenseActivity;
 import com.rc.attributionpresenter.view.AnimatedTextView;
+import com.rc.designpattern.pattern.behavioural.observer.Subscriber;
 import com.rc.designpattern.pattern.behavioural.state.ActionType;
-import com.rc.designpattern.pattern.controller.ActionController;
+import com.rc.designpattern.pattern.behavioural.state.ShapeState;
+import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.util.Util;
 import com.rc.designpatterndemo.R;
+import com.rc.designpatterndemo.controller.ActionController;
 import com.skydoves.flourish.Flourish;
 import com.skydoves.flourish.FlourishAnimation;
 import com.skydoves.flourish.FlourishOrientation;
@@ -39,7 +42,7 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import cn.ymex.popup.controller.AlertController;
 import cn.ymex.popup.dialog.PopupDialog;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Subscriber<Shape> {
 
     private String TAG = "MainActivity";
     //Toolbar
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private AnimatedTextView toolbarTitle;
 
     private RelativeLayout shapeContainer;
+    private Shape selectedShape;
     //    private ShapeFactory shapeFactory;
 //    private Topic<Property> topicCircleBackground;
 //    private CircleViewGroup circleViewGroup;
@@ -188,9 +192,9 @@ public class MainActivity extends AppCompatActivity {
 
                         actionController.dispatchRequest(MainActivity.this, ActionType.CIRCLE, shapeContainer);
 
-                        for(int i=0;i<shapeContainer.getChildCount();i++){
-                            Log.d(TAG, "Added views "+i+" is "+ shapeContainer.getChildAt(i).getClass().getSimpleName());
-                        }
+//                        for(int i=0;i<shapeContainer.getChildCount();i++){
+//                            Log.d(TAG, "Added views "+i+" is "+ shapeContainer.getChildAt(i).getClass().getSimpleName());
+//                        }
                         break;
                     case 1:
                         actionController.dispatchRequest(MainActivity.this, ActionType.UNDO, shapeContainer);
@@ -384,11 +388,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateAttributeView() {
-//        if (shapeList != null && shapeList.size() > 0) {
-//            llBottomSheet.setVisibility(View.VISIBLE);
-//        } else {
-//            llBottomSheet.setVisibility(View.INVISIBLE);
-//        }
+        if (selectedShape != null) {
+            llBottomSheet.setVisibility(View.VISIBLE);
+        } else {
+            llBottomSheet.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void initSettings() {
@@ -466,5 +470,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 //        ShapeManager.getInstance(MainActivity.this).destroyObject();
+    }
+
+    @Override
+    public void updateSubscriber(Shape item) {
+        if (item != null) {
+
+            if (item.getShapeProperty().isShapeSelected()) {
+                selectedShape = item;
+
+                // Unselect all other shapes
+                for (int i = 0; i < shapeContainer.getChildCount(); i++) {
+                    Log.d(TAG, "Added views " + i + " is " + shapeContainer.getChildAt(i).getClass().getSimpleName());
+                    if (((Shape) shapeContainer.getChildAt(i)).getShapeProperty().getShapeId() != item.getShapeProperty().getShapeId()) {
+                        ((Shape) shapeContainer.getChildAt(i)).getShapeProperty().setShapeState(ShapeState.UNSELECTED);
+                        ((Shape) shapeContainer.getChildAt(i)).refreshView();
+                    }
+                }
+            } else {
+                selectedShape = null;
+            }
+
+            // Update attribute view
+            updateAttributeView();
+        }
     }
 }
