@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.rc.designpattern.pattern.behavioural.command.AddShapeCommand;
+import com.rc.designpattern.pattern.behavioural.command.Command;
 import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
 import com.rc.designpattern.pattern.behavioural.iterator.TopicIteratorManager;
 import com.rc.designpattern.pattern.behavioural.observer.Topic;
@@ -43,10 +45,16 @@ public class Dispatcher {
             case TRIANGLE:
                 break;
             case UNDO:
-                CommandExecutor.getInstance().undoLastCommand();
+                Command commandUndo = CommandExecutor.getInstance().undoLastCommand();
+                if (commandUndo != null) {
+                    Toast.makeText(activity, "Undo>>" + commandUndo.whoAmI(), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case REDO:
-                CommandExecutor.getInstance().redoLastUndoedCommand();
+                Command commandRedo = CommandExecutor.getInstance().redoLastUndoedCommand();
+                if (commandRedo != null) {
+                    Toast.makeText(activity, "Redo>>" + commandRedo.whoAmI(), Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }

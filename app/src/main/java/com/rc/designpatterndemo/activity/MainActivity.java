@@ -502,11 +502,9 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                 // Unselect all other shapes
                 for (int i = 0; i < shapeContainer.getChildCount(); i++) {
                     Log.d(TAG, "Added views " + i + " is " + shapeContainer.getChildAt(i).getClass().getSimpleName());
-                    if (((Shape) shapeContainer.getChildAt(i)).getShapeProperty().getShapeId() != item.getShapeProperty().getShapeId()) {
-                        if (((Shape) shapeContainer.getChildAt(i)).getShapeProperty().getShapeState() == ShapeState.SELECTED) {
-                            ((Shape) shapeContainer.getChildAt(i)).getShapeProperty().setShapeState(ShapeState.UNSELECTED);
-                            ((Shape) shapeContainer.getChildAt(i)).refreshView();
-                        }
+                    if (((Shape) shapeContainer.getChildAt(i)) instanceof CompoundShape && (((Shape) shapeContainer.getChildAt(i)).getShapeProperty().getShapeId() != item.getShapeProperty().getShapeId())) {
+                        ((Shape) shapeContainer.getChildAt(i)).getShapeProperty().setShapeState(ShapeState.UNSELECTED);
+                        ((Shape) shapeContainer.getChildAt(i)).refreshView();
                     }
                 }
             } else {

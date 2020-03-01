@@ -259,11 +259,6 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Shape>
 //                spotL = false;
 //                requestLayout();
                     // invalidate();
-
-
-                    UpdateShapeCommand previousState = new UpdateShapeCommand(ShapeCommandType.SHAPE_STATE, new MutableVariable(ShapeState.UNSELECTED), new MutableVariable(ShapeState.SELECTED), getShape());
-                    CommandExecutor.getInstance().executeCommand(previousState);
-
                     break;
 //            case MotionEvent.ACTION_CANCEL:
 //                Log.d(TAG, "onTouchEvent: cancel");

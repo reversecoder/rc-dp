@@ -43,18 +43,18 @@ public class UpdateShapeCommand implements Command {
                 shape.getShapeProperty().setShapeColor((int) newPropertyValue.getValue());
                 break;
         }
-        shape.refreshView();
-
-        // Memento
-        GenericOriginator<Shape> mOriginator = new GenericOriginator<>(shape);
-        GenericMemento<Shape> currentMemento = (GenericMemento<Shape>) mOriginator.saveToMemento();
-        CareTaker.getInstance().add(key, currentMemento);
+//        shape.refreshView();
 
         // Notify Observer for shape do
         Topic<Shape> topic = TopicIteratorManager.getInstance().getTopic(AddShapeCommand.class.getSimpleName() + shape.getShapeProperty().getShapeId());
         if (topic != null) {
             topic.setValue(shape);
         }
+
+        // Memento
+        GenericOriginator<Shape> mOriginator = new GenericOriginator<>(shape);
+        GenericMemento<Shape> currentMemento = (GenericMemento<Shape>) mOriginator.saveToMemento();
+        CareTaker.getInstance().add(key, currentMemento);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class UpdateShapeCommand implements Command {
                 mShape.getShapeProperty().setShapeColor((int) oldPropertyValue.getValue());
                 break;
         }
-        mShape.refreshView();
+//        mShape.refreshView();
 
         // Notify Observer for shape undo
         Topic<Shape> topic = TopicIteratorManager.getInstance().getTopic(AddShapeCommand.class.getSimpleName() + shape.getShapeProperty().getShapeId());
