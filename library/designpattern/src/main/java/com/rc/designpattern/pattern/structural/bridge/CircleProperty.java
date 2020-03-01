@@ -21,7 +21,7 @@ public class CircleProperty implements Property {
     private ShapeState shapeState;
 
     public CircleProperty(int shapeX, int shapeY, int shapeRadius) {
-        this.shapeId = RandomManager.getRandom(5);
+        this.shapeId = RandomManager.getRandom(1, 1000);
         this.shapeX = shapeX;
         this.shapeY = shapeY;
         this.shapeRadius = shapeRadius;

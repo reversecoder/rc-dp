@@ -13,9 +13,12 @@ import android.widget.Toast;
 import com.rc.designpattern.R;
 import com.rc.designpattern.gesture.TouchGestureDetector;
 import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
-import com.rc.designpattern.pattern.behavioural.command.SelectShapeCommand;
+import com.rc.designpattern.pattern.behavioural.command.MutableVariable;
+import com.rc.designpattern.pattern.behavioural.command.UpdateShapeCommand;
 import com.rc.designpattern.pattern.behavioural.observer.Subscriber;
 import com.rc.designpattern.pattern.behavioural.state.DirectionType;
+import com.rc.designpattern.pattern.behavioural.state.ShapeCommandType;
+import com.rc.designpattern.pattern.behavioural.state.ShapeState;
 import com.rc.designpattern.pattern.behavioural.state.ShapeType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
@@ -27,7 +30,7 @@ import com.rc.designpattern.util.CustomViewManager;
 /**
  * Created by enrique on 04/08/14.
  */
-public class CompoundShape extends ViewGroup implements Shape, Subscriber<Property> {
+public class CompoundShape extends ViewGroup implements Shape, Subscriber<Shape> {
 
     private String TAG = CompoundShape.class.getSimpleName();
     private int centerX = 0;
@@ -40,7 +43,6 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Proper
 
         property = prepareProperty(components);
         setId(property.getShapeId());
-        setBackgroundColor(property.getShapeBackgroundColor());
         setWillNotDraw(false);
         // Add component views
         add(components);
@@ -117,7 +119,7 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Proper
 
     @Override
     public void drawShape(Canvas canvas) {
-
+        setBackgroundColor(property.getShapeBackgroundColor());
     }
 
     @Override
@@ -257,6 +259,11 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Proper
 //                spotL = false;
 //                requestLayout();
                     // invalidate();
+
+
+                    UpdateShapeCommand previousState = new UpdateShapeCommand(ShapeCommandType.SHAPE_STATE, new MutableVariable(ShapeState.UNSELECTED), new MutableVariable(ShapeState.SELECTED), getShape());
+                    CommandExecutor.getInstance().executeCommand(previousState);
+
                     break;
 //            case MotionEvent.ACTION_CANCEL:
 //                Log.d(TAG, "onTouchEvent: cancel");
@@ -324,7 +331,6 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Proper
                                 int circleRadius = Math.min(finalWidth / 2, finalHeight / 2);
                                 Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): circleRadius= " + circleRadius);
                                 ((CircleProperty) ((Circle) child).getShapeProperty()).setShapeRadius(circleRadius);
-//                        ((View) child).setLayoutParams(lp);
                             }
                         }
 
@@ -376,7 +382,7 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Proper
                 Log.d(TAG, "touchGestureDetector>>onLongPress: ");
                 CustomViewManager.doVibrate(getContext(), 100);
 
-                SelectShapeCommand previousState = new SelectShapeCommand((View) getShape());
+                UpdateShapeCommand previousState = new UpdateShapeCommand(ShapeCommandType.SHAPE_STATE, new MutableVariable(ShapeState.UNSELECTED), new MutableVariable(ShapeState.SELECTED), getShape());
                 CommandExecutor.getInstance().executeCommand(previousState);
             }
         }
@@ -507,8 +513,9 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Proper
     }
 
     @Override
-    public void updateSubscriber(Property item) {
-        setShapeProperty(item);
+    public void updateSubscriber(Shape item) {
+        Toast.makeText(getContext(), getClass().getSimpleName() + item.getShapeProperty().getShapeId(), Toast.LENGTH_SHORT).show();
+        setShapeProperty(item.getShapeProperty());
         refreshView();
         Log.d("AddShapeCommand", "AddShapeCommand>>background after: " + property.getShapeBackgroundColor());
     }

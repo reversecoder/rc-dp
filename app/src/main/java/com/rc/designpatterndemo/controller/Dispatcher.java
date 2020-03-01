@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.rc.designpattern.pattern.behavioural.command.AddShapeCommand;
-import com.rc.designpattern.pattern.behavioural.command.Command;
 import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
 import com.rc.designpattern.pattern.behavioural.iterator.TopicIteratorManager;
 import com.rc.designpattern.pattern.behavioural.observer.Topic;
@@ -29,12 +27,13 @@ public class Dispatcher {
                 params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 compoundShape.setLayoutParams(params);
 
-                AddShapeCommand addShapeCommand = new AddShapeCommand(parentView, compoundShape.getShapeView());
+                AddShapeCommand addShapeCommand = new AddShapeCommand(parentView, compoundShape);
                 CommandExecutor.getInstance().executeCommand(addShapeCommand);
 
                 // Observer pattern
-                Topic<Shape> topicSelectShape = new Topic<Shape>("SelectShapeCommand>>" + compoundShape.getShapeProperty().getShapeId(), compoundShape);
+                Topic<Shape> topicSelectShape = new Topic<Shape>(addShapeCommand.whoAmI(), compoundShape);
                 topicSelectShape.registerSubscriber((MainActivity) activity);
+                topicSelectShape.registerSubscriber(compoundShape);
                 TopicIteratorManager.getInstance().addTopic(topicSelectShape);
                 Log.d("SelectShapeCommand", "SelectShapeCommand>>Subscribed added shape");
 
@@ -44,16 +43,10 @@ public class Dispatcher {
             case TRIANGLE:
                 break;
             case UNDO:
-                Command commandUndo = CommandExecutor.getInstance().undoLastCommand();
-                if (commandUndo != null) {
-                    Toast.makeText(activity, commandUndo.whoAmI(), Toast.LENGTH_SHORT).show();
-                }
+                CommandExecutor.getInstance().undoLastCommand();
                 break;
             case REDO:
-                Command commandRedo = CommandExecutor.getInstance().redoLastUndoedCommand();
-                if (commandRedo != null) {
-                    Toast.makeText(activity, commandRedo.whoAmI(), Toast.LENGTH_SHORT).show();
-                }
+                CommandExecutor.getInstance().redoLastUndoedCommand();
                 break;
         }
     }

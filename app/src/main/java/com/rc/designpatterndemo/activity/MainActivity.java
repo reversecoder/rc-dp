@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,10 +26,16 @@ import com.cleveroad.cyclemenuwidget.OnStateChangedListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.rc.attributionpresenter.activity.LicenseActivity;
 import com.rc.attributionpresenter.view.AnimatedTextView;
+import com.rc.designpattern.pattern.behavioural.command.AddShapeCommand;
+import com.rc.designpattern.pattern.behavioural.iterator.TopicIteratorManager;
 import com.rc.designpattern.pattern.behavioural.observer.Subscriber;
+import com.rc.designpattern.pattern.behavioural.observer.Topic;
 import com.rc.designpattern.pattern.behavioural.state.ActionType;
+import com.rc.designpattern.pattern.behavioural.state.ShapeCommandType;
 import com.rc.designpattern.pattern.behavioural.state.ShapeState;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
+import com.rc.designpattern.pattern.structural.bridge.Property;
+import com.rc.designpattern.pattern.structural.composite.CompoundShape;
 import com.rc.designpattern.util.Util;
 import com.rc.designpatterndemo.R;
 import com.rc.designpatterndemo.controller.ActionController;
@@ -68,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
     private AppCompatImageView ivToggleAttributes;
     private AppCompatCheckBox cbShowBorder;
     private DiscreteSeekBar seekBarMeasureWidth, seekBarMeasureHeight, seekBarMeasureRotation;
-    private ImageView ivBackgroundColor, ivBorderColor;
+    private ImageView ivBackgroundColor, ivShapeColor;
 
     // Settings
     private Flourish flourish;
@@ -109,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
         seekBarMeasureHeight = (DiscreteSeekBar) findViewById(R.id.seekbar_measure_height);
         seekBarMeasureRotation = (DiscreteSeekBar) findViewById(R.id.seekbar_measure_roataion);
         ivBackgroundColor = (ImageView) findViewById(R.id.image_background_color);
-        ivBorderColor = (ImageView) findViewById(R.id.image_border_color);
+        ivShapeColor = (ImageView) findViewById(R.id.image_border_color);
 
         initTapSound();
         initShapeCreator();
@@ -343,18 +350,18 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
         ivBackgroundColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showColorPicker(ContextCompat.getColor(MainActivity.this, R.color.default_selector_color), ivBackgroundColor);
+                showColorPicker(ShapeCommandType.SHAPE_BACKGROUND_COLOR, ContextCompat.getColor(MainActivity.this, R.color.default_selector_color), ivBackgroundColor);
             }
         });
-        ivBorderColor.setOnClickListener(new View.OnClickListener() {
+        ivShapeColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showColorPicker(ContextCompat.getColor(MainActivity.this, R.color.default_highlight_background_color), ivBorderColor);
+                showColorPicker(ShapeCommandType.SHAPE_COLOR, ContextCompat.getColor(MainActivity.this, R.color.default_highlight_background_color), ivShapeColor);
             }
         });
     }
 
-    private void showColorPicker(int selectedColor, final ImageView colorView) {
+    private void showColorPicker(final ShapeCommandType shapeCommandType, int selectedColor, final ImageView colorView) {
         new SpectrumDialog.Builder(MainActivity.this)
                 .setColors(R.array.colors)
                 .setSelectedColor(selectedColor)
@@ -373,9 +380,17 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 //                            backgroundColorDecorator.refreshShape();
 
                             // Observer pattern
-//                            CircleViewGroupProperty circleViewGroupProperty = (CircleViewGroupProperty) circleViewGroup.getProperty();
-//                            circleViewGroupProperty.setBackgroundColor(color);
-//                            topicCircleBackground.setValue(circleViewGroupProperty);
+                            Topic<Shape> topic = TopicIteratorManager.getInstance().getTopic(AddShapeCommand.class.getSimpleName() + selectedShape.getShapeProperty().getShapeId());
+                            if (topic != null) {
+                                Property property = ((CompoundShape) selectedShape).getShapeProperty();
+                                if (shapeCommandType == ShapeCommandType.SHAPE_BACKGROUND_COLOR) {
+                                    property.setShapeBackgroundColor(color);
+                                } else if (shapeCommandType == ShapeCommandType.SHAPE_COLOR) {
+                                    property.setShapeColor(color);
+                                }
+                                selectedShape.setShapeProperty(property);
+                                topic.setValue(selectedShape);
+                            }
 
                             // Command pattern
 //                            CircleViewGroupProperty circleViewGroupProperty = (CircleViewGroupProperty) circleViewGroup.getProperty();
@@ -422,6 +437,10 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 
     @Override
     public void onBackPressed() {
+        if (bottomSheetBehavior != null && bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            return;
+        }
         if (flourish != null && flourish.isShowing()) {
             flourish.dismiss();
             return;
@@ -470,12 +489,13 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
     protected void onDestroy() {
         super.onDestroy();
 //        ShapeManager.getInstance(MainActivity.this).destroyObject();
+        TopicIteratorManager.getInstance().removeAllTopics();
     }
 
     @Override
     public void updateSubscriber(Shape item) {
         if (item != null) {
-
+            Toast.makeText(MainActivity.this, TAG + item.getShapeProperty().getShapeId(), Toast.LENGTH_SHORT).show();
             if (item.getShapeProperty().isShapeSelected()) {
                 selectedShape = item;
 
@@ -483,8 +503,10 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                 for (int i = 0; i < shapeContainer.getChildCount(); i++) {
                     Log.d(TAG, "Added views " + i + " is " + shapeContainer.getChildAt(i).getClass().getSimpleName());
                     if (((Shape) shapeContainer.getChildAt(i)).getShapeProperty().getShapeId() != item.getShapeProperty().getShapeId()) {
-                        ((Shape) shapeContainer.getChildAt(i)).getShapeProperty().setShapeState(ShapeState.UNSELECTED);
-                        ((Shape) shapeContainer.getChildAt(i)).refreshView();
+                        if (((Shape) shapeContainer.getChildAt(i)).getShapeProperty().getShapeState() == ShapeState.SELECTED) {
+                            ((Shape) shapeContainer.getChildAt(i)).getShapeProperty().setShapeState(ShapeState.UNSELECTED);
+                            ((Shape) shapeContainer.getChildAt(i)).refreshView();
+                        }
                     }
                 }
             } else {

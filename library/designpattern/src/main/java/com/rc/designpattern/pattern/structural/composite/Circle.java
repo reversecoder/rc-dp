@@ -23,6 +23,7 @@ public class Circle extends ShapeView {
     public void drawShape(Canvas canvas) {
         Property property = getShapeProperty();
         if (property != null) {
+            setBackgroundColor(property.getShapeBackgroundColor());
             canvas.drawCircle((float) property.getShapeWidth() / 2, (float) property.getShapeHeight() / 2, ((CircleProperty) property).getShapeRadius() - 10, property.getShapePaint());
         }
     }

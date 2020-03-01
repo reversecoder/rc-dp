@@ -20,7 +20,7 @@ public class CompoundProperty implements Property {
     private List<Shape> children = new ArrayList<>();
 
     public CompoundProperty(Shape... components) {
-        this.shapeId = RandomManager.getRandom(5);
+        this.shapeId = RandomManager.getRandom(1, 1000);
         add(components);
     }
 
