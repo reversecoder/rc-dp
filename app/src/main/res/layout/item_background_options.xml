@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/Heading"
-        android:text="@string/txt_background" />
+        android:text="@string/txt_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,21 +18,51 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="@string/txt_color"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"/>
+            android:text="@string/txt_background"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:padding="1dp"
-            android:background="@drawable/bg_oval_border_black">
+            android:background="@drawable/bg_oval_border_black"
+            android:padding="1dp">
 
             <ImageView
+                android:id="@+id/image_background_color"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:id="@+id/image_background_color"
-                android:background="@drawable/bg_oval_white"/>
+                android:background="@drawable/bg_oval_white" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_shape"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/bg_oval_border_black"
+            android:padding="1dp">
+
+            <ImageView
+                android:id="@+id/image_shape_color"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/bg_oval_white" />
 
         </RelativeLayout>
 

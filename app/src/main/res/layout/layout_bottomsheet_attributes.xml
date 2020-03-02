@@ -68,12 +68,6 @@
 
             <include layout="@layout/item_background_options" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-            <include layout="@layout/item_border_options" />
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

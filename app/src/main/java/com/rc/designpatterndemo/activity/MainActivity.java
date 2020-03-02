@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,9 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.ContextCompat;
 
 import com.cleveroad.cyclemenuwidget.CycleMenuWidget;
 import com.cleveroad.cyclemenuwidget.OnMenuItemClickListener;
@@ -73,9 +70,8 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
     private BottomSheetBehavior bottomSheetBehavior;
     private LinearLayout llBottomSheet, llViewOptionsHeader;
     private AppCompatImageView ivToggleAttributes;
-    private AppCompatCheckBox cbShowBorder;
-    private DiscreteSeekBar seekBarMeasureWidth, seekBarMeasureHeight, seekBarMeasureRotation;
-    private ImageView ivBackgroundColor, ivShapeColor;
+    private DiscreteSeekBar seekBarCircleX, seekBarCircleY, seekBarCircleRadius, seekBarMeasureWidth, seekBarMeasureHeight;
+    private ImageView ivShapeBackgroundColor, ivShapeColor;
 
     // Settings
     private Flourish flourish;
@@ -111,12 +107,13 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
         llBottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
         llViewOptionsHeader = (LinearLayout) findViewById(R.id.view_options_header);
         ivToggleAttributes = (AppCompatImageView) findViewById(R.id.image_toggle);
-        cbShowBorder = (AppCompatCheckBox) findViewById(R.id.checkbox_show_border);
+        seekBarCircleX = (DiscreteSeekBar) findViewById(R.id.seekbar_circle_x);
+        seekBarCircleY = (DiscreteSeekBar) findViewById(R.id.seekbar_circle_y);
+        seekBarCircleRadius = (DiscreteSeekBar) findViewById(R.id.seekbar_circle_radius);
         seekBarMeasureWidth = (DiscreteSeekBar) findViewById(R.id.seekbar_measure_width);
         seekBarMeasureHeight = (DiscreteSeekBar) findViewById(R.id.seekbar_measure_height);
-        seekBarMeasureRotation = (DiscreteSeekBar) findViewById(R.id.seekbar_measure_roataion);
-        ivBackgroundColor = (ImageView) findViewById(R.id.image_background_color);
-        ivShapeColor = (ImageView) findViewById(R.id.image_border_color);
+        ivShapeBackgroundColor = (ImageView) findViewById(R.id.image_background_color);
+        ivShapeColor = (ImageView) findViewById(R.id.image_shape_color);
 
         initTapSound();
         initShapeCreator();
@@ -276,18 +273,74 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
             }
         });
 
-        cbShowBorder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//        cbShowBorder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                Shape shape = shapeList.get(shapeList.size() - 1);
 //
 //                int thickness = (isChecked) ? shape.getTopicValue().getBorderWidth() : 0;
 //                LineThinknessDecorator lineThinknessDecorator = new LineThinknessDecorator(shape, thickness);
 //                lineThinknessDecorator.refreshShape();
+//            }
+//        });
+
+        seekBarCircleX.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+
+                int valueInDp = Util.dpToPx(value, MainActivity.this);
+                Log.d(TAG, "->seekBarCircleX>>onProgressChanged>>valueInDp: " + value);
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+
             }
         });
 
-        // Bottom sheet
+        seekBarCircleY.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+
+                int valueInDp = Util.dpToPx(value, MainActivity.this);
+                Log.d(TAG, "->seekBarCircleY>>onProgressChanged>>valueInDp: " + value);
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+        });
+
+        seekBarCircleRadius.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+
+                int valueInDp = Util.dpToPx(value, MainActivity.this);
+                Log.d(TAG, "->seekBarCircleRadius>>onProgressChanged>>valueInDp: " + value);
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+        });
+
         seekBarMeasureWidth.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
@@ -326,37 +379,25 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
             }
         });
 
-        seekBarMeasureRotation.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
-            @Override
-            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
-
-                int valueInDp = Util.dpToPx(value, MainActivity.this);
-                Log.d(TAG, "->seekBarMeasureRotation>>onProgressChanged>>valueInDp: " + value);
-
-                // TODO: need to updateSubscriber view
-            }
-
-            @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
-        });
-
-        ivBackgroundColor.setOnClickListener(new View.OnClickListener() {
+        ivShapeBackgroundColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showColorPicker(ShapeCommandType.SHAPE_BACKGROUND_COLOR, ContextCompat.getColor(MainActivity.this, R.color.default_selector_color), ivBackgroundColor);
+                if (selectedShape != null) {
+                    int selectedColor = selectedShape.getShapeProperty().getShapeBackgroundColor();
+                    Log.d(TAG, "selectedColor>>ivShapeBackgroundColor: " + selectedColor);
+                    showColorPicker(ShapeCommandType.SHAPE_BACKGROUND_COLOR, selectedColor, ivShapeBackgroundColor);
+                }
             }
         });
+
         ivShapeColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showColorPicker(ShapeCommandType.SHAPE_COLOR, ContextCompat.getColor(MainActivity.this, R.color.default_highlight_background_color), ivShapeColor);
+                if (selectedShape != null) {
+                    int selectedColor = selectedShape.getShapeProperty().getShapeColor();
+                    Log.d(TAG, "selectedColor>>ivShapeColor: " + selectedColor);
+                    showColorPicker(ShapeCommandType.SHAPE_COLOR, selectedColor, ivShapeColor);
+                }
             }
         });
     }
@@ -372,7 +413,6 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                     public void onColorSelected(boolean positiveResult, int color) {
                         if (positiveResult) {
                             colorView.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-
 
                             Log.d(TAG, "->showColorPicker>>onColorSelected>>color: " + color);
                             // Decorator pattern
@@ -402,12 +442,27 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                 }).build().show(getSupportFragmentManager(), "ColorPicker");
     }
 
+    private void refreshAttributes() {
+        if (selectedShape != null) {
+//            seekBarCircleX.setProgress();
+//            seekBarCircleY.setProgress();
+//            seekBarCircleRadius.setProgress();
+//            seekBarMeasureWidth.setProgress();
+//            seekBarMeasureHeight.setProgress();
+
+            ivShapeBackgroundColor.getBackground().setColorFilter(selectedShape.getShapeProperty().getShapeBackgroundColor(), PorterDuff.Mode.SRC_ATOP);
+            ivShapeColor.getBackground().setColorFilter(selectedShape.getShapeProperty().getShapeColor(), PorterDuff.Mode.SRC_ATOP);
+        }
+    }
+
     private void updateAttributeView() {
         if (selectedShape != null) {
             llBottomSheet.setVisibility(View.VISIBLE);
         } else {
             llBottomSheet.setVisibility(View.INVISIBLE);
         }
+
+        refreshAttributes();
     }
 
     private void initSettings() {

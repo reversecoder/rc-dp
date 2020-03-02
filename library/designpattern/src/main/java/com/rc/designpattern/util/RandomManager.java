@@ -1,6 +1,9 @@
 package com.rc.designpattern.util;
 
 import android.graphics.Color;
+import android.util.Log;
+
+import com.rc.designpattern.R;
 
 import java.util.Random;
 
@@ -10,10 +13,25 @@ public class RandomManager {
     public static final String NUMBERS_AND_LETTERS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public static int getRandomColor() {
-        int r = (int) (Math.random() * 255);
-        int g = (int) (Math.random() * 255);
-        int b = (int) (Math.random() * 255);
-        return Color.rgb(r, g, b);
+//        int r = (int) (Math.random() * 255);
+//        int g = (int) (Math.random() * 255);
+//        int b = (int) (Math.random() * 255);
+//        int color = Color.rgb(r, g, b);
+
+//        Random rnd = new Random();
+//        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+
+//        int color = ((int) (Math.random() * 16777215)) | (0xFF << 24);
+
+        String colors[] = { "#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5", "#2196F3", "#03A9F4",
+                "#00BCD4", "#009688", "#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800",
+                "#FF5722", "#795548", "#9E9E9E", "#607D8B", "#FFFFFF"};
+        String randomColor = colors[new Random().nextInt(colors.length)];
+        Log.d("color>>", "color>>randomColor " + randomColor);
+        int color = Color.parseColor(randomColor);
+        Log.d("color>>", "color>>color " + color);
+
+        return color;
     }
 
     public static String getRandomNumbers(int length) {

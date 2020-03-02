@@ -35,6 +35,7 @@
     <string name="txt_color">Color</string>
     <string name="txt_border">Border</string>
     <string name="txt_enable">Enable</string>
+    <string name="txt_shape">Shape</string>
 
     <string-array name="divider_type">
         <item>Normal</item>
