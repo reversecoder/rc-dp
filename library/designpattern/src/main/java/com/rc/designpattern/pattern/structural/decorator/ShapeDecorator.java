@@ -35,7 +35,7 @@ public class ShapeDecorator extends Decorator {
                 break;
             case SHAPE_WIDTH:
                 getDecoratedShape().getShapeProperty().setShapeWidth((int) newProperty.getValue());
-                ((CompoundShape) getDecoratedShape()).resizeShape((int) newProperty.getValue(), getDecoratedShape().getShapeProperty().getShapeWidth(), ((CompoundShape) getDecoratedShape()).getLeft(), ((CompoundShape) getDecoratedShape()).getTop());
+                ((CompoundShape) getDecoratedShape()).resizeShape((int) newProperty.getValue(), getDecoratedShape().getShapeProperty().getShapeHeight(), ((CompoundShape) getDecoratedShape()).getLeft(), ((CompoundShape) getDecoratedShape()).getTop());
                 break;
             case SHAPE_HEIGHT:
                 getDecoratedShape().getShapeProperty().setShapeHeight((int) newProperty.getValue());

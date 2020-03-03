@@ -23,17 +23,16 @@ import com.cleveroad.cyclemenuwidget.OnStateChangedListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.rc.attributionpresenter.activity.LicenseActivity;
 import com.rc.attributionpresenter.view.AnimatedTextView;
-import com.rc.designpattern.pattern.behavioural.command.AddShapeCommand;
+import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
 import com.rc.designpattern.pattern.behavioural.command.MutableVariable;
+import com.rc.designpattern.pattern.behavioural.command.UpdateShapeCommand;
 import com.rc.designpattern.pattern.behavioural.iterator.TopicIteratorManager;
 import com.rc.designpattern.pattern.behavioural.observer.Subscriber;
-import com.rc.designpattern.pattern.behavioural.observer.Topic;
 import com.rc.designpattern.pattern.behavioural.state.CommandType;
 import com.rc.designpattern.pattern.behavioural.state.DecorationType;
 import com.rc.designpattern.pattern.behavioural.state.MenuType;
 import com.rc.designpattern.pattern.behavioural.state.StateType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
-import com.rc.designpattern.pattern.structural.bridge.Property;
 import com.rc.designpattern.pattern.structural.composite.CompoundShape;
 import com.rc.designpattern.pattern.structural.decorator.ShapeDecorator;
 import com.rc.designpattern.util.Util;
@@ -59,11 +58,6 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 
     private RelativeLayout shapeContainer;
     private Shape selectedShape;
-    //    private ShapeFactory shapeFactory;
-//    private Topic<Property> topicCircleBackground;
-//    private CircleViewGroup circleViewGroup;
-//    private CompositeShape compositeShape;
-//    private CommandManager circleCommandManager;
     private ActionController actionController = new ActionController();
 
     // Cycle menu
@@ -162,46 +156,8 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
             @Override
             public void onMenuItemClick(View view, int itemPosition) {
                 switch (itemPosition) {
-//                    case 0:
-//                        if (shapeList.size() > 0) {
-//                            RectangleProperty rectangleProperty = (RectangleProperty) shapeList.get(shapeList.size() - 1).getTopicValue();
-//                            ((Rectangle) shapeList.get(shapeList.size() - 1).getShapeView()).setProperty(rectangleProperty.setHeight(rectangleProperty.getHeight() + 10));
-//                        }
-
-//                        TriangleProperty triangleProperty = new TriangleProperty(150, 5, Color.BLUE, Color.RED);
-//                        Shape triangle = shapeFactory.createShape(MainActivity.this, ShapeType.TRIANGLE, triangleProperty);
-//                        shapeList.add(triangle);
-//                        dragView.addView(triangle.getShapeView());
-
-//                        actionController.dispatchRequest(MainActivity.this, ActionType.TRIANGLE, shapeContainer);
-//                        break;
-//                    case 1:
-//                        RectangleProperty rectangleProperty = new RectangleProperty(200, 100, 5, Color.BLUE, Color.CYAN);
-//                        Shape rectangle = shapeFactory.createShape(MainActivity.this, ShapeType.RECTANGLE, rectangleProperty);
-//                        shapeList.add(rectangle);
-//                        dragView.addView(rectangle.getShapeView());
-//                        break;
-
-//                        actionController.dispatchRequest(MainActivity.this, ActionType.RECTANGLE, shapeContainer);
-//                        break;
                     case 0:
-//                        circleViewGroup = ShapeManager.getInstance(MainActivity.this).getCircleShape();
-//                        compositeShape = ShapeManager.getInstance(MainActivity.this).getCompositeShape();
-//                        compositeShape.add(circleViewGroup);
-//                        dragLayout.addDragView(circleViewGroup, 0, 400, 380, 760, false, false);
-
-                        // Observer pattern
-//                        topicCircleBackground = new Topic<Property>(CircleViewGroupProperty.class.getSimpleName() + circleViewGroup.getProperty().getIdentity(), circleViewGroup.getProperty());
-//                        topicCircleBackground.registerSubscriber(circleViewGroup);
-
-                        // Command pattern
-//                        circleCommandManager = new CommandManager();
-
                         actionController.dispatchRequest(MainActivity.this, MenuType.CIRCLE, shapeContainer);
-
-//                        for(int i=0;i<shapeContainer.getChildCount();i++){
-//                            Log.d(TAG, "Added views "+i+" is "+ shapeContainer.getChildAt(i).getClass().getSimpleName());
-//                        }
                         break;
                     case 1:
                         actionController.dispatchRequest(MainActivity.this, MenuType.UNDO, shapeContainer);
@@ -276,43 +232,43 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
             }
         });
 
-        seekBarCircleX.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
-            @Override
-            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
-
-                int valueInDp = Util.dpToPx(value, MainActivity.this);
-                Log.d(TAG, "->seekBarCircleX>>onProgressChanged>>valueInDp: " + value);
-            }
-
-            @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
-        });
-
-        seekBarCircleY.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
-            @Override
-            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
-
-                int valueInDp = Util.dpToPx(value, MainActivity.this);
-                Log.d(TAG, "->seekBarCircleY>>onProgressChanged>>valueInDp: " + value);
-            }
-
-            @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
-        });
+//        seekBarCircleX.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+//            @Override
+//            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+//
+//                int valueInDp = Util.dpToPx(value, MainActivity.this);
+//                Log.d(TAG, "->seekBarCircleX>>onProgressChanged>>valueInDp: " + value);
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+//
+//            }
+//        });
+//
+//        seekBarCircleY.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+//            @Override
+//            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+//
+//                int valueInDp = Util.dpToPx(value, MainActivity.this);
+//                Log.d(TAG, "->seekBarCircleY>>onProgressChanged>>valueInDp: " + value);
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+//
+//            }
+//        });
 
         seekBarCircleRadius.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
@@ -321,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                 int valueInDp = Util.dpToPx(value, MainActivity.this);
                 Log.d(TAG, "->seekBarCircleRadius>>onProgressChanged>>value: " + valueInDp + "valueInDp: " + valueInDp);
                 ShapeDecorator shapeDecoratorRadius = new ShapeDecorator(selectedShape, DecorationType.SHAPE_RADIUS,
-                        new MutableVariable(selectedShape.getShapeProperty().getShapeWidth()/2),
+                        new MutableVariable(selectedShape.getShapeProperty().getShapeWidth() / 2),
                         new MutableVariable(value));
                 shapeDecoratorRadius.refreshView();
 
@@ -354,6 +310,7 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 
                 // Update width seekbar simultaneously
                 seekBarMeasureHeight.setProgress(shapeDecoratorWidth.getShapeProperty().getShapeHeight());
+                seekBarCircleRadius.setProgress(shapeDecoratorWidth.getShapeProperty().getShapeHeight() / 2);
             }
 
             @Override
@@ -380,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 
                 // Update width seekbar simultaneously
                 seekBarMeasureWidth.setProgress(shapeDecoratorHeight.getShapeProperty().getShapeWidth());
+                seekBarCircleRadius.setProgress(shapeDecoratorHeight.getShapeProperty().getShapeWidth() / 2);
             }
 
             @Override
@@ -425,35 +383,18 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                 .setOnColorSelectedListener(new SpectrumDialog.OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(boolean positiveResult, int color) {
+                        Log.d(TAG, "->showColorPicker>>onColorSelected>>color: " + color);
                         if (positiveResult) {
                             colorView.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
 
-                            Log.d(TAG, "->showColorPicker>>onColorSelected>>color: " + color);
-                            // Decorator pattern
-//                            BackgroundColorDecorator backgroundColorDecorator = new BackgroundColorDecorator(circleViewGroup, color);
-//                            backgroundColorDecorator.refreshShape();
-
-                            // Observer pattern
-                            Topic<Shape> topic = TopicIteratorManager.getInstance().getTopic(AddShapeCommand.class.getSimpleName() + selectedShape.getShapeProperty().getShapeId());
-                            if (topic != null) {
-                                Property property = ((CompoundShape) selectedShape).getShapeProperty();
-                                if (commandType == CommandType.SHAPE_BACKGROUND_COLOR) {
-                                    property.setShapeBackgroundColor(color);
-                                    ShapeDecorator shapeDecorator = new ShapeDecorator(selectedShape, DecorationType.SHAPE_BACKGROUND_COLOR,
-                                            new MutableVariable(selectedShape.getShapeProperty().getShapeBackgroundColor()),
-                                            new MutableVariable(color));
-                                } else if (commandType == CommandType.SHAPE_COLOR) {
-                                    property.setShapeColor(color);
-                                }
-                                selectedShape.setShapeProperty(property);
-                                topic.setValue(selectedShape);
-                            }
-
                             // Command pattern
-//                            CircleViewGroupProperty circleViewGroupProperty = (CircleViewGroupProperty) circleViewGroup.getProperty();
-//                            circleViewGroupProperty.setBackgroundColor(color);
-//                            Log.d("CommandManager", "MainActivity>>undo>>circleViewGroupProperty: " + circleViewGroupProperty.toString());
-//                            circleCommandManager.executeCommand(new CircleCommand(CircleCommand.class.getSimpleName() + ">>Shape background change", circleViewGroup), circleViewGroupProperty);
+                            UpdateShapeCommand colorUpdateCommand = null;
+                            if (commandType == CommandType.SHAPE_BACKGROUND_COLOR) {
+                                colorUpdateCommand = new UpdateShapeCommand(selectedShape, commandType, new MutableVariable(selectedShape.getShapeProperty().getShapeBackgroundColor()), new MutableVariable(color));
+                            } else if (commandType == CommandType.SHAPE_COLOR) {
+                                colorUpdateCommand = new UpdateShapeCommand(selectedShape, commandType, new MutableVariable(selectedShape.getShapeProperty().getShapeColor()), new MutableVariable(color));
+                            }
+                            CommandExecutor.getInstance().executeCommand(colorUpdateCommand);
                         }
                     }
                 }).build().show(getSupportFragmentManager(), "ColorPicker");
@@ -461,9 +402,9 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 
     private void refreshAttributes() {
         if (selectedShape != null) {
-//            seekBarCircleX.setProgress();
-//            seekBarCircleY.setProgress();
-            seekBarCircleRadius.setProgress(selectedShape.getShapeProperty().getShapeWidth()/2);
+//            seekBarCircleX.setProgress(selectedShape.getShapeProperty().getShapeX());
+//            seekBarCircleY.setProgress(selectedShape.getShapeProperty().getShapeY());
+            seekBarCircleRadius.setProgress(selectedShape.getShapeProperty().getShapeWidth() / 2);
             seekBarMeasureWidth.setProgress(selectedShape.getShapeProperty().getShapeWidth());
             seekBarMeasureHeight.setProgress(selectedShape.getShapeProperty().getShapeHeight());
             ivShapeBackgroundColor.getBackground().setColorFilter(selectedShape.getShapeProperty().getShapeBackgroundColor(), PorterDuff.Mode.SRC_ATOP);
@@ -559,7 +500,6 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        ShapeManager.getInstance(MainActivity.this).destroyObject();
         TopicIteratorManager.getInstance().removeAllTopics();
     }
 

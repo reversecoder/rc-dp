@@ -20,7 +20,7 @@ public class UpdateShapeCommand implements Command {
     private MutableVariable oldPropertyValue;
     private MutableVariable newPropertyValue;
 
-    public UpdateShapeCommand(Shape shape,CommandType commandType, MutableVariable oldPropertyValue, MutableVariable newPropertyValue) {
+    public UpdateShapeCommand(Shape shape, CommandType commandType, MutableVariable oldPropertyValue, MutableVariable newPropertyValue) {
         this.shape = shape;
         this.commandType = commandType;
         this.oldPropertyValue = oldPropertyValue;
@@ -42,7 +42,6 @@ public class UpdateShapeCommand implements Command {
                 shape.getShapeProperty().setShapeColor((int) newPropertyValue.getValue());
                 break;
         }
-//        shape.refreshView();
 
         // Notify Observer for shape do
         Topic<Shape> topic = TopicIteratorManager.getInstance().getTopic(AddShapeCommand.class.getSimpleName() + shape.getShapeProperty().getShapeId());
@@ -77,7 +76,6 @@ public class UpdateShapeCommand implements Command {
                 mShape.getShapeProperty().setShapeColor((int) oldPropertyValue.getValue());
                 break;
         }
-//        mShape.refreshView();
 
         // Notify Observer for shape undo
         Topic<Shape> topic = TopicIteratorManager.getInstance().getTopic(AddShapeCommand.class.getSimpleName() + shape.getShapeProperty().getShapeId());

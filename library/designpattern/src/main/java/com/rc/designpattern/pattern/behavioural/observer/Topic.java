@@ -45,6 +45,12 @@ public class Topic<T> implements Publisher<T> {
     }
 
     @Override
+    public void setValue(T value, Subscriber subscriber) {
+        this.topicValue = value;
+        notifySubscriber(subscriber);
+    }
+
+    @Override
     public boolean registerSubscriber(Subscriber subscriber) {
         if (subscriber == null)
             throw new NullPointerException("Subscriber should not null");
@@ -64,6 +70,11 @@ public class Topic<T> implements Publisher<T> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Subscriber> getSubscribers() {
+        return subscribers;
     }
 
     @Override

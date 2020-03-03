@@ -24,26 +24,9 @@ public interface Shape extends Serializable {
 
     void refreshView();
 
-//    int getShapeId();
-//
-//    int getShapeX();
-//
-//    int getShapeY();
-//
-//    void setShapeX(int shapeX);
-//
-//    void setShapeY(int shapeY);
-//
-//    int getShapeWidth();
-//
-//    int getShapeHeight();
-//
-//    boolean isShapeSelected();
-//
-//    void setShapeState(ShapeState shapeState);
-//
-//    ShapeState getShapeState();
-//
-//    void setShapeColor(int color);
-
+//    void drag();
+//    void drop();
+//    void moveTo(int x, int y);
+//    void moveBy(int x, int y);
+//    boolean isInsideBounds(int x, int y);
 }
