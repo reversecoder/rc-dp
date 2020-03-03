@@ -17,6 +17,10 @@ import com.rc.designpattern.pattern.creational.singleton.ShapeManager;
 import com.rc.designpattern.pattern.structural.composite.CompoundShape;
 import com.rc.designpatterndemo.activity.MainActivity;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class Dispatcher {
 
     public void dispatch(Activity activity, MenuType menuType, ViewGroup parentView) {

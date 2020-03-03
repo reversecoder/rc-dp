@@ -3,6 +3,10 @@ package com.rc.designpattern.pattern.behavioural.command;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 class CommandStack {
 
 	private final int maxStackSize;

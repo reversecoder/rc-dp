@@ -1,5 +1,9 @@
 package com.rc.designpattern.pattern.behavioural.memento;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class GenericOriginator<T> implements Originator<T> {
 
 	private T state;

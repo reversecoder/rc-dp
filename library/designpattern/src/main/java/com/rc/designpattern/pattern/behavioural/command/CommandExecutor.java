@@ -1,5 +1,9 @@
 package com.rc.designpattern.pattern.behavioural.command;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class CommandExecutor {
 
     private static CommandStack commandStack;

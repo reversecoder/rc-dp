@@ -6,6 +6,10 @@ import android.view.View;
 
 import com.rc.designpattern.pattern.structural.bridge.Property;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public abstract class ShapeView extends View implements Shape{
 
 //    @Override

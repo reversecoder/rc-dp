@@ -5,11 +5,11 @@ package com.rc.designpattern.pattern.behavioural.iterator;
  * Email: rashed.droid@gmail.com
  */
 public interface Iterator<E> {
-    void reset();   // reset to the first element
+    void reset();
 
-    E next();   // To get the next element
+    E next();
 
-    E currentItem();    // To retrieve the current element
+    E currentItem();
 
-    boolean hasNext();  // To check whether there is any next element or not.
+    boolean hasNext();
 }

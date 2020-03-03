@@ -5,6 +5,10 @@ import android.graphics.Paint;
 import com.rc.designpattern.pattern.behavioural.state.StateType;
 import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class CirclePropertyBuilder {
 
     private int shapeId;

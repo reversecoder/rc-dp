@@ -7,6 +7,10 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.TypedValue;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class Util {
 
     public static void doVibrate(Context context, long duration) {

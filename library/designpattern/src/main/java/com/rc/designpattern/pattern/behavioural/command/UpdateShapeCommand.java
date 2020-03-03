@@ -12,6 +12,10 @@ import com.rc.designpattern.pattern.behavioural.state.DecorationType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.pattern.structural.decorator.ShapeDecorator;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class UpdateShapeCommand implements Command {
 
     private String TAG = UpdateShapeCommand.class.getSimpleName();

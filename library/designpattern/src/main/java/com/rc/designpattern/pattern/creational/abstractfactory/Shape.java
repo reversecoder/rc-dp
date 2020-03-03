@@ -8,6 +8,10 @@ import com.rc.designpattern.pattern.structural.bridge.Property;
 
 import java.io.Serializable;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public interface Shape extends Serializable {
 
     ShapeType getShapeType();

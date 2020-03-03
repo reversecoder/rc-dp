@@ -1,5 +1,9 @@
 package com.rc.designpattern.pattern.behavioural.state;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public enum ShapeType {
 
     CIRCLE(0), RECTANGLE(1), TRIANGLE(2), COMPOSITE(3);

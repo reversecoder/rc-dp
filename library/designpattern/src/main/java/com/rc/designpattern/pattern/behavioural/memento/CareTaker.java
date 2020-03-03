@@ -3,6 +3,10 @@ package com.rc.designpattern.pattern.behavioural.memento;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class CareTaker {
 
     private static Map<String, GenericMemento> mementoList;

@@ -5,6 +5,10 @@ import android.view.ViewGroup;
 
 import com.rc.designpattern.pattern.behavioural.state.MenuType;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class ActionController {
 
     private Dispatcher dispatcher;

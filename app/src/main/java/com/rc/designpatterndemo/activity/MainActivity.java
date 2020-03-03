@@ -47,6 +47,10 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import cn.ymex.popup.controller.AlertController;
 import cn.ymex.popup.dialog.PopupDialog;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class MainActivity extends AppCompatActivity implements Subscriber<Shape> {
 
     private String TAG = "MainActivity";

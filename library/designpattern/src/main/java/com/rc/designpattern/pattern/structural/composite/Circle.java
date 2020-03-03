@@ -8,6 +8,10 @@ import com.rc.designpattern.pattern.creational.abstractfactory.ShapeView;
 import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
 import com.rc.designpattern.pattern.structural.bridge.Property;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class Circle extends ShapeView {
 
     public Circle(Context context, Property property) {

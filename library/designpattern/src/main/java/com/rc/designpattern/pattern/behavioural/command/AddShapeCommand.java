@@ -8,6 +8,10 @@ import com.rc.designpattern.pattern.behavioural.memento.GenericMemento;
 import com.rc.designpattern.pattern.behavioural.memento.GenericOriginator;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 
+/**
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
+ */
 public class AddShapeCommand implements Command {
 
     private String TAG = AddShapeCommand.class.getSimpleName();

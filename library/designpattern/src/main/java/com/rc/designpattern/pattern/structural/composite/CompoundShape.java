@@ -28,7 +28,8 @@ import com.rc.designpattern.pattern.structural.facade.PropertyKeeper;
 import com.rc.designpattern.util.CustomViewManager;
 
 /**
- * Created by enrique on 04/08/14.
+ * @author Md. Rashadul Alam
+ * Email: rashed.droid@gmail.com
  */
 public class CompoundShape extends ViewGroup implements Shape, Subscriber<Shape> {
 
