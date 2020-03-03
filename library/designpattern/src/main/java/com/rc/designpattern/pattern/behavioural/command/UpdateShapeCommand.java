@@ -8,8 +8,9 @@ import com.rc.designpattern.pattern.behavioural.memento.GenericMemento;
 import com.rc.designpattern.pattern.behavioural.memento.GenericOriginator;
 import com.rc.designpattern.pattern.behavioural.observer.Topic;
 import com.rc.designpattern.pattern.behavioural.state.CommandType;
-import com.rc.designpattern.pattern.behavioural.state.StateType;
+import com.rc.designpattern.pattern.behavioural.state.DecorationType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
+import com.rc.designpattern.pattern.structural.decorator.ShapeDecorator;
 
 public class UpdateShapeCommand implements Command {
 
@@ -31,17 +32,35 @@ public class UpdateShapeCommand implements Command {
 
     @Override
     public void doIt() {
-        switch (commandType) {
-            case SHAPE_STATE:
-                shape.getShapeProperty().setStateType((StateType) newPropertyValue.getValue());
-                break;
-            case SHAPE_BACKGROUND_COLOR:
-                shape.getShapeProperty().setShapeBackgroundColor((int) newPropertyValue.getValue());
-                break;
-            case SHAPE_COLOR:
-                shape.getShapeProperty().setShapeColor((int) newPropertyValue.getValue());
-                break;
-        }
+        ShapeDecorator shapeDecoratorDo = new ShapeDecorator(shape, DecorationType.valueOf(commandType.name()), new MutableVariable(oldPropertyValue.getValue()), new MutableVariable(newPropertyValue.getValue()));
+        shapeDecoratorDo.refreshView();
+
+//        switch (commandType) {
+//            case SHAPE_STATE:
+//                ShapeDecorator shapeDecoratorState = new ShapeDecorator(shape, DecorationType.SHAPE_STATE, new MutableVariable(oldPropertyValue.getValue()), new MutableVariable(newPropertyValue.getValue()));
+//                shapeDecoratorState.refreshView();
+//                break;
+//            case SHAPE_BACKGROUND_COLOR:
+//                ShapeDecorator shapeDecoratorBackgroundColor = new ShapeDecorator(shape, DecorationType.SHAPE_BACKGROUND_COLOR, new MutableVariable(oldPropertyValue.getValue()), new MutableVariable(newPropertyValue.getValue()));
+//                shapeDecoratorBackgroundColor.refreshView();
+//                break;
+//            case SHAPE_COLOR:
+//                ShapeDecorator shapeDecoratorColor = new ShapeDecorator(shape, DecorationType.SHAPE_COLOR, new MutableVariable(oldPropertyValue.getValue()), new MutableVariable(newPropertyValue.getValue()));
+//                shapeDecoratorColor.refreshView();
+//                break;
+//            case SHAPE_RADIUS:
+//                ShapeDecorator shapeDecoratorRadius = new ShapeDecorator(shape, DecorationType.SHAPE_RADIUS, new MutableVariable(oldPropertyValue.getValue()), new MutableVariable(newPropertyValue.getValue()));
+//                shapeDecoratorRadius.refreshView();
+//                break;
+//            case SHAPE_WIDTH:
+//                ShapeDecorator shapeDecoratorWidth = new ShapeDecorator(shape, DecorationType.SHAPE_WIDTH, new MutableVariable(oldPropertyValue.getValue()), new MutableVariable(newPropertyValue.getValue()));
+//                shapeDecoratorWidth.refreshView();
+//                break;
+//            case SHAPE_HEIGHT:
+//                ShapeDecorator shapeDecoratorHeight = new ShapeDecorator(shape, DecorationType.SHAPE_HEIGHT, new MutableVariable(oldPropertyValue.getValue()), new MutableVariable(newPropertyValue.getValue()));
+//                shapeDecoratorHeight.refreshView();
+//                break;
+//        }
 
         // Notify Observer for shape do
         Topic<Shape> topic = TopicIteratorManager.getInstance().getTopic(AddShapeCommand.class.getSimpleName() + shape.getShapeProperty().getShapeId());
@@ -65,17 +84,36 @@ public class UpdateShapeCommand implements Command {
         // Memento
         GenericMemento mMemento = CareTaker.getInstance().get(key);
         Shape mShape = (Shape) mMemento.getState();
-        switch (commandType) {
-            case SHAPE_STATE:
-                mShape.getShapeProperty().setStateType((StateType) oldPropertyValue.getValue());
-                break;
-            case SHAPE_BACKGROUND_COLOR:
-                mShape.getShapeProperty().setShapeBackgroundColor((int) oldPropertyValue.getValue());
-                break;
-            case SHAPE_COLOR:
-                mShape.getShapeProperty().setShapeColor((int) oldPropertyValue.getValue());
-                break;
-        }
+
+        ShapeDecorator shapeDecoratorUndo = new ShapeDecorator(shape, DecorationType.valueOf(commandType.name()), new MutableVariable(newPropertyValue.getValue()), new MutableVariable(oldPropertyValue.getValue()));
+        shapeDecoratorUndo.refreshView();
+
+//        switch (commandType) {
+//            case SHAPE_STATE:
+//                ShapeDecorator shapeDecoratorState = new ShapeDecorator(shape, DecorationType.SHAPE_STATE, new MutableVariable(newPropertyValue.getValue()), new MutableVariable(oldPropertyValue.getValue()));
+//                shapeDecoratorState.refreshView();
+//                break;
+//            case SHAPE_BACKGROUND_COLOR:
+//                ShapeDecorator shapeDecoratorBackgroundColor = new ShapeDecorator(shape, DecorationType.SHAPE_BACKGROUND_COLOR, new MutableVariable(newPropertyValue.getValue()), new MutableVariable(oldPropertyValue.getValue()));
+//                shapeDecoratorBackgroundColor.refreshView();
+//                break;
+//            case SHAPE_COLOR:
+//                ShapeDecorator shapeDecoratorColor = new ShapeDecorator(shape, DecorationType.SHAPE_COLOR, new MutableVariable(newPropertyValue.getValue()), new MutableVariable(oldPropertyValue.getValue()));
+//                shapeDecoratorColor.refreshView();
+//                break;
+//            case SHAPE_RADIUS:
+//                ShapeDecorator shapeDecoratorRadius = new ShapeDecorator(shape, DecorationType.SHAPE_RADIUS, new MutableVariable(newPropertyValue.getValue()), new MutableVariable(oldPropertyValue.getValue()));
+//                shapeDecoratorRadius.refreshView();
+//                break;
+//            case SHAPE_WIDTH:
+//                ShapeDecorator shapeDecoratorWidth = new ShapeDecorator(shape, DecorationType.SHAPE_WIDTH, new MutableVariable(newPropertyValue.getValue()), new MutableVariable(oldPropertyValue.getValue()));
+//                shapeDecoratorWidth.refreshView();
+//                break;
+//            case SHAPE_HEIGHT:
+//                ShapeDecorator shapeDecoratorHeight = new ShapeDecorator(shape, DecorationType.SHAPE_HEIGHT, new MutableVariable(newPropertyValue.getValue()), new MutableVariable(oldPropertyValue.getValue()));
+//                shapeDecoratorHeight.refreshView();
+//                break;
+//        }
 
         // Notify Observer for shape undo
         Topic<Shape> topic = TopicIteratorManager.getInstance().getTopic(AddShapeCommand.class.getSimpleName() + shape.getShapeProperty().getShapeId());

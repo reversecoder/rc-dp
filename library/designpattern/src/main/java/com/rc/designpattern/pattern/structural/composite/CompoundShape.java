@@ -513,7 +513,7 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Shape>
 
     @Override
     public void updateSubscriber(Shape item) {
-        Toast.makeText(getContext(), getClass().getSimpleName() + item.getShapeProperty().getShapeId(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), getClass().getSimpleName() + item.getShapeProperty().getShapeId(), Toast.LENGTH_SHORT).show();
         setShapeProperty(item.getShapeProperty());
         refreshView();
         Log.d("AddShapeCommand", "AddShapeCommand>>background after: " + property.getShapeBackgroundColor());

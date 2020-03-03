@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -246,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 //            }
 //
 //            @Override
-//            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+//            public void onStopTrackingTouch(DiscreteSeekBar seekBar, int value) {
 //
 //            }
 //        });
@@ -265,17 +264,19 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 //            }
 //
 //            @Override
-//            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+//            public void onStopTrackingTouch(DiscreteSeekBar seekBar, int value) {
 //
 //            }
 //        });
 
         seekBarCircleRadius.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            int radiusOld = 0;
+
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
 
                 int valueInDp = Util.dpToPx(value, MainActivity.this);
-                Log.d(TAG, "->seekBarCircleRadius>>onProgressChanged>>value: " + valueInDp + "valueInDp: " + valueInDp);
+                Log.d(TAG, "->seekBarCircleRadius>>onProgressChanged>>value: " + value + "valueInDp: " + valueInDp);
                 ShapeDecorator shapeDecoratorRadius = new ShapeDecorator(selectedShape, DecorationType.SHAPE_RADIUS,
                         new MutableVariable(selectedShape.getShapeProperty().getShapeWidth() / 2),
                         new MutableVariable(value));
@@ -288,21 +289,26 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 
             @Override
             public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
-
+                radiusOld = seekBarCircleRadius.getProgress();
             }
 
             @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar, int value) {
+                Log.d(TAG, "->seekBarCircleRadius>>onStopTrackingTouch>>value: " + value + " radiusOld: " + radiusOld);
+                // Command pattern
+                UpdateShapeCommand radiusUpdateCommand = new UpdateShapeCommand(selectedShape, CommandType.SHAPE_RADIUS, new MutableVariable(radiusOld), new MutableVariable(value));
+                CommandExecutor.getInstance().executeCommand(radiusUpdateCommand);
             }
         });
 
         seekBarMeasureWidth.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            int widthOld = 0;
+
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
 
                 int valueInDp = Util.dpToPx(value, MainActivity.this);
-                Log.d(TAG, "->seekBarMeasureWidth>>onProgressChanged>>value: " + valueInDp + "valueInDp: " + valueInDp);
+                Log.d(TAG, "->seekBarMeasureWidth>>onProgressChanged>>value: " + value + "valueInDp: " + valueInDp);
                 ShapeDecorator shapeDecoratorWidth = new ShapeDecorator(selectedShape, DecorationType.SHAPE_WIDTH,
                         new MutableVariable(selectedShape.getShapeProperty().getShapeWidth()),
                         new MutableVariable(value));
@@ -315,21 +321,26 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 
             @Override
             public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
-
+                widthOld = seekBarMeasureWidth.getProgress();
             }
 
             @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar, int value) {
+                Log.d(TAG, "->seekBarMeasureWidth>>onStopTrackingTouch>>value: " + value + " widthOld: " + widthOld);
+                // Command pattern
+                UpdateShapeCommand widthUpdateCommand = new UpdateShapeCommand(selectedShape, CommandType.SHAPE_WIDTH, new MutableVariable(widthOld), new MutableVariable(value));
+                CommandExecutor.getInstance().executeCommand(widthUpdateCommand);
             }
         });
 
         seekBarMeasureHeight.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            int heightOld = 0;
+
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
 
                 int valueInDp = Util.dpToPx(value, MainActivity.this);
-                Log.d(TAG, "->seekBarMeasureHeight>>onProgressChanged>>value: " + valueInDp + "valueInDp: " + valueInDp);
+                Log.d(TAG, "->seekBarMeasureHeight>>onProgressChanged>>value: " + value + "valueInDp: " + valueInDp);
                 ShapeDecorator shapeDecoratorHeight = new ShapeDecorator(selectedShape, DecorationType.SHAPE_HEIGHT,
                         new MutableVariable(selectedShape.getShapeProperty().getShapeHeight()),
                         new MutableVariable(value));
@@ -342,12 +353,15 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 
             @Override
             public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
-
+                heightOld = seekBarMeasureHeight.getProgress();
             }
 
             @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar, int value) {
+                Log.d(TAG, "->seekBarMeasureHeight>>onStopTrackingTouch>>value: " + value + " heightOld: " + heightOld);
+                // Command pattern
+                UpdateShapeCommand heightUpdateCommand = new UpdateShapeCommand(selectedShape, CommandType.SHAPE_HEIGHT, new MutableVariable(heightOld), new MutableVariable(value));
+                CommandExecutor.getInstance().executeCommand(heightUpdateCommand);
             }
         });
 
@@ -506,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
     @Override
     public void updateSubscriber(Shape item) {
         if (item != null) {
-            Toast.makeText(MainActivity.this, TAG + item.getShapeProperty().getShapeId(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this, TAG + item.getShapeProperty().getShapeId(), Toast.LENGTH_SHORT).show();
             if (item.getShapeProperty().isShapeSelected()) {
                 selectedShape = item;
 

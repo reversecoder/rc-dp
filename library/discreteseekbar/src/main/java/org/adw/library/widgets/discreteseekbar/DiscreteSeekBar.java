@@ -67,7 +67,7 @@ public class DiscreteSeekBar extends View {
 
         public void onStartTrackingTouch(DiscreteSeekBar seekBar);
 
-        public void onStopTrackingTouch(DiscreteSeekBar seekBar);
+        public void onStopTrackingTouch(DiscreteSeekBar seekBar, int value);
     }
 
     /**
@@ -772,7 +772,7 @@ public class DiscreteSeekBar extends View {
 
     private void stopDragging() {
         if (mPublicChangeListener != null) {
-            mPublicChangeListener.onStopTrackingTouch(this);
+            mPublicChangeListener.onStopTrackingTouch(this, mValue);
         }
         mIsDragging = false;
         setPressed(false);
