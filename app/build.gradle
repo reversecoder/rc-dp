@@ -46,6 +46,5 @@ dependencies {
     implementation project(":library:pdialog")
     implementation project(":library:attributionpresenter")
     implementation project(":library:discreteseekbar")
-    implementation project(":library:shapemanager")
     implementation project(":library:spectrum")
 }
