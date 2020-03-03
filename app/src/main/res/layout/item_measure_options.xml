@@ -26,8 +26,7 @@
             android:id="@+id/seekbar_measure_width"
             style="@style/DiscreteSeekBar"
             app:dsb_max="500"
-            app:dsb_min="0"
-            app:dsb_value="200" />
+            app:dsb_min="0" />
 
     </LinearLayout>
 
@@ -48,8 +47,7 @@
             android:id="@+id/seekbar_measure_height"
             style="@style/DiscreteSeekBar"
             app:dsb_max="500"
-            app:dsb_min="0"
-            app:dsb_value="250" />
+            app:dsb_min="0" />
 
     </LinearLayout>
 

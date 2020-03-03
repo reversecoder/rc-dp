@@ -317,25 +317,10 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Shape>
                         int finalWidth = oriRight - oriLeft;
                         int finalHeight = oriBottom - oriTop;
 
-                        //new pos l t r b is set into oriLeft, oriTop, oriRight, oriBottom
-                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(oriRight - oriLeft, oriBottom - oriTop);
-                        lp.setMargins(oriLeft, oriTop, 0, 0);
-
-                        for (Shape child : property.getChildren()) {
-                            if (child instanceof Circle) {
-                                int circleRadius = Math.min(finalWidth / 2, finalHeight / 2);
-                                Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): circleRadius= " + circleRadius);
-                                ((CircleProperty) ((Circle) child).getShapeProperty()).setShapeRadius(circleRadius);
-                            }
-                        }
-
-                        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(lp);
-                        if (editableView != null) {
-                            editableView.setLayoutParams(layoutParams);
-                        }
-                        setLayoutParams(lp);
+                        // Resize shape
                         Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): finalWidth= " + finalWidth + " finalHeight= " + finalHeight);
                         Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): marginLeft= " + oriLeft + " marginTop= " + oriTop);
+                        resizeShape(finalWidth, finalHeight, oriLeft, oriTop);
                     }
                     break;
             }
@@ -343,6 +328,25 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Shape>
             return true;
         }
         return true;
+    }
+
+    public void resizeShape(int width, int height, int marginLeft, int marginTop) {
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, height);
+        lp.setMargins(marginLeft, marginTop, 0, 0);
+
+        for (Shape child : property.getChildren()) {
+            if (child instanceof Circle) {
+                int circleRadius = Math.min(width / 2, height / 2);
+                Log.d(TAG, "onTouchEvent(MotionEvent.ACTION_MOVE): circleRadius= " + circleRadius);
+                ((CircleProperty) ((Circle) child).getShapeProperty()).setShapeRadius(circleRadius);
+            }
+        }
+
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(lp);
+        if (editableView != null) {
+            editableView.setLayoutParams(layoutParams);
+        }
+        setLayoutParams(lp);
     }
 
     TouchGestureDetector touchGestureDetector = new TouchGestureDetector(new TouchGestureDetector.TouchGestureListener() {

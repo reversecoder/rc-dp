@@ -28,13 +28,18 @@ public class ShapeDecorator extends Decorator {
                 getDecoratedShape().getShapeProperty().setShapeY((int) newProperty.getValue());
                 break;
             case SHAPE_RADIUS:
-                ((CircleProperty) ((CompoundProperty) ((CompoundShape) getDecoratedShape()).getShapeProperty()).getChildren().get(0).getShapeProperty()).setShapeRadius((int) newProperty.getValue());
+                int radius = (int) newProperty.getValue();
+                CircleProperty circleProperty = ((CircleProperty) ((CompoundProperty) ((CompoundShape) getDecoratedShape()).getShapeProperty()).getChildren().get(0).getShapeProperty());
+                circleProperty.setShapeRadius(radius);
+                ((CompoundShape) getDecoratedShape()).resizeShape((radius * 2), (radius * 2), ((CompoundShape) getDecoratedShape()).getLeft(), ((CompoundShape) getDecoratedShape()).getTop());
                 break;
             case SHAPE_WIDTH:
                 getDecoratedShape().getShapeProperty().setShapeWidth((int) newProperty.getValue());
+                ((CompoundShape) getDecoratedShape()).resizeShape((int) newProperty.getValue(), getDecoratedShape().getShapeProperty().getShapeWidth(), ((CompoundShape) getDecoratedShape()).getLeft(), ((CompoundShape) getDecoratedShape()).getTop());
                 break;
             case SHAPE_HEIGHT:
                 getDecoratedShape().getShapeProperty().setShapeHeight((int) newProperty.getValue());
+                ((CompoundShape) getDecoratedShape()).resizeShape(getDecoratedShape().getShapeProperty().getShapeWidth(), (int) newProperty.getValue(), ((CompoundShape) getDecoratedShape()).getLeft(), ((CompoundShape) getDecoratedShape()).getTop());
                 break;
             case SHAPE_BACKGROUND_COLOR:
                 getDecoratedShape().getShapeProperty().setShapeBackgroundColor((int) newProperty.getValue());

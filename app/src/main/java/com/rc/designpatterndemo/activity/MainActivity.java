@@ -319,7 +319,15 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
 
                 int valueInDp = Util.dpToPx(value, MainActivity.this);
-                Log.d(TAG, "->seekBarCircleRadius>>onProgressChanged>>valueInDp: " + value);
+                Log.d(TAG, "->seekBarCircleRadius>>onProgressChanged>>value: " + valueInDp + "valueInDp: " + valueInDp);
+                ShapeDecorator shapeDecoratorRadius = new ShapeDecorator(selectedShape, DecorationType.SHAPE_RADIUS,
+                        new MutableVariable(selectedShape.getShapeProperty().getShapeWidth()/2),
+                        new MutableVariable(value));
+                shapeDecoratorRadius.refreshView();
+
+                // Update width and height seekbar simultaneously
+                seekBarMeasureWidth.setProgress(shapeDecoratorRadius.getShapeProperty().getShapeWidth());
+                seekBarMeasureHeight.setProgress(shapeDecoratorRadius.getShapeProperty().getShapeHeight());
             }
 
             @Override
@@ -338,11 +346,14 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
 
                 int valueInDp = Util.dpToPx(value, MainActivity.this);
-                Log.d(TAG, "->seekBarMeasureWidth>>onProgressChanged>>valueInDp: " + value);
-//                ShapeDecorator shapeDecoratorWidth = new ShapeDecorator(selectedShape, DecorationType.SHAPE_WIDTH,
-//                        new MutableVariable(selectedShape.getShapeProperty().getShapeWidth()),
-//                        new MutableVariable(value));
-//                shapeDecoratorWidth.refreshView();
+                Log.d(TAG, "->seekBarMeasureWidth>>onProgressChanged>>value: " + valueInDp + "valueInDp: " + valueInDp);
+                ShapeDecorator shapeDecoratorWidth = new ShapeDecorator(selectedShape, DecorationType.SHAPE_WIDTH,
+                        new MutableVariable(selectedShape.getShapeProperty().getShapeWidth()),
+                        new MutableVariable(value));
+                shapeDecoratorWidth.refreshView();
+
+                // Update width seekbar simultaneously
+                seekBarMeasureHeight.setProgress(shapeDecoratorWidth.getShapeProperty().getShapeHeight());
             }
 
             @Override
@@ -361,7 +372,14 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
 
                 int valueInDp = Util.dpToPx(value, MainActivity.this);
-                Log.d(TAG, "->seekBarMeasureHeight>>onProgressChanged>>valueInDp: " + value);
+                Log.d(TAG, "->seekBarMeasureHeight>>onProgressChanged>>value: " + valueInDp + "valueInDp: " + valueInDp);
+                ShapeDecorator shapeDecoratorHeight = new ShapeDecorator(selectedShape, DecorationType.SHAPE_HEIGHT,
+                        new MutableVariable(selectedShape.getShapeProperty().getShapeHeight()),
+                        new MutableVariable(value));
+                shapeDecoratorHeight.refreshView();
+
+                // Update width seekbar simultaneously
+                seekBarMeasureWidth.setProgress(shapeDecoratorHeight.getShapeProperty().getShapeWidth());
             }
 
             @Override
@@ -445,10 +463,9 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
         if (selectedShape != null) {
 //            seekBarCircleX.setProgress();
 //            seekBarCircleY.setProgress();
-//            seekBarCircleRadius.setProgress();
-//            seekBarMeasureWidth.setProgress();
-//            seekBarMeasureHeight.setProgress();
-
+            seekBarCircleRadius.setProgress(selectedShape.getShapeProperty().getShapeWidth()/2);
+            seekBarMeasureWidth.setProgress(selectedShape.getShapeProperty().getShapeWidth());
+            seekBarMeasureHeight.setProgress(selectedShape.getShapeProperty().getShapeHeight());
             ivShapeBackgroundColor.getBackground().setColorFilter(selectedShape.getShapeProperty().getShapeBackgroundColor(), PorterDuff.Mode.SRC_ATOP);
             ivShapeColor.getBackground().setColorFilter(selectedShape.getShapeProperty().getShapeColor(), PorterDuff.Mode.SRC_ATOP);
         }
