@@ -16,10 +16,10 @@ import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
 import com.rc.designpattern.pattern.behavioural.command.MutableVariable;
 import com.rc.designpattern.pattern.behavioural.command.UpdateShapeCommand;
 import com.rc.designpattern.pattern.behavioural.observer.Subscriber;
+import com.rc.designpattern.pattern.behavioural.state.CommandType;
 import com.rc.designpattern.pattern.behavioural.state.DirectionType;
-import com.rc.designpattern.pattern.behavioural.state.ShapeCommandType;
-import com.rc.designpattern.pattern.behavioural.state.ShapeState;
 import com.rc.designpattern.pattern.behavioural.state.ShapeType;
+import com.rc.designpattern.pattern.behavioural.state.StateType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
 import com.rc.designpattern.pattern.structural.bridge.CompoundProperty;
@@ -377,7 +377,7 @@ public class CompoundShape extends ViewGroup implements Shape, Subscriber<Shape>
                 Log.d(TAG, "touchGestureDetector>>onLongPress: ");
                 CustomViewManager.doVibrate(getContext(), 100);
 
-                UpdateShapeCommand previousState = new UpdateShapeCommand(ShapeCommandType.SHAPE_STATE, new MutableVariable(ShapeState.UNSELECTED), new MutableVariable(ShapeState.SELECTED), getShape());
+                UpdateShapeCommand previousState = new UpdateShapeCommand(getShape(), CommandType.SHAPE_STATE, new MutableVariable(StateType.UNSELECTED), new MutableVariable(StateType.SELECTED));
                 CommandExecutor.getInstance().executeCommand(previousState);
             }
         }

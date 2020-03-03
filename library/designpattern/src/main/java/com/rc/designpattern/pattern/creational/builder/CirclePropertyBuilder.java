@@ -2,7 +2,7 @@ package com.rc.designpattern.pattern.creational.builder;
 
 import android.graphics.Paint;
 
-import com.rc.designpattern.pattern.behavioural.state.ShapeState;
+import com.rc.designpattern.pattern.behavioural.state.StateType;
 import com.rc.designpattern.pattern.structural.bridge.CircleProperty;
 
 public class CirclePropertyBuilder {
@@ -13,7 +13,7 @@ public class CirclePropertyBuilder {
     private int shapeRadius;
     private Paint shapePaint;
     private int shapeColor, shapeBackgroundColor;
-    private ShapeState shapeState;
+    private StateType stateType;
 
     public CirclePropertyBuilder setShapeId(int shapeId) {
         this.shapeId = shapeId;
@@ -50,8 +50,8 @@ public class CirclePropertyBuilder {
         return this;
     }
 
-    public CirclePropertyBuilder setShapeState(ShapeState shapeState) {
-        this.shapeState = shapeState;
+    public CirclePropertyBuilder setStateType(StateType stateType) {
+        this.stateType = stateType;
         return this;
     }
 

@@ -1,15 +1,14 @@
 package com.rc.designpattern.pattern.behavioural.command;
 
 import android.util.Log;
-import android.view.View;
 
 import com.rc.designpattern.pattern.behavioural.iterator.TopicIteratorManager;
 import com.rc.designpattern.pattern.behavioural.memento.CareTaker;
 import com.rc.designpattern.pattern.behavioural.memento.GenericMemento;
 import com.rc.designpattern.pattern.behavioural.memento.GenericOriginator;
 import com.rc.designpattern.pattern.behavioural.observer.Topic;
-import com.rc.designpattern.pattern.behavioural.state.ShapeCommandType;
-import com.rc.designpattern.pattern.behavioural.state.ShapeState;
+import com.rc.designpattern.pattern.behavioural.state.CommandType;
+import com.rc.designpattern.pattern.behavioural.state.StateType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 
 public class UpdateShapeCommand implements Command {
@@ -17,24 +16,24 @@ public class UpdateShapeCommand implements Command {
     private String TAG = UpdateShapeCommand.class.getSimpleName();
     private Shape shape;
     private String key;
-    private ShapeCommandType shapeCommandType;
+    private CommandType commandType;
     private MutableVariable oldPropertyValue;
     private MutableVariable newPropertyValue;
 
-    public UpdateShapeCommand(ShapeCommandType shapeCommandType, MutableVariable oldPropertyValue, MutableVariable newPropertyValue, Shape shape) {
+    public UpdateShapeCommand(Shape shape,CommandType commandType, MutableVariable oldPropertyValue, MutableVariable newPropertyValue) {
         this.shape = shape;
-        this.shapeCommandType = shapeCommandType;
+        this.commandType = commandType;
         this.oldPropertyValue = oldPropertyValue;
         this.newPropertyValue = newPropertyValue;
-        this.key = shapeCommandType.name() + shape.getShapeProperty().getShapeId();
+        this.key = commandType.name() + shape.getShapeProperty().getShapeId();
         Log.d(TAG, TAG + ">>key: " + key);
     }
 
     @Override
     public void doIt() {
-        switch (shapeCommandType) {
+        switch (commandType) {
             case SHAPE_STATE:
-                shape.getShapeProperty().setShapeState((ShapeState) newPropertyValue.getValue());
+                shape.getShapeProperty().setStateType((StateType) newPropertyValue.getValue());
                 break;
             case SHAPE_BACKGROUND_COLOR:
                 shape.getShapeProperty().setShapeBackgroundColor((int) newPropertyValue.getValue());
@@ -67,9 +66,9 @@ public class UpdateShapeCommand implements Command {
         // Memento
         GenericMemento mMemento = CareTaker.getInstance().get(key);
         Shape mShape = (Shape) mMemento.getState();
-        switch (shapeCommandType) {
+        switch (commandType) {
             case SHAPE_STATE:
-                mShape.getShapeProperty().setShapeState((ShapeState) oldPropertyValue.getValue());
+                mShape.getShapeProperty().setStateType((StateType) oldPropertyValue.getValue());
                 break;
             case SHAPE_BACKGROUND_COLOR:
                 mShape.getShapeProperty().setShapeBackgroundColor((int) oldPropertyValue.getValue());

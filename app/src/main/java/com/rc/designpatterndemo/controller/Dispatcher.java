@@ -11,7 +11,7 @@ import com.rc.designpattern.pattern.behavioural.command.Command;
 import com.rc.designpattern.pattern.behavioural.command.CommandExecutor;
 import com.rc.designpattern.pattern.behavioural.iterator.TopicIteratorManager;
 import com.rc.designpattern.pattern.behavioural.observer.Topic;
-import com.rc.designpattern.pattern.behavioural.state.ActionType;
+import com.rc.designpattern.pattern.behavioural.state.MenuType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.pattern.creational.singleton.ShapeManager;
 import com.rc.designpattern.pattern.structural.composite.CompoundShape;
@@ -19,8 +19,8 @@ import com.rc.designpatterndemo.activity.MainActivity;
 
 public class Dispatcher {
 
-    public void dispatch(Activity activity, ActionType actionType, ViewGroup parentView) {
-        switch (actionType) {
+    public void dispatch(Activity activity, MenuType menuType, ViewGroup parentView) {
+        switch (menuType) {
             case CIRCLE:
                 Shape chileCircle = ShapeManager.getInstance(activity).getCircleShape();
                 CompoundShape compoundShape = new CompoundShape(activity, chileCircle);

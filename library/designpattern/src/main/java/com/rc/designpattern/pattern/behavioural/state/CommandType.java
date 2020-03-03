@@ -1,12 +1,12 @@
 package com.rc.designpattern.pattern.behavioural.state;
 
-public enum ShapeCommandType {
+public enum CommandType {
 
     SHAPE_BACKGROUND_COLOR(0), SHAPE_COLOR(1), SHAPE_STATE(2);
 
     private int value;
 
-    ShapeCommandType(int value) {
+    CommandType(int value) {
         this.value = value;
     }
 

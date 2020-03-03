@@ -1,10 +1,9 @@
 package com.rc.designpattern.pattern.structural.bridge;
 
-import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 
-import com.rc.designpattern.pattern.behavioural.state.ShapeState;
+import com.rc.designpattern.pattern.behavioural.state.StateType;
 import com.rc.designpattern.util.RandomManager;
 
 /**
@@ -18,7 +17,7 @@ public class CircleProperty implements Property {
     private int shapeRadius;
     private Paint shapePaint;
     private int shapeColor, shapeBackgroundColor;
-    private ShapeState shapeState;
+    private StateType stateType;
 
     public CircleProperty(int shapeX, int shapeY, int shapeRadius) {
         this.shapeId = RandomManager.getRandom(1, 1000);
@@ -28,7 +27,7 @@ public class CircleProperty implements Property {
         this.shapePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.shapeColor = RandomManager.getRandomColor();
         this.shapeBackgroundColor = RandomManager.getRandomColor();
-        this.shapeState = ShapeState.UNSELECTED;
+        this.stateType = StateType.UNSELECTED;
     }
 
     @Override
@@ -82,13 +81,13 @@ public class CircleProperty implements Property {
     }
 
     @Override
-    public ShapeState getShapeState() {
-        return shapeState;
+    public StateType getStateType() {
+        return stateType;
     }
 
     @Override
-    public void setShapeState(ShapeState shapeState) {
-        this.shapeState = shapeState;
+    public void setStateType(StateType stateType) {
+        this.stateType = stateType;
     }
 
     @Override
@@ -131,7 +130,7 @@ public class CircleProperty implements Property {
 
     @Override
     public boolean isShapeSelected() {
-        return (shapeState == ShapeState.SELECTED);
+        return (stateType == StateType.SELECTED);
     }
 
     public int getShapeRadius() {
@@ -151,7 +150,7 @@ public class CircleProperty implements Property {
                 ", shapeRadius=" + shapeRadius +
                 ", shapePaint=" + shapePaint +
                 ", shapeColor=" + shapeColor +
-                ", shapeState=" + shapeState +
+                ", shapeState=" + stateType +
                 '}';
     }
 }

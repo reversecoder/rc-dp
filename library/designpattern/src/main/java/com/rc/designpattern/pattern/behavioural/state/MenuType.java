@@ -1,12 +1,12 @@
 package com.rc.designpattern.pattern.behavioural.state;
 
-public enum ActionType {
+public enum MenuType {
 
     CIRCLE(0), RECTANGLE(1), TRIANGLE(2), UNDO(4), REDO(5);
 
     private int value;
 
-    ActionType(int value) {
+    MenuType(int value) {
         this.value = value;
     }
 

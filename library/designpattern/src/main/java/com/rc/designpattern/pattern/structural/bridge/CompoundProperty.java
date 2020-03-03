@@ -2,7 +2,7 @@ package com.rc.designpattern.pattern.structural.bridge;
 
 import android.graphics.Paint;
 
-import com.rc.designpattern.pattern.behavioural.state.ShapeState;
+import com.rc.designpattern.pattern.behavioural.state.StateType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.util.RandomManager;
 
@@ -153,18 +153,18 @@ public class CompoundProperty implements Property {
     }
 
     @Override
-    public ShapeState getShapeState() {
+    public StateType getStateType() {
         if (children.size() > 0) {
-            return children.get(0).getShapeProperty().getShapeState();
+            return children.get(0).getShapeProperty().getStateType();
         }
         return null;
     }
 
     @Override
-    public void setShapeState(ShapeState shapeState) {
+    public void setStateType(StateType stateType) {
         if (children.size() > 0) {
             for (Shape child : children) {
-                child.getShapeProperty().setShapeState(shapeState);
+                child.getShapeProperty().setStateType(stateType);
             }
         }
     }
@@ -222,14 +222,14 @@ public class CompoundProperty implements Property {
 
     @Override
     public boolean isShapeSelected() {
-        return (getShapeState() == ShapeState.SELECTED);
+        return (getStateType() == StateType.SELECTED);
     }
 
     @Override
     public String toString() {
         return "CompoundProperty{" +
                 "shapeId=" + shapeId +
-                ", shapeState=" + getShapeState() +
+                ", shapeState=" + getStateType() +
                 ", children=" + children +
                 '}';
     }

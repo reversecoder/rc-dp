@@ -24,15 +24,18 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.rc.attributionpresenter.activity.LicenseActivity;
 import com.rc.attributionpresenter.view.AnimatedTextView;
 import com.rc.designpattern.pattern.behavioural.command.AddShapeCommand;
+import com.rc.designpattern.pattern.behavioural.command.MutableVariable;
 import com.rc.designpattern.pattern.behavioural.iterator.TopicIteratorManager;
 import com.rc.designpattern.pattern.behavioural.observer.Subscriber;
 import com.rc.designpattern.pattern.behavioural.observer.Topic;
-import com.rc.designpattern.pattern.behavioural.state.ActionType;
-import com.rc.designpattern.pattern.behavioural.state.ShapeCommandType;
-import com.rc.designpattern.pattern.behavioural.state.ShapeState;
+import com.rc.designpattern.pattern.behavioural.state.CommandType;
+import com.rc.designpattern.pattern.behavioural.state.DecorationType;
+import com.rc.designpattern.pattern.behavioural.state.MenuType;
+import com.rc.designpattern.pattern.behavioural.state.StateType;
 import com.rc.designpattern.pattern.creational.abstractfactory.Shape;
 import com.rc.designpattern.pattern.structural.bridge.Property;
 import com.rc.designpattern.pattern.structural.composite.CompoundShape;
+import com.rc.designpattern.pattern.structural.decorator.ShapeDecorator;
 import com.rc.designpattern.util.Util;
 import com.rc.designpatterndemo.R;
 import com.rc.designpatterndemo.controller.ActionController;
@@ -194,17 +197,17 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                         // Command pattern
 //                        circleCommandManager = new CommandManager();
 
-                        actionController.dispatchRequest(MainActivity.this, ActionType.CIRCLE, shapeContainer);
+                        actionController.dispatchRequest(MainActivity.this, MenuType.CIRCLE, shapeContainer);
 
 //                        for(int i=0;i<shapeContainer.getChildCount();i++){
 //                            Log.d(TAG, "Added views "+i+" is "+ shapeContainer.getChildAt(i).getClass().getSimpleName());
 //                        }
                         break;
                     case 1:
-                        actionController.dispatchRequest(MainActivity.this, ActionType.UNDO, shapeContainer);
+                        actionController.dispatchRequest(MainActivity.this, MenuType.UNDO, shapeContainer);
                         break;
                     case 2:
-                        actionController.dispatchRequest(MainActivity.this, ActionType.REDO, shapeContainer);
+                        actionController.dispatchRequest(MainActivity.this, MenuType.REDO, shapeContainer);
                         break;
                 }
 
@@ -273,17 +276,6 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
             }
         });
 
-//        cbShowBorder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                Shape shape = shapeList.get(shapeList.size() - 1);
-//
-//                int thickness = (isChecked) ? shape.getTopicValue().getBorderWidth() : 0;
-//                LineThinknessDecorator lineThinknessDecorator = new LineThinknessDecorator(shape, thickness);
-//                lineThinknessDecorator.refreshShape();
-//            }
-//        });
-
         seekBarCircleX.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
@@ -347,6 +339,10 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
 
                 int valueInDp = Util.dpToPx(value, MainActivity.this);
                 Log.d(TAG, "->seekBarMeasureWidth>>onProgressChanged>>valueInDp: " + value);
+//                ShapeDecorator shapeDecoratorWidth = new ShapeDecorator(selectedShape, DecorationType.SHAPE_WIDTH,
+//                        new MutableVariable(selectedShape.getShapeProperty().getShapeWidth()),
+//                        new MutableVariable(value));
+//                shapeDecoratorWidth.refreshView();
             }
 
             @Override
@@ -385,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                 if (selectedShape != null) {
                     int selectedColor = selectedShape.getShapeProperty().getShapeBackgroundColor();
                     Log.d(TAG, "selectedColor>>ivShapeBackgroundColor: " + selectedColor);
-                    showColorPicker(ShapeCommandType.SHAPE_BACKGROUND_COLOR, selectedColor, ivShapeBackgroundColor);
+                    showColorPicker(CommandType.SHAPE_BACKGROUND_COLOR, selectedColor, ivShapeBackgroundColor);
                 }
             }
         });
@@ -396,13 +392,13 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                 if (selectedShape != null) {
                     int selectedColor = selectedShape.getShapeProperty().getShapeColor();
                     Log.d(TAG, "selectedColor>>ivShapeColor: " + selectedColor);
-                    showColorPicker(ShapeCommandType.SHAPE_COLOR, selectedColor, ivShapeColor);
+                    showColorPicker(CommandType.SHAPE_COLOR, selectedColor, ivShapeColor);
                 }
             }
         });
     }
 
-    private void showColorPicker(final ShapeCommandType shapeCommandType, int selectedColor, final ImageView colorView) {
+    private void showColorPicker(final CommandType commandType, int selectedColor, final ImageView colorView) {
         new SpectrumDialog.Builder(MainActivity.this)
                 .setColors(R.array.colors)
                 .setSelectedColor(selectedColor)
@@ -423,9 +419,12 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                             Topic<Shape> topic = TopicIteratorManager.getInstance().getTopic(AddShapeCommand.class.getSimpleName() + selectedShape.getShapeProperty().getShapeId());
                             if (topic != null) {
                                 Property property = ((CompoundShape) selectedShape).getShapeProperty();
-                                if (shapeCommandType == ShapeCommandType.SHAPE_BACKGROUND_COLOR) {
+                                if (commandType == CommandType.SHAPE_BACKGROUND_COLOR) {
                                     property.setShapeBackgroundColor(color);
-                                } else if (shapeCommandType == ShapeCommandType.SHAPE_COLOR) {
+                                    ShapeDecorator shapeDecorator = new ShapeDecorator(selectedShape, DecorationType.SHAPE_BACKGROUND_COLOR,
+                                            new MutableVariable(selectedShape.getShapeProperty().getShapeBackgroundColor()),
+                                            new MutableVariable(color));
+                                } else if (commandType == CommandType.SHAPE_COLOR) {
                                     property.setShapeColor(color);
                                 }
                                 selectedShape.setShapeProperty(property);
@@ -558,7 +557,7 @@ public class MainActivity extends AppCompatActivity implements Subscriber<Shape>
                 for (int i = 0; i < shapeContainer.getChildCount(); i++) {
                     Log.d(TAG, "Added views " + i + " is " + shapeContainer.getChildAt(i).getClass().getSimpleName());
                     if (((Shape) shapeContainer.getChildAt(i)) instanceof CompoundShape && (((Shape) shapeContainer.getChildAt(i)).getShapeProperty().getShapeId() != item.getShapeProperty().getShapeId())) {
-                        ((Shape) shapeContainer.getChildAt(i)).getShapeProperty().setShapeState(ShapeState.UNSELECTED);
+                        ((Shape) shapeContainer.getChildAt(i)).getShapeProperty().setStateType(StateType.UNSELECTED);
                         ((Shape) shapeContainer.getChildAt(i)).refreshView();
                     }
                 }

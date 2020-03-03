@@ -2,7 +2,7 @@ package com.rc.designpattern.pattern.structural.bridge;
 
 import android.graphics.Paint;
 
-import com.rc.designpattern.pattern.behavioural.state.ShapeState;
+import com.rc.designpattern.pattern.behavioural.state.StateType;
 
 /**
  * @author Md. Rashadul Alam
@@ -30,9 +30,9 @@ public interface Property {
 
     void setShapeHeight(int shapeHeight);
 
-    ShapeState getShapeState();
+    StateType getStateType();
 
-    void setShapeState(ShapeState shapeState);
+    void setStateType(StateType stateType);
 
     int getShapeColor();
 
