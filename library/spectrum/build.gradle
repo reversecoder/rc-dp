@@ -1,15 +1,16 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+}
 
 def libraryVersionCode = 071
 def libraryVersion = '0.7.1'
 
 android {
-    compileSdkVersion appCompileSdkVersion
-    buildToolsVersion appBuildToolsVersion
+    compileSdk appCompileSdkVersion
 
     defaultConfig {
-        minSdkVersion appMinSdkVersion
-        targetSdkVersion appTargetSdkVersion
+        minSdk appMinSdkVersion
+        targetSdk appTargetSdkVersion
         versionCode libraryVersionCode
         versionName libraryVersion
         consumerProguardFiles 'proguard-rules.pro'

@@ -6,11 +6,13 @@
 
         <activity
             android:name=".activity.LicenseActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.AttributePresenter.Transparent" />
 
         <activity
             android:name=".activity.LicenseDetailActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.AttributePresenter.Transparent" />
 

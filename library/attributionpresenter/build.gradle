@@ -1,31 +1,15 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
-buildscript {
-    ext.kotlinVersion = '1.3.61'
-    ext.androidGradlePluginVersion = '3.6.1'
-
-    repositories {
-        google()
-        jcenter()
-    }
-
-    dependencies {
-        classpath "com.android.tools.build:gradle:${androidGradlePluginVersion}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:${kotlinVersion}"
-    }
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
 }
 
 android {
-
-    compileSdkVersion appCompileSdkVersion
-    buildToolsVersion appBuildToolsVersion
+    compileSdk appCompileSdkVersion
 
     defaultConfig {
-        minSdkVersion appMinSdkVersion
-        targetSdkVersion appTargetSdkVersion
+        minSdk appMinSdkVersion
+        targetSdk appTargetSdkVersion
         versionCode 2
         versionName "1.0.1"
 
